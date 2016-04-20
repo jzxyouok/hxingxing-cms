@@ -76,11 +76,12 @@ $(function() {
                     return '操作';
                     },
                     itemTemplate: function(_, item) {
+                        console.log(item.contact)
                         return '<div class="btn-group">'+
                           '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+(item.contact?item.contact.name:'')+' <span class="caret"></span>'+
                           '</button>'+
                           '<ul class="dropdown-menu">'+
-                            '<li><a href="#" data-title="'+(item.contact?item.contact.name:'')+'" data-comment="'+(item.contact?JSON.stringify(item.contact):"")+'" data-toggle="modal" data-target="#pageModal" class="openModal"><i class="fa fa-user"></i> 编辑</a></li>'+
+                            '<li><a href="#" data-comment="'+(item.contact?item.contact:"")+'" data-toggle="modal" data-target="#pageModal" class="openModal"><i class="fa fa-user"></i> 编辑</a></li>'+
                             '<li role="separator" class="divider"></li>'+
                             '<li><a href="#"><i class="fa fa-comment-o"></i> 短信</a></li>'+
                             '<li><a href="#"><i class="fa fa-comments"></i> 推送</a></li>'+
@@ -145,20 +146,28 @@ $(function() {
                     }
                     $(this).data("clicks", !clicks);
                 });
-
+function writeObj(obj){ 
+ var description = ""; 
+ for(var i in obj){ 
+  var property=obj[i]; 
+  description+=i+" = "+property+"\n"; 
+ } 
+ console.log(description); 
+} 
                 $('.openModal').click(function () {
-                  rowIndex = $('#unpub .jsgrid-table tbody .jsgrid-edit-row').index($(this).closest('.jsgrid-edit-row'));
-                  console.log(rowIndex)
-                  var commentData = $.parseJSON($(this).data('comment'));
+                  /*rowIndex = $('#unpub .jsgrid-table tbody tr').index($(this).closest('.jsgrid-edit-row'));
+                  console.log(rowIndex)*/
+                  var commentData = $(this).data('comment');
                   // newsId = $(this).data('newsid');
-
+                  writeObj(commentData)
+                  console.log(commentData,commentData.name)
                     var artTitle = $(this).data('title');
                     $('#modalTitle').text(artTitle);
                     $('#contactName').val(commentData.name);
                     $('#contactMobile').val(commentData.mobile);
                     $('#contactCompany').val(commentData.company);
                     $('#contactPosition').val(commentData.position);
-                    $('#myModal').modal('');
+                    $('#myModal').modal('show');
                 })
             }
         });

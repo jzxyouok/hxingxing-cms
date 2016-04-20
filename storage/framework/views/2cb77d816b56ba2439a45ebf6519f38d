@@ -162,6 +162,7 @@
     $('.openModal').click(function () {
       rowIndex = $('#main-table tr').index($(this).closest('tr'));
       var commentData = $(this).data('comment');
+    console.log(commentData)
       newsId = $(this).data('newsid');
 
       <!-- console.log(rowIndex,commentData) -->
