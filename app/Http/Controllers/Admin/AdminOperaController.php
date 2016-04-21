@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Douyasi\Repositories\OperaRepository;  //模型仓库层
 use Douyasi\Repositories\FlagRepository;  //推荐位仓库层
 use Douyasi\Cache\DataCache;
+use Douyasi\Extensions\ChuanglanSmsApi;
+use Douyasi\Extensions\Easemob;
 use Cache;
 
 /**
@@ -176,5 +178,60 @@ class AdminOperaController extends BackController
         $this->content->destroy($ids, 'article');
         echo 1;
         // return redirect()->route('admin.opera.index')->with('message', '删除剧目成功！');
+    }
+
+    private function newEasemob(){
+        $options['client_id']='YXA6GE-eINUnEeWsSV3hfNAN8Q';
+        $options['client_secret']='YXA60AK_25-5gNGQ1D_rUzjZrqnaYsI';
+        $options['org_name']='shiheng2015';
+        $options['app_name']='hongka';
+        return new Easemob($options);
+    }
+    public function getHxUsers(OperaRequest $request){
+        $h=$this->newEasemob();
+        $aaa = $h->getUsers();
+
+        if ($aaa) {
+            $users = $aaa['entities'];
+            var_dump($users);die();
+        }
+    }
+    public function hxPush($mobile,$content='',$uid){
+        // var_dump($data);die();
+        $h=$this->newEasemob();
+        $ext['a']="a";
+        $ext['b']="b";
+        // $uids = ['73y'];
+        $uids[] = $uid.'y';
+        $uids[] = $uid.'z';
+        $result = $h->sendText('admin','users',$uids,$content,$ext);
+        // var_dump($result);
+        return $result['data'][$uid.'y']=='success'&&$result['data'][$uid.'z']=='success'?1:0;
+    }
+    private function newChuanglan(){
+        $config = [
+            'api_send_url'=> 'http://222.73.117.156/msg/HttpBatchSendSM',
+            'api_balance_query_url' => 'http://222.73.117.156/msg/QueryBalance',
+            'api_account'    => 'shiheng',
+            'api_password'   => 'Sh888123'
+        ];
+        return new ChuanglanSmsApi($config);
+    }
+    public function smsPush($mobile,$content='',$uid){
+        $clapi=$this->newChuanglan();
+        // $mobile = '15711553913';
+        // $content = '【红色咖啡】大人，周星驰发布了女主（求职意向岗位）微简历，他（她）是你的艺中人吗？';
+
+        $result = $clapi->sendSMS($mobile,$content,'true');
+        $result = $clapi->execResult($result);
+        // var_dump($result);
+        return $result['1']==0?1:0;
+    }
+    public function pushMsg(OperaRequest $request){
+        $data = $request->all();
+        $function = $data['pushType'].'Push';
+        // var_dump($function);die();
+        unset($data['pushType']);
+        echo $this->$function($data['mobile'],$data['content'],$data['uid']);
     }
 }
