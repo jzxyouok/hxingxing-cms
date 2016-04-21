@@ -14,7 +14,7 @@ use Zizaco\Entrust\Traits\EntrustUserTrait;
  *
  * @author raoyc <raoyc2009@gmail.com>
  */
-class Person extends Model implements AuthenticatableContract, CanResetPasswordContract
+class Person extends Model
 {
     
     use Authenticatable, CanResetPassword;
@@ -39,6 +39,10 @@ class Person extends Model implements AuthenticatableContract, CanResetPasswordC
     public function scopeCustomer($query)
     {
         // return $query->where('user_type', '=', 'customer');
+    }
+    public function updViewNum($id,$num)
+    {
+        return $this->where('id', $id)->update(['viewNum' => $num]);
     }
     public function works()
     {

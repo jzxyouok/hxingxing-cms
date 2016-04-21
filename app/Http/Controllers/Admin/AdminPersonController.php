@@ -110,7 +110,13 @@ class AdminPersonController extends BackController
     {
         return view('back.person.edit', compact('user', 'roles', 'own_role'));
     }
-
+    public function checkMobile(PersonRequest $request)
+    {
+        $mobile = $request->input('mobile');
+        $uid = $request->input('uid');
+        $exsit = $this->person->checkMobile($mobile, $uid);
+        echo $exsit?'false':'true';
+    }
 
     /**
      * Update the specified resource in storage.
@@ -118,21 +124,13 @@ class AdminPersonController extends BackController
      * @param  int  $id
      * @return Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(PersonRequest $request, $id)
     {
         //
         $data = $request->all();
-        $this->user->update($id, $data, 'manager');
+        $this->person->update($id, $data, 'manager');
 
-        $log = [
-            'user_id' => user('id'),
-            'url'=>route('admin.user.edit', $id),
-            'type'=>'manager',
-            'content'=>'管理员：超级管理员修改了id为'.$id.'的管理用户资料。',
-        ];
-
-        SystemLogger::write($log);
-        return redirect()->route('admin.user.index')->with('message', '修改管理员成功！');
+        echo 1;
 
     }
 

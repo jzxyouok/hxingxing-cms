@@ -156,7 +156,7 @@ class AdminArticleController extends BackController
 //            return redirect()->route('admin.article.index')->with('fail', '没有权限进行文章修改炒作！');
 //            //die('没有权限进行文章修改炒作！');
 //        }
-        $data = $request->all();/*var_dump($data)*/;die;
+        $data = $request->all();/*var_dump($data)*///;die;
         $this->content->update($id, $data, 'article');
         return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }

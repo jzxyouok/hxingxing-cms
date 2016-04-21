@@ -144,6 +144,7 @@
   <script src="<?php echo e(asset('plugins/layer/layer.min.js')); ?>"></script>
   <!--引入iCheck组件-->
   <script src="<?php echo e(asset('plugins/iCheck/icheck.min.js')); ?>" type="text/javascript"></script>
+  <script src="<?php echo e(asset('static/js/hongka.js')); ?>" type="text/javascript"></script>
   <!--引入Chosen组件-->
   <?php echo $__env->make('scripts.endChosen', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>
 

@@ -1,11 +1,11 @@
-function popContactData(name,uname,mobile,company,position) {
-    $('#modalTitle').text(name);
-    $('#contactName').val(uname);
-    $('#contactMobile').val(mobile);
-    $('#contactCompany').val(company);
-    $('#contactPosition').val(position);
-    $('#myModal').modal('');
-}
+function writeObj(obj){ 
+ var description = ""; 
+ for(var i in obj){ 
+  var property=obj[i]; 
+  description+=i+" = "+property+"\n"; 
+ } 
+ console.log(description); 
+} 
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
@@ -39,6 +39,7 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
+                    console.log(item)
                     item._token=_token;
                     return $.ajax({
                         type: "PUT",
@@ -72,34 +73,27 @@ $(function() {
                     },
                     align: "center",width: 40,sorting: false,
                 },
-                {headerTemplate: function() {
-                    return '操作';
+                {headerTemplate: function() {return '联系人';},
+                    insertTemplate: function() {
+                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal"><i class="icon fa fa-edit"></i></a>';
                     },
                     itemTemplate: function(_, item) {
-                        return '<div class="btn-group">'+
-                          '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">'+(item.contact?item.contact.name:'')+' <span class="caret"></span>'+
-                          '</button>'+
-                          '<ul class="dropdown-menu">'+
-                            '<li><a href="#" data-title="'+(item.contact?item.contact.name:'')+'" data-comment="'+(item.contact?JSON.stringify(item.contact):"")+'" data-toggle="modal" data-target="#pageModal" class="openModal"><i class="fa fa-user"></i> 编辑</a></li>'+
-                            '<li role="separator" class="divider"></li>'+
-                            '<li><a href="#"><i class="fa fa-comment-o"></i> 短信</a></li>'+
-                            '<li><a href="#"><i class="fa fa-comments"></i> 推送</a></li>'+
-                          '</ul></div>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal"><i class="icon fa fa-user"></i> '+(item.contact?item.contact.name:'')+'</a>';
                     },
                     align: "center",width: 40,sorting: false,
                 },
                 { name: "name", title: "剧名", type: "text", width: 50, validate: "required" },
-                { name: "invest", title: "总投资", type: "text", width: 50 },
-                { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "id", textField: "name" },
-                { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
-                { name: "site", title: "地点", type: "text", width: 50 },
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.startTime,valueField:"id",textField:"name", width: 50},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.shootPeriod,valueField:"id",textField:"name", width: 50},
-                { name: "runTime", title: "片长", type: "text", width: 50 },
-                { name: "outline", title: "剧目介绍", type: "text", width: 50 },
-                { name: "producer", title: "制片方", type: "text", width: 50 },
-                { name: "creator", title: "主创", type: "text", width: 50 },
-                { name: "platform", title: "播放平台", type: "text", width: 50 },
+                { name: "invest", title: "总投资", type: "text", width: 30 },
+                { name: "categoryC", title: "类型", type: "select", width: 30, items: tagsData.jobCategory, valueField: "id", textField: "name" },
+                { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
+                { name: "site", title: "地点", type: "text", width: 30 },
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.startTime,valueField:"id",textField:"name", width: 40},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.shootPeriod,valueField:"id",textField:"name", width: 40},
+                { name: "runTime", title: "片长", type: "text", width: 40 },
+                { name: "outline", title: "剧目介绍", type: "text", width: 120 },
+                { name: "producer", title: "制片方", type: "text", width: 30 },
+                { name: "creator", title: "主创", type: "text", width: 30 },
+                { name: "platform", title: "播放平台", type: "text", width: 30 },
                 // {headerTemplate: function() {return '封面';},
                 //     itemTemplate: function(_, item) {
                 //         return '<img src="'+item.cover+'" style="height: 35px;width: 35px">';
@@ -130,36 +124,27 @@ $(function() {
                     }
                 })
                 //Enable check and uncheck all functionality
+                $(".checkbox-toggle").data("clicks", false);
                 $(".checkbox-toggle").click(function () {
                     var clicks = $(this).data('clicks');
+                    console.log(clicks)
                     if (clicks) {
                       //Uncheck all checkboxes
                       // $(".table-operation").iCheck("uncheck");
-                      $(".table-operation").prop('checked', true)
-                      // $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
+                      $(".table-operation").prop('checked', false)
+                      selectedItems = [];
+                      $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
                     } else {
                       //Check all checkboxes
                       // $(".table-operation").iCheck("check");
-                      $(".table-operation").prop('checked', false)
-                      // $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
+                      $(".table-operation").each(function(index, el) {
+                          $(this).prop('checked', true);
+                          selectItem($(this).data('id'));
+                      }); 
+                      $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
                     }
                     $(this).data("clicks", !clicks);
                 });
-
-                $('.openModal').click(function () {
-                  rowIndex = $('#unpub .jsgrid-table tbody .jsgrid-edit-row').index($(this).closest('.jsgrid-edit-row'));
-                  console.log(rowIndex)
-                  var commentData = $.parseJSON($(this).data('comment'));
-                  // newsId = $(this).data('newsid');
-
-                    var artTitle = $(this).data('title');
-                    $('#modalTitle').text(artTitle);
-                    $('#contactName').val(commentData.name);
-                    $('#contactMobile').val(commentData.mobile);
-                    $('#contactCompany').val(commentData.company);
-                    $('#contactPosition').val(commentData.position);
-                    $('#myModal').modal('');
-                })
             }
         });
         $("#pubed").jsGrid({
@@ -196,44 +181,24 @@ $(function() {
                 }
             },
             fields: [
-                {headerTemplate: function() {
-                    return '联系人';
-                    },
+                {headerTemplate: function() {return '联系人';},
                     itemTemplate: function(_, item) {
-                        return $("<button>").attr({"type":"button","title":item.contact?item.contact.name:'',"class":"btn btn-default btn-sm",'data-target':'#contactModal','data-toggle':'modal'}).html(item.contact?item.contact.name:'')
-                        .on("click", function () {
-                            popContactData(item.name,item.contact.name,item.contact.mobile,item.contact.company,item.contact.position);
-                        });
-                    },
-                    align: "center",width: 40,sorting: false,
-                },
-                {headerTemplate: function() {
-                    return '推送';
-                    },
-                    itemTemplate: function(_, item) {
-                        return '<div class="btn-group">'+
-                          '<button type="button" class="btn btn-default btn-sm dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">推送 <span class="caret"></span>'+
-                          '</button>'+
-                          '<ul class="dropdown-menu">'+
-                            '<li><a href="#">短信</a></li>'+
-                            '<li role="separator" class="divider"></li>'+
-                            '<li><a href="#">推送</a></li>'+
-                          '</ul></div>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal"><i class="icon fa fa-user"></i> '+(item.contact?item.contact.name:'')+'</a>';
                     },
                     align: "center",width: 40,sorting: false,
                 },
                 { name: "name", title: "剧名", type: "text", width: 50 },
-                { name: "invest", title: "总投资", type: "text", width: 50 },
-                { name:"categoryC",title:"类型",type:"select",items: tagsData.jobCategory,valueField:"id",textField:"name", width: 50},
-                { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
-                { name: "site", title: "地点", type: "text", width: 50 },
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.startTime,valueField:"id",textField:"name", width: 50},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.shootPeriod,valueField:"id",textField:"name", width: 50},
-                { name: "runTime", title: "片长", type: "text", width: 50 },
-                { name: "outline", title: "剧目介绍", type: "text", width: 50 },
-                { name: "producer", title: "制片方", type: "text", width: 50 },
-                { name: "creator", title: "主创", type: "text", width: 50 },
-                { name: "platform", title: "播放平台", type: "text", width: 50 },
+                { name: "invest", title: "总投资", type: "text", width: 30 },
+                { name:"categoryC",title:"类型",type:"select",items: tagsData.jobCategory,valueField:"id",textField:"name", width: 30},
+                { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
+                { name: "site", title: "地点", type: "text", width: 30 },
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.startTime,valueField:"id",textField:"name", width: 40},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.shootPeriod,valueField:"id",textField:"name", width: 40},
+                { name: "runTime", title: "片长", type: "text", width: 40 },
+                { name: "outline", title: "剧目介绍", type: "text", width: 120 },
+                { name: "producer", title: "制片方", type: "text", width: 30 },
+                { name: "creator", title: "主创", type: "text", width: 30 },
+                { name: "platform", title: "播放平台", type: "text", width: 30 },
                 /*{headerTemplate: function() {return '封面';},
                     itemTemplate: function(_, item) {
                         return item.cover?'<img src="'+item.cover+'" style="height: 35px;width: 35px">':'';
@@ -246,33 +211,6 @@ $(function() {
             }
         });
     });
-    var selectedItems = [];
- 
-    var selectItem = function(item) {
-        selectedItems.push(item);
-    };
- 
-    var unselectItem = function(item) {
-        selectedItems = $.grep(selectedItems, function(i) {
-            return i !== item;
-        });
-    };
- 
-    var deleteSelectedItems = function() {
-        if(!selectedItems.length || !confirm("确定删除吗?"))
-            return;
- 
-        $.ajax({
-            type: "POST",
-            url: operaController+'/'+selectedItems,
-            data: {_method:'delete',_token:_token}
-        }).done(function() {
-            $.each(selectedItems, function(_, item) {
-                $("#unpub").jsGrid("deleteItem", item);
-            });
-            selectedItems = [];
-        });
-    };
     $('#pubOpera').click(function(event) {
         // console.log(selectedItems)
         if(!selectedItems.length){
@@ -290,6 +228,47 @@ $(function() {
             location.reload();
         });
     });
+
+    $('#pushBtn').click(function(event) {
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        var mobileFinal = $('input[name="mobileFinal"]:checked').val();
+        mobile = $('#'+mobileFinal+'Mobile');
+        if(!myreg.test(mobile.val())) { 
+            alert('请输入有效的手机号码！'); 
+            mobile.select();
+            return false; 
+        }
+        
+        var self = $(this);
+        var msgBox = self.next();
+        if (confirm('确定发送吗？')) {
+          statusTable = self.attr('status-table');
+          pushType = $('input[name="pushType"]:checked').val();
+          uid = $('#uid').val();
+          // content = $('#msgTpl').val()+$('#msgInput').val();
+          content = $('#msgInput').val();
+          console.log({pushType:pushType,uid:uid,mobile:mobile.val(),content:'123'})
+          if (uid>0) {
+            $.ajax({
+                type: "post",
+                url: operaController+'/pushMsg',
+                data: {pushType:pushType,uid:uid,mobile:mobile.val(),content:content},
+                beforeSend: function( xhr ) {
+                    self.prop('disabled', true);
+                    msgBox.text('发送中...').removeClass('alert-success').removeClass('alert-warning').addClass('alert-info').show();
+                },
+                error: function( xhr ) {
+                    msgBox.text('发送失败').removeClass('alert-success').removeClass('alert-info').addClass('alert-warning').show();
+                },
+                complete: function( xhr ) {
+                    self.prop('disabled', false);
+                },
+            }).done(function(data) {
+                msgBox.text('已发送！').removeClass('alert-warning').removeClass('alert-info').addClass('alert-success').show();
+            });
+          }
+        }
+    })
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         if ($(e.target).attr('href')=='#tab_1') {
             $('#pubOpera').show();

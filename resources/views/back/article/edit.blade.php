@@ -151,6 +151,7 @@
   <script src="{{ asset('plugins/layer/layer.min.js') }}"></script>
   <!--引入iCheck组件-->
   <script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
+  <!--<script src="{{ asset('static/js/hongka.js') }}" type="text/javascript"></script>-->
   <!--引入Chosen组件-->
 
   <script src="{{ asset('static/js/hongka.js') }}" type="text/javascript"></script>
@@ -162,7 +163,6 @@
 @section('filledScript')
     $("#submitDraftBtn").click(function() {
         $("#article_form").append('<input type="hidden" name="is_draft" value="1"/>');
-        $('input[name="Submit"]').off('onbeforeunload');
         $("#article_form").submit();
     });
     $("#submitPubBtn").click(function() {
