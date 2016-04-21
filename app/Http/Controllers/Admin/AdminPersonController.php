@@ -4,6 +4,7 @@ namespace Douyasi\Http\Controllers\Admin;
 
 use Douyasi\Http\Requests\PersonRequest;
 use Douyasi\Http\Controllers\Controller;
+use Douyasi\Models\Works;
 use Illuminate\Http\Request;
 use Douyasi\Logger\SystemLogger as SystemLogger;
 use Douyasi\Repositories\PersonRepository;
@@ -26,11 +27,13 @@ class AdminPersonController extends BackController
     protected $person;
 
     public function __construct(
-        PersonRepository $person)
+        PersonRepository $person/*,
+        WorksRepository $works*/
+    )
     {
         parent::__construct();
         $this->person = $person;
-
+        //$this->works = $works;
         if (! user('object')->can('manage_users')) {
             $this->middleware('deny403');
         }
@@ -50,6 +53,7 @@ class AdminPersonController extends BackController
             'mobile' => $request->input('s_phone'),
         ];
         $persons = $this->person->index($data, 'manager', Cache::get('page_size', '10'));
+        //var_dump($persons);die;
         $serverUrl = 'http://112.74.86.237:8080/img/';
         return view('back.person.index', compact('persons','serverUrl'));
     }
@@ -131,4 +135,13 @@ class AdminPersonController extends BackController
         return redirect()->route('admin.user.index')->with('message', '修改管理员成功！');
 
     }
+
+    public function delWork($workId){
+//        if (! user('object')->can('manage_users') || ! user('object')->can('manage_system')) {
+//            die('权限不足！');
+//        }
+        //$this->works->delWorkById($workId);
+        echo 1;
+    }
+
 }

@@ -1,41 +1,41 @@
-@extends('layout._back')
-
-@section('content-header')
+<?php $__env->startSection('content-header'); ?>
 @parent
-          <a href="{{ route('admin.article.create') }}" class="btn btn-primary"><i class="fa fa-fw fa-pencil"></i> 撰写新文章</a>
+          <a href="<?php echo e(route('admin.article.create')); ?>" class="btn btn-primary"><i class="fa fa-fw fa-pencil"></i> 撰写新文章</a>
           <ol class="breadcrumb">
-            <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
+            <li><a href="<?php echo e(route('admin')); ?>"><i class="fa fa-dashboard"></i> 主页</a></li>
             <li class="active">内容管理 - 文章</li>
           </ol>
           <style>
           .table>tbody>tr>td{vertical-align: middle;}
           </style>
-@stop
+<?php $__env->stopSection(); ?>
 
-@section('content')
-              @if(Session::has('fail'))
+<?php $__env->startSection('content'); ?>
+              <?php if(Session::has('fail')): ?>
                 <div class="alert alert-warning alert-dismissable">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h4>  <i class="icon icon fa fa-warning"></i> 提示！</h4>
-                  {{ Session::get('fail') }}
+                  <?php echo e(Session::get('fail')); ?>
+
                 </div>
-              @endif
-              @if(Session::has('message'))
+              <?php endif; ?>
+              <?php if(Session::has('message')): ?>
                 <div class="alert alert-success alert-dismissable">
                   <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                   <h4>  <i class="icon fa fa-check"></i> 提示！</h4>
-                  {{ Session::get('message') }}
-                </div>
-              @endif
+                  <?php echo e(Session::get('message')); ?>
 
-              <!-- <a href="{{ route('admin.article.create') }}" class="btn btn-primary margin-bottom">撰写新文章</a> -->
+                </div>
+              <?php endif; ?>
+
+              <!-- <a href="<?php echo e(route('admin.article.create')); ?>" class="btn btn-primary margin-bottom">撰写新文章</a> -->
             <div class="box box-primary">
                 <div class="box-header with-border">
                     <h3 class="box-title">文章列表</h3>
                     <div class="box-tools">
-                        <form action="{{ route('admin.article.index') }}" method="get">
+                        <form action="<?php echo e(route('admin.article.index')); ?>" method="get">
                             <div class="input-group">
-                                <input type="text" class="form-control input-sm pull-right" name="s_title" value="{{ Input::get('s_title') }}" style="width: 150px;" placeholder="搜索文章标题">
+                                <input type="text" class="form-control input-sm pull-right" name="s_title" value="<?php echo e(Input::get('s_title')); ?>" style="width: 150px;" placeholder="搜索文章标题">
                                 <div class="input-group-btn">
                                     <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
                                 </div>
@@ -83,45 +83,47 @@
                                     </tr>
                                     <!--tr-th end-->
 
-                                    @foreach ($draft_articles as $k=> $art)
+                                    <?php foreach($draft_articles as $k=> $art): ?>
                                     <tr class="row-item">
-                                        <!-- <td class="table-operation"><input type="checkbox" value="{{ $art->id }}" name="checkbox[]"></td> -->
-                                        <!-- <td class="text-green">{!! flag_tag($art->flag, $flags) !!}</td> -->
-                                        <td class="text-muted"><a href="{{ route('admin.article.index') }}/{{ $art->id }}/edit">{{ str_limit($art->title,50) }}</a></td>
-                                        <td class="text-muted">{{ $art->user->username }}</td>
-                                        <td class="text-muted">{{ $art->author }}</td>
-                                        <td class="text-muted">{!! show_check($art->is_top) !!}</td>
+                                        <!-- <td class="table-operation"><input type="checkbox" value="<?php echo e($art->id); ?>" name="checkbox[]"></td> -->
+                                        <!-- <td class="text-green"><?php echo flag_tag($art->flag, $flags); ?></td> -->
+                                        <td class="text-muted"><a href="<?php echo e(route('admin.article.index')); ?>/<?php echo e($art->id); ?>/edit"><?php echo e(str_limit($art->title,50)); ?></a></td>
+                                        <td class="text-muted"><?php echo e($art->user->username); ?></td>
+                                        <td class="text-muted"><?php echo e($art->author); ?></td>
+                                        <td class="text-muted"><?php echo show_check($art->is_top); ?></td>
                                         <!-- <td class="text-green">
-                                          @if(empty($art->slug))
-                                          {{ $art->id }}
-                                          @else
-                                          {{ $art->slug }}
-                                          @endif
+                                          <?php if(empty($art->slug)): ?>
+                                          <?php echo e($art->id); ?>
+
+                                          <?php else: ?>
+                                          <?php echo e($art->slug); ?>
+
+                                          <?php endif; ?>
                                         </td> -->
                                         <td>
                           <span class="showBox">
-                            <span class="numTxt">{{ $art->viewNum }}</span> <a href="javascript:void(0);" class="editViewNum"><i class="fa fa-edit"></i></a>
+                            <span class="numTxt"><?php echo e($art->viewNum); ?></span> <a href="javascript:void(0);" class="editViewNum"><i class="fa fa-edit"></i></a>
                           </span>
                           <span class="editBox" style="display:none">
-                            <input type="number" value="{{ $art->viewNum }}" style="width: 60px;"><a href="javascript:void(0);" class="subViewNum" data-id="{{ $art->id }}"><i class="fa fa-save"></i></a>
+                            <input type="number" value="<?php echo e($art->viewNum); ?>" style="width: 60px;"><a href="javascript:void(0);" class="subViewNum" data-id="<?php echo e($art->id); ?>"><i class="fa fa-save"></i></a>
                           </span>
                                         </td>
-                                        <td>{{ $art->likeNum }}</td>
-                                        <td>@if($art->commentNum>0)<button data-title="{{ str_limit($art->title,50) }}" data-comment="{{ $art->newsComment }}" data-newsId="{{ $art->id }}" class="btn btn-default btn-sm openModal" data-toggle="modal" data-target="#pageModal"><i class="fa fa-fw fa-comments"></i></button> @endif<span class="numBox">{{ $art->commentNum }}</span></td>
+                                        <td><?php echo e($art->likeNum); ?></td>
+                                        <td><?php if($art->commentNum>0): ?><button data-title="<?php echo e(str_limit($art->title,50)); ?>" data-comment="<?php echo e($art->newsComment); ?>" data-newsId="<?php echo e($art->id); ?>" class="btn btn-default btn-sm openModal" data-toggle="modal" data-target="#pageModal"><i class="fa fa-fw fa-comments"></i></button> <?php endif; ?><span class="numBox"><?php echo e($art->commentNum); ?></span></td>
                                         <td>
-                                            @if($art->thumb)
-                                            <img src="{{ url() }}/{{ $art->thumb }}" style="height: 35px;width: 35px">
-                                            @endif
-                                            {{ $art->meta->name }}</td>
-                                        <td>{{ date('H:i m-d-Y', strtotime($art->created_at)) }}</td>
-                                        <td>{{ date('H:i m-d', strtotime($art->updated_at)) }}</td>
+                                            <?php if($art->thumb): ?>
+                                            <img src="<?php echo e(url()); ?>/<?php echo e($art->thumb); ?>" style="height: 35px;width: 35px">
+                                            <?php endif; ?>
+                                            <?php echo e($art->meta->name); ?></td>
+                                        <td><?php echo e(date('H:i m-d-Y', strtotime($art->created_at))); ?></td>
+                                        <td><?php echo e(date('H:i m-d', strtotime($art->updated_at))); ?></td>
                                         <td>
-                                            @if($canDel)
-                                            <a href="javascript:void(0);"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-id="{{ $art->id }}" data-action=''></i></a>
-                                            @endif
+                                            <?php if($canDel): ?>
+                                            <a href="javascript:void(0);"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-id="<?php echo e($art->id); ?>" data-action=''></i></a>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; ?>
 
                                     </tbody>
                                 </table>
@@ -159,45 +161,47 @@
                                     </tr>
                                     <!--tr-th end-->
 
-                                    @foreach ($pub_articles as $k=> $art)
+                                    <?php foreach($pub_articles as $k=> $art): ?>
                                     <tr class="row-item">
-                                        <!-- <td class="table-operation"><input type="checkbox" value="{{ $art->id }}" name="checkbox[]"></td> -->
-                                        <!-- <td class="text-green">{!! flag_tag($art->flag, $flags) !!}</td> -->
-                                        <td class="text-muted"><a href="{{ route('admin.article.index') }}/{{ $art->id }}/edit">{{ str_limit($art->title,50) }}</a></td>
-                                        <td class="text-muted">{{ $art->user->username }}</td>
-                                        <td class="text-muted">{{ $art->author }}</td>
-                                        <td class="text-muted">{!! show_check($art->is_top) !!}</td>
+                                        <!-- <td class="table-operation"><input type="checkbox" value="<?php echo e($art->id); ?>" name="checkbox[]"></td> -->
+                                        <!-- <td class="text-green"><?php echo flag_tag($art->flag, $flags); ?></td> -->
+                                        <td class="text-muted"><a href="<?php echo e(route('admin.article.index')); ?>/<?php echo e($art->id); ?>/edit"><?php echo e(str_limit($art->title,50)); ?></a></td>
+                                        <td class="text-muted"><?php echo e($art->user->username); ?></td>
+                                        <td class="text-muted"><?php echo e($art->author); ?></td>
+                                        <td class="text-muted"><?php echo show_check($art->is_top); ?></td>
                                         <!-- <td class="text-green">
-                                          @if(empty($art->slug))
-                                          {{ $art->id }}
-                                          @else
-                                          {{ $art->slug }}
-                                          @endif
+                                          <?php if(empty($art->slug)): ?>
+                                          <?php echo e($art->id); ?>
+
+                                          <?php else: ?>
+                                          <?php echo e($art->slug); ?>
+
+                                          <?php endif; ?>
                                         </td> -->
                                         <td>
                           <span class="showBox">
-                            <span class="numTxt">{{ $art->viewNum }}</span> <a href="javascript:void(0);" class="editViewNum"><i class="fa fa-edit"></i></a>
+                            <span class="numTxt"><?php echo e($art->viewNum); ?></span> <a href="javascript:void(0);" class="editViewNum"><i class="fa fa-edit"></i></a>
                           </span>
                           <span class="editBox" style="display:none">
-                            <input type="number" value="{{ $art->viewNum }}" style="width: 60px;"><a href="javascript:void(0);" class="subViewNum" data-id="{{ $art->id }}"><i class="fa fa-save"></i></a>
+                            <input type="number" value="<?php echo e($art->viewNum); ?>" style="width: 60px;"><a href="javascript:void(0);" class="subViewNum" data-id="<?php echo e($art->id); ?>"><i class="fa fa-save"></i></a>
                           </span>
                                         </td>
-                                        <td>{{ $art->likeNum }}</td>
-                                        <td>@if($art->commentNum>0)<button data-title="{{ str_limit($art->title,50) }}" data-comment="{{ $art->newsComment }}" data-newsId="{{ $art->id }}" class="btn btn-default btn-sm openModal" data-toggle="modal" data-target="#pageModal"><i class="fa fa-fw fa-comments"></i></button> @endif<span class="numBox">{{ $art->commentNum }}</span></td>
+                                        <td><?php echo e($art->likeNum); ?></td>
+                                        <td><?php if($art->commentNum>0): ?><button data-title="<?php echo e(str_limit($art->title,50)); ?>" data-comment="<?php echo e($art->newsComment); ?>" data-newsId="<?php echo e($art->id); ?>" class="btn btn-default btn-sm openModal" data-toggle="modal" data-target="#pageModal"><i class="fa fa-fw fa-comments"></i></button> <?php endif; ?><span class="numBox"><?php echo e($art->commentNum); ?></span></td>
                                         <td>
-                                            @if($art->thumb)
-                                            <img src="{{ url() }}/{{ $art->thumb }}" style="height: 35px;width: 35px">
-                                            @endif
-                                            {{ $art->meta->name }}</td>
-                                        <td>{{ date('H:i m-d-Y', strtotime($art->created_at)) }}</td>
-                                        <td>{{ date('H:i m-d', strtotime($art->updated_at)) }}</td>
+                                            <?php if($art->thumb): ?>
+                                            <img src="<?php echo e(url()); ?>/<?php echo e($art->thumb); ?>" style="height: 35px;width: 35px">
+                                            <?php endif; ?>
+                                            <?php echo e($art->meta->name); ?></td>
+                                        <td><?php echo e(date('H:i m-d-Y', strtotime($art->created_at))); ?></td>
+                                        <td><?php echo e(date('H:i m-d', strtotime($art->updated_at))); ?></td>
                                         <td>
-                                            @if($canDel)
-                                            <a href="javascript:void(0);"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-id="{{ $art->id }}" data-action=''></i></a>
-                                            @endif
+                                            <?php if($canDel): ?>
+                                            <a href="javascript:void(0);"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-id="<?php echo e($art->id); ?>" data-action=''></i></a>
+                                            <?php endif; ?>
                                         </td>
                                     </tr>
-                                    @endforeach
+                                    <?php endforeach; ?>
 
                                     </tbody>
                                 </table>
@@ -228,14 +232,14 @@
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->
 </div><!-- /.modal -->
-@stop
+<?php $__env->stopSection(); ?>
 
-@section('extraPlugin')
+<?php $__env->startSection('extraPlugin'); ?>
 <!--引入iCheck组件-->
-<script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
-@stop
+<script src="<?php echo e(asset('plugins/iCheck/icheck.min.js')); ?>" type="text/javascript"></script>
+<?php $__env->stopSection(); ?>
 
-@section('filledScript')
+<?php $__env->startSection('filledScript'); ?>
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -244,7 +248,7 @@
 
     var rowIndex;
     var newsId;
-    var token = '{{ csrf_token() }}';
+    var token = '<?php echo e(csrf_token()); ?>';
     $('.openModal').click(function () {
       rowIndex = $('#main-table tr').index($(this).closest('tr'));
       var commentData = $(this).data('comment');
@@ -267,7 +271,7 @@
       var ptd = $(this).closest('td');
       var aid = $(this).data('id');
       var newNum = ptd.find('input').val();
-      $.post("{{ route('admin.article.index') }}/updViewNum/" + aid+"/"+newNum, function(data) {
+      $.post("<?php echo e(route('admin.article.index')); ?>/updViewNum/" + aid+"/"+newNum, function(data) {
         ptd.find('.numTxt').text(newNum).end().find('.showBox').show().end().find('.editBox').hide().end().addClass('bg-success');
       })
     })
@@ -305,7 +309,7 @@
           var id = $(this).data('id');
           var action = $(this).data('action');
           if(action!=''){
-            $.post("{{ route('admin.article.index') }}/"+action + id+"/"+newsId, function(data) {
+            $.post("<?php echo e(route('admin.article.index')); ?>/"+action + id+"/"+newsId, function(data) {
               self.closest('.row-item').remove();
               var trs = $('#main-table tr');
               var modalBtn = trs.eq(rowIndex).find('.openModal');
@@ -318,10 +322,12 @@
               modalBtn.data('comment',commentData);
             })
           }else{
-            $.post("{{ route('admin.article.index') }}/"+action + id,{_method:'delete',_token:token}, function(data) {
+            $.post("<?php echo e(route('admin.article.index')); ?>/"+action + id,{_method:'delete',_token:token}, function(data) {
               self.closest('.row-item').remove();
             })
           }
         }
     });
-@stop
+<?php $__env->stopSection(); ?>
+
+<?php echo $__env->make('layout._back', array_except(get_defined_vars(), array('__data', '__path')))->render(); ?>

@@ -8,7 +8,7 @@ function is_form_changed() {
         if(_v != $(this).val()){
             is_changed = true;
             return true
-        } 
+        }
     });
     return is_changed;
 }
@@ -19,8 +19,36 @@ $(function(){
     });
 });
 
-window.onbeforeunload = function() {
+//window.onbeforeunload = function() {
+//    if(is_form_changed()) {
+//        return confirm('您的修改内容还没有保存，确定离开吗？');
+//    }
+//}
+
+
+
+window.onunload = function() {
     if(is_form_changed()) {
-        return confirm('您的修改内容还没有保存，确定离开吗？');
+
+        return '您的修改内容还没有保存，确定离开吗？';
+
     }
 }
+
+
+//$('input[name="Submit"]').off('onbeforeunload');
+//
+//window.onbeforeunload = function closeEditorWarning(){
+//
+//    /** Check to see if the settings warning is displayed */
+//    if($('#unsaved-settings').css('display') !== 'none'){
+//        bol_option_changed = true;
+//    }
+//
+//    /** Display a warning if the user is trying to leave the page with unsaved settings */
+//    if(bol_option_changed === true){
+//        return '';
+//    }
+//
+//
+//};

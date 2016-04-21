@@ -64,13 +64,15 @@ class AdminArticleController extends BackController
      */
     public function index(Request $request)
     {
+
         $data = [
             's_title' => $request->input('s_title'),
             's_cat_id' => $request->input('s_cat_id', 0),
         ];
 
         //使用仓库方法获取文章列表
-        $articles = $this->content->index($data, array('1', '2','3'), Cache::get('page_size', '10'));
+        $draft_articles = $this->content->index($data,1, array('1', '2','3'), Cache::get('page_size', '10'));
+        $pub_articles = $this->content->index($data, 0,array('1', '2','3'), Cache::get('page_size', '10'));
 
         //注意：因为已经使用 Bootstrap 后台模版，故无须再传入自定义的分页样式
         //传入自定义的分页Presenter
@@ -80,7 +82,7 @@ class AdminArticleController extends BackController
         if (! user('object')->can('manage_users') || ! user('object')->can('manage_system')) {
             $canDel = false;
         }
-        return view('back.article.index', compact('articles', 'flags', 'canDel'));
+        return view('back.article.index', compact('draft_articles','pub_articles', 'flags', 'canDel'));
     }
 
 
@@ -97,7 +99,6 @@ class AdminArticleController extends BackController
         foreach($categories->toArray() as $val) {
             $returnC[$val['slug']][] = $val;
         }
-        // var_dump($returnC);die();
         $flags = $this->flag->index();
         return view('back.article.create', compact('returnC', 'flags'));
     }
@@ -110,7 +111,6 @@ class AdminArticleController extends BackController
     public function store(ArticleRequest $request)
     {
         $data = $request->all();  //获取请求过来的数据
-
         $content = $this->content->store($data, 'article', user('id'));  //使用仓库方法存储
         if ($content->id) {  //添加成功
             return redirect()->route('admin.article.index')->with('message', '成功发布新文章！');
@@ -134,7 +134,6 @@ class AdminArticleController extends BackController
         foreach($categories->toArray() as $val) {
             $returnC[$val['slug']][] = $val;
         }
-        // var_dump($returnC);die();
         $article = $this->content->edit($id, 'article');
         //已经findOrFail处理，如果不存在该id资源会抛出异常，再加is_null判定无意义
         //is_null($article) and abort(404); 
@@ -152,8 +151,12 @@ class AdminArticleController extends BackController
      */
     public function update(ArticleRequest $request, $id)
     {
-        //
-        $data = $request->all();
+
+//        if ($_SERVER['REMOTE_ADDR'] !== '27.154.55.210') {
+//            return redirect()->route('admin.article.index')->with('fail', '没有权限进行文章修改炒作！');
+//            //die('没有权限进行文章修改炒作！');
+//        }
+        $data = $request->all();/*var_dump($data)*/;die;
         $this->content->update($id, $data, 'article');
         return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }

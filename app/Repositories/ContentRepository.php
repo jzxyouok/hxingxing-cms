@@ -91,6 +91,7 @@ class ContentRepository extends BaseRepository
         $content->author   = e($inputs['author']);
         $content->content = e($inputs['content']);
         $content->thumb   = e($inputs['thumb']);
+        $content->is_draft   = e($inputs['is_draft']);
         if ($type === 'article') {
             $content->category_id = e($inputs['category_id']);
             $content->type        = 'article';
@@ -139,10 +140,11 @@ class ContentRepository extends BaseRepository
      *
      * @param  array $data
      * @param  string $type 内容模型类型 文章article,单页page,碎片fragment
+     * @param  string $is_draft 1-草稿 0-已发布
      * @param  string $size 分页大小
      * @return Illuminate\Support\Collection
      */
-    public function index($data = [], $category = array('1', '2'), $size = '10')
+    public function index($data = [], $is_draft = 1,$category = array('1', '2'), $size = '10')
     {
         if (!ctype_digit($size)) {
             $size = '10';
@@ -163,16 +165,18 @@ class ContentRepository extends BaseRepository
         //                         ->paginate($size);
         // } else {
             $data = array_add($data, 's_title', '');
+            $data = array_add($data,'is_draft',$is_draft);
             $ret = $this->model->article()->with(array(
                                     'newsComment' => function ($query) {
                                         $query->orderBy('id', 'desc');
                                     }
                                 ))->where('title', 'like', '%'.e($data['s_title']).'%')
+                                ->where('is_draft','=',$is_draft)
                                 ->orderBy('is_top', 'desc')
                                 ->orderBy('id', 'desc')
                                 ->with(array('meta'=>function ($query) {
                                     $query->where('type', '=', 'CATEGORY');
-                                }))
+                                }))//->get()->toArray();
                                 ->paginate($size);
         // }
         return $ret;
