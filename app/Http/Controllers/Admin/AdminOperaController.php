@@ -231,7 +231,12 @@ class AdminOperaController extends BackController
         $data = $request->all();
         $function = $data['pushType'].'Push';
         // var_dump($function);die();
-        unset($data['pushType']);
         echo $this->$function($data['mobile'],$data['content'],$data['uid']);
+    }
+    public function checkOpera(OperaRequest $request){
+        $name = $request->input('name');
+        $id = $request->input('id');
+        $exsit = $this->content->checkOpera($name, $id);
+        echo $exsit?false:true;
     }
 }
