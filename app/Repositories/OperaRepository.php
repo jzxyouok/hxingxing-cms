@@ -216,6 +216,14 @@ class OperaRepository extends BaseRepository
     {
         $this->model->pubOpera($ids);
     }
+    public function checkOpera($name,$id)
+    {
+        $query = $this->model->where('name', $name)->where('pubStatus', 0);
+        if ($id>0) {
+            $query->where('id', '!=', $id);
+        }
+        return $query->value('id');
+    }
     #********
     #* 资源 REST 相关的接口函数 END
     #********

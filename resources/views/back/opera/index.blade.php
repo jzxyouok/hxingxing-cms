@@ -10,7 +10,7 @@
   .jsgrid-table td,.jsgrid-table th{padding:0!important}
   td a.btn-sm:not(.checkbox-toggle){text-overflow: ellipsis;
     overflow: hidden;
-    width: 70px;
+    width: 50px;
     padding: 5px;}
     .panel-heading h3 {padding-top: 8px;}
     .panel-heading{padding: 5px 15px}
