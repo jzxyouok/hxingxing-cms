@@ -77,10 +77,12 @@
         <!--jQuery 提交表单，实现DELETE删除资源-->
         //jQuery submit form
         $('.delete_item').click(function(){
-            var action = '{{ route('admin.role.index') }}';
-            var id = $(this).data('id');
-            var new_action = action + '/' + id;
-            $('#hidden-delete-form').attr('action', new_action);
-            $('#hidden-delete-form').submit();
+            if (confirm('确定删除吗？')) {
+              var action = '{{ route('admin.role.index') }}';
+              var id = $(this).data('id');
+              var new_action = action + '/' + id;
+              $('#hidden-delete-form').attr('action', new_action);
+              $('#hidden-delete-form').submit();
+            }
         });
 @stop

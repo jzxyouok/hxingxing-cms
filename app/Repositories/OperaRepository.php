@@ -218,7 +218,7 @@ class OperaRepository extends BaseRepository
     }
     public function checkOpera($name,$id)
     {
-        $query = $this->model->where('name', $name);
+        $query = $this->model->where('name', $name)->where('pubStatus', 0);
         if ($id>0) {
             $query->where('id', '!=', $id);
         }
