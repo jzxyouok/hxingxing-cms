@@ -178,6 +178,7 @@ class ContentRepository extends BaseRepository
                                     $query->where('type', '=', 'CATEGORY');
                                 }))//->get()->toArray();
                                 ->paginate($size);
+        //var_dump($ret);die;
         // }
         return $ret;
     }

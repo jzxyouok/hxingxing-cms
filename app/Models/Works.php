@@ -33,7 +33,7 @@ class Works extends Eloquent
         //模型名 外键 本键
         return $this->belongsTo('Douyasi\Models\User', 'uid', 'uid');
     }
-    public function delWorkById($workId)
+    public function delWork($workId)
     {
         return $this::where('id', $workId)->delete();
     }

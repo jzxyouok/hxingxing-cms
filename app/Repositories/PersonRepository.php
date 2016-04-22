@@ -4,7 +4,7 @@ namespace Douyasi\Repositories;
 
 use Douyasi\Models\Person;
 use Douyasi\Models\Role;
-
+use Douyasi\Models\Works;
 /**
  * 用户仓库UserRepository
  *
@@ -28,10 +28,13 @@ class PersonRepository extends BaseRepository
      */
     public function __construct(
         Person $person,
-        Role $role)
+        Role $role,
+        Works $work
+    )
     {
         $this->model = $person;
         $this->role = $role;
+        $this->work = $work;
     }
 
     /**
@@ -179,6 +182,10 @@ class PersonRepository extends BaseRepository
             $query->where('uid', '!=', $uid);
         }
         return $query->value('uid');
+    }
+    public function delWork($workId)
+    {
+        $this->work->delWork($workId);
     }
     #********
     #* 资源 REST 相关的接口函数 END

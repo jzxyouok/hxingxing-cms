@@ -69,11 +69,11 @@ class AdminArticleController extends BackController
             's_title' => $request->input('s_title'),
             's_cat_id' => $request->input('s_cat_id', 0),
         ];
-
+        $_data = $request->all();
+        $tab = isset($_data['tab']) ? (is_numeric($_data['tab']) ? $_data['tab']: 0 ) :0;
         //使用仓库方法获取文章列表
         $draft_articles = $this->content->index($data,1, array('1', '2','3'), Cache::get('page_size', '10'));
         $pub_articles = $this->content->index($data, 0,array('1', '2','3'), Cache::get('page_size', '10'));
-
         //注意：因为已经使用 Bootstrap 后台模版，故无须再传入自定义的分页样式
         //传入自定义的分页Presenter
         //$links = page_links($articles, $data);
@@ -82,7 +82,7 @@ class AdminArticleController extends BackController
         if (! user('object')->can('manage_users') || ! user('object')->can('manage_system')) {
             $canDel = false;
         }
-        return view('back.article.index', compact('draft_articles','pub_articles', 'flags', 'canDel'));
+        return view('back.article.index', compact('draft_articles','pub_articles', 'flags', 'canDel','tab'));
     }
 
 

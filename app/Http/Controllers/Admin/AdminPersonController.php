@@ -8,6 +8,7 @@ use Douyasi\Models\Works;
 use Illuminate\Http\Request;
 use Douyasi\Logger\SystemLogger as SystemLogger;
 use Douyasi\Repositories\PersonRepository;
+
 use Cache;
 
 /**
@@ -27,13 +28,11 @@ class AdminPersonController extends BackController
     protected $person;
 
     public function __construct(
-        PersonRepository $person/*,
-        WorksRepository $works*/
+        PersonRepository $person
     )
     {
         parent::__construct();
         $this->person = $person;
-        //$this->works = $works;
         if (! user('object')->can('manage_users')) {
             $this->middleware('deny403');
         }
@@ -134,11 +133,12 @@ class AdminPersonController extends BackController
 
     }
 
-    public function delWork($workId){
-//        if (! user('object')->can('manage_users') || ! user('object')->can('manage_system')) {
-//            die('权限不足！');
-//        }
-        //$this->works->delWorkById($workId);
+    public function delWork($id){
+        /*if (! user('object')->can('manage_users') || ! user('object')->can('manage_system')) {
+            die('权限不足！');
+        }*/
+        //var_dump($id);die;
+        $this->person->delWork($id);
         echo 1;
     }
 
