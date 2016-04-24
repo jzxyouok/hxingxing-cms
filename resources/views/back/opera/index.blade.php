@@ -10,7 +10,7 @@
   .jsgrid-table td,.jsgrid-table th{padding:0!important}
   td a.btn-sm:not(.checkbox-toggle){text-overflow: ellipsis;
     overflow: hidden;
-    width: 70px;
+    width: 50px;
     padding: 5px;}
     .panel-heading h3 {padding-top: 8px;}
     .panel-heading{padding: 5px 15px}
@@ -18,7 +18,10 @@
     .error{color: red;border-color: red;}
 </style>
 @parent
-    <button class="btn btn-primary" id="pubOpera"><i class="fa fa-fw fa-plus"></i> 发布</button>&nbsp;
+
+    @if($manageRole)
+      <button class="btn btn-primary" id="pubOpera"><i class="fa fa-fw fa-plus"></i> 发布</button>&nbsp;
+    @endif
     <ol class="breadcrumb">
       <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
       <li class="active">剧目管理</li>
@@ -72,7 +75,7 @@
             <form action="" class="form-horizontal" id="modalForm">
               <div class="panel panel-default">
                  <div class="panel-heading">
-                    <h3 class="pull-left panel-title">资料</h3>
+                    <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 联系人资料</h3>
                     <button type="submit" class="pull-right btn btn-primary" id="commitModal">
                        提交更改
                     </button>
@@ -97,7 +100,7 @@
                           <div class="col-md-6">
                               <input type="text" class="form-control" name="mobile" id="realMobile">
                           </div>
-                          <label for="mobile" id="mobile-error" class="row col-md-4 control-label error"></label>
+                          <label for="realMobile" id="realMobile-error" class="row col-md-4 error"></label>
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">虚拟手机</label>
@@ -115,7 +118,7 @@
                      <div class="tab-pane fade" id="other">
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">姓名</label>
-                          <div class="col-md-10"><input type="hidden" name="uid" id="uid"><input type="text" class="form-control" name="otherName" id="otherName"></div>
+                          <div class="col-md-10"><input type="text" class="form-control" name="otherName" id="otherName"></div>
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">手机号</label>
@@ -141,7 +144,7 @@
                     <input type="radio" name="pushType" value="sms" checked> 短信
                   </label>
                   <label class="checkbox-inline">
-                    <input type="radio" name="pushType" value="hx">环信消息
+                    <input type="radio" name="pushType" value="hx">App消息
                   </label>
                   <button type="button" class="pull-right btn btn-info" id="pushBtn">
                      <i class="icon fa fa-send"></i> 发送
@@ -150,29 +153,41 @@
                   <div class="clearfix"></div>
                </div>
                <div class="panel-body">
-                  <form action="" class="form-horizontal" id="pushForm">
-                    <div class="form-group">
-                        <label for="" class="col-md-2 control-label">选择手机</label>
-                        <label class="checkbox-inline">
-                          <input type="radio" name="mobileFinal" value="real" checked> 真实手机
-                        </label>
-                        <label class="checkbox-inline">
-                          <input type="radio" name="mobileFinal" value="fake">虚拟手机
-                        </label>
+                  <ul class="nav nav-tabs">
+                    <li class="active"><a href="#send" data-toggle="tab" aria-expanded="true">发送</a></li>
+                    <li><a href="#history" data-toggle="tab" aria-expanded="false">历史</a></li>
+                  </ul>
+
+                  <div class="tab-content">
+                      <div class="tab-pane active" id="send">
+                          <form action="" class="form-horizontal" id="pushForm">
+                            <div class="form-group">
+                                <label for="" class="col-md-2 control-label">选择手机</label>
+                                <label class="checkbox-inline">
+                                  <input type="radio" name="mobileFinal" value="real" checked> 真实手机
+                                </label>
+                                <label class="checkbox-inline">
+                                  <input type="radio" name="mobileFinal" value="fake">虚拟手机
+                                </label>
+                              </div>
+                            <!-- <div class="form-group col-md-6">
+                                <select class="form-control" id="msgTpl">
+                                   <option value="哈喽">哈喽</option>
+                                   <option value="喂">喂</option>
+                                </select>
+                            </div> -->
+                            <div class="row">
+                              <label for="" class="col-md-2 control-label">内容</label>
+                              <div class="col-md-10">
+                                <textarea class="form-control" rows="2" placeholder="嗨" id="msgInput">【红色咖啡】大人，周星驰发布了女主（求职意向岗位）微简历，他（她）是你的艺中人吗？</textarea>
+                              </div>
+                            </div>
+                          </form>
                       </div>
-                    <!-- <div class="form-group col-md-6">
-                        <select class="form-control" id="msgTpl">
-                           <option value="哈喽">哈喽</option>
-                           <option value="喂">喂</option>
-                        </select>
-                    </div> -->
-                    <div class="row">
-                      <label for="" class="col-md-2 control-label">内容</label>
-                      <div class="col-md-10">
-                        <textarea class="form-control" rows="2" placeholder="嗨" id="msgInput">【红色咖啡】大人，周星驰发布了女主（求职意向岗位）微简历，他（她）是你的艺中人吗？</textarea>
+                      <div class="tab-pane" id="history">
+                        发送历史
                       </div>
-                    </div>
-                  </form>
+                  </div>
                </div>
             </div>
          </div>
@@ -199,6 +214,7 @@
   var operaController = '{{ route("admin.opera.index") }}';
   var personController = '{{ route("admin.person.index") }}';
   var checkMobileController = '{{ route("admin.person.index") }}/checkMobile';
+  var manageRole = '{{$manageRole}}';
   var _token = '{{ csrf_token() }}';
   var rowIndex,statusTable;
   var token = '{{ csrf_token() }}';
@@ -216,6 +232,9 @@
       $('#realMobile').val(commentData.mobile);
       $('#contactCompany').val(commentData.company);
       $('#contactPosition').val(commentData.position);
+      $('#otherName').val(commentData.otherName);
+      $('#otherMobile').val(commentData.otherMobile);
+      $('#otherCompany').val(commentData.otherCompany);
       $('#myModal').modal('show');
   })
     var selectedItems = [];
@@ -253,6 +272,22 @@
 @stop
 
 @section('filledScript')
+    $.fn.serializeObject = function(){
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+
     var modalForm = $('#modalForm');
     var validator= modalForm.validate({
       onkeyup:false,
@@ -261,7 +296,7 @@
           contactName:{required:true},
           mobile: {required:true,
             remote:{url: checkMobileController, type:"post",dataType:"json",
-              data: {uid: function(){return $("#modalForm #uid").val();},mobile: function(){return $("#modalForm #mobile").val();}}
+              data: {uid: function(){return $("#modalForm #uid").val();},mobile: function(){return $("#modalForm #realMobile").val();}}
             }
           },
         },
@@ -271,7 +306,8 @@
         },
         submitHandler: function(form) {
           var self = $('#commitModal');
-          var item =origin= modalForm.serialize()
+          var item = modalForm.serialize()
+          var oldContact= modalForm.serializeObject()
           var uid= $('#uid').val()
           console.log(uid)
           item._token=_token;
@@ -298,8 +334,8 @@
           }).done(function() {
               var trs = $('#'+statusTable+' .jsgrid-grid-body tr:visible');
               var modalBtn = trs.eq(rowIndex).find('.openModal');
-              console.log(statusTable,rowIndex,origin)
-              modalBtn.data('comment',origin);
+              console.log(modalBtn,oldContact)
+              modalBtn.data('comment',oldContact);
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });
         }

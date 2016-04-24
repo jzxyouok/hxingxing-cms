@@ -98,7 +98,7 @@ class OperaRepository extends BaseRepository
                 $content->$val = e($inputs[$val]) ;
             }
         }
-        
+        $content->created_uid = user('id');
         if ($user_id) {
             $content->uid = $user_id;
         }
@@ -116,11 +116,11 @@ class OperaRepository extends BaseRepository
      * 内容资源列表数据
      *
      * @param  array $data
-     * @param  string $type 内容模型类型 文章article,单页page,碎片fragment
+     * @param  string $onlySelf  权限控制，只能看到自己的剧目
      * @param  string $size 分页大小
      * @return Illuminate\Support\Collection
      */
-    public function index($data = [],$type = 'article',  $size = '50')
+    public function index($data = [],$onlySelf = true,  $size = '50')
     {
         if (!ctype_digit($size)) {
             $size = '50';
@@ -128,9 +128,12 @@ class OperaRepository extends BaseRepository
         // var_dump($data);die();
         $query = $this->model->with(array(
                                     'contact' => function ($query) {
-                                        $query->get(['uid', 'name','fakeMobile','mobile','company','position']);
+                                        $query->get(['uid', 'name','fakeMobile','mobile','company','position','otherName','otherMobile','otherCompany']);
                                     }
                                 ));
+        if ($onlySelf) {
+            $query->where('created_uid', user('id'));
+        }
         $searchFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline');
         foreach ($searchFields as $k => $val) {
             if (!is_numeric($data[$val])&&trim($data[$val])!=''|| is_numeric($data[$val])&&$data[$val]>0) {
@@ -215,6 +218,14 @@ class OperaRepository extends BaseRepository
     public function pubOpera($ids)
     {
         $this->model->pubOpera($ids);
+    }
+    public function checkOpera($name,$id)
+    {
+        $query = $this->model->where('name', $name)->where('created_uid','>',0);
+        if ($id>0) {
+            $query->where('id', '!=', $id);
+        }
+        return $query->value('id');
     }
     #********
     #* 资源 REST 相关的接口函数 END
