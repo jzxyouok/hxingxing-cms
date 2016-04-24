@@ -115,7 +115,7 @@ $(function() {
                 //         return '<img src="'+item.cover+'" style="height: 35px;width: 35px">';
                 //     },width: 40,sorting: false,
                 // },
-                { type: "control", editButton: false }
+                { type: "control", editButton: false,deleteButton:manageRole }
             ],
             onDataLoaded: function(args) {
                 $('.dropdown-toggle').dropdownHover().dropdown();
@@ -220,7 +220,7 @@ $(function() {
                         return item.cover?'<img src="'+item.cover+'" style="height: 35px;width: 35px">':'';
                     },width: 40,sorting: false,
                 },*/
-                { type: "control", editButton: false,modeSwitchButton: false}
+                { type: "control", editButton: false,deleteButton:manageRole,modeSwitchButton: false}
             ],
             onDataLoaded: function(args) {
                 $('.dropdown-toggle').dropdownHover().dropdown();

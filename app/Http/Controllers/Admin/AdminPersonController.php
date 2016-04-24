@@ -91,10 +91,11 @@ class AdminPersonController extends BackController
             ];
             SystemLogger::write($log);
 
-            return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
-
+            // return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
+            echo 1;
         } else {
-            return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
+            echo 1;
+            // return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
         }
     }
 

@@ -170,6 +170,7 @@ class PersonRepository extends BaseRepository
     public function update($id, $inputs, $type = 'manager')
     {
         unset($inputs['_url']);
+        unset($inputs['uid']);
         $this->model->where('uid', $id)->update((array)$inputs);
     }
     public function checkMobile($mobile,$uid)
