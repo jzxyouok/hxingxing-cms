@@ -33,7 +33,8 @@
                 <div class="box-header with-border">
                     <h3 class="box-title">文章列表</h3>
                     <div class="box-tools">
-                        <form action="<?php echo e(route('admin.article.index')); ?>" method="get">
+                        <form action="<?php echo e(route('admin.article.index')); ?>/?tab=1" method="get">
+                            <!--                            <a href=" route('admin.article.index') / $art->id /edit">-->
                             <div class="input-group">
                                 <input type="text" class="form-control input-sm pull-right" name="s_title" value="<?php echo e(Input::get('s_title')); ?>" style="width: 150px;" placeholder="搜索文章标题">
                                 <div class="input-group-btn">
@@ -49,12 +50,13 @@
               <div class="nav-tabs-custom">
 
                     <ul class="nav nav-tabs">
-                        <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">未发布</a></li>
-                        <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>
+                        <li <?php if($tab == 0): ?>class="active"<?php endif; ?>><a href="#tab_1" data-toggle="tab" aria-expanded="true">草稿</a></li>
+                        <li <?php if($tab == 1): ?>class="active"<?php endif; ?>><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>
                     </ul>
 
                     <div class="tab-content">
-                        <div class="tab-pane active" id="tab_1">
+<!--                        <div class="tab-pane active" id="tab_1">-->
+                        <div  <?php if($tab == 0): ?>class="tab-pane active"<?php else: ?> class="tab-pane"<?php endif; ?> id="tab_1">
                             <div class="box-body table-responsive">
                                 <div class="tablebox-controls">
                                     <!-- Check all button -->
@@ -128,11 +130,13 @@
                                     </tbody>
                                 </table>
                             </div><!-- /.box-body -->
-                            <!--<div id="unpub"></div>
-                            <div id="unpubPager"></div>-->
+                            <div class="box-footer clearfix">
+                                <?php echo $draft_articles->appends(['tab'=>0])->render(); ?>
+
+                            </div>
                         </div>
 
-                        <div class="tab-pane" id="tab_2">
+                        <div <?php if($tab == 1): ?>class="tab-pane active"<?php else: ?> class="tab-pane"<?php endif; ?> id="tab_2">
                             <div class="box-body table-responsive">
                                 <div class="tablebox-controls">
                                     <!-- Check all button -->
@@ -206,8 +210,10 @@
                                     </tbody>
                                 </table>
                             </div><!-- /.box-body -->
-                            <!--<div id="pubed"></div>
-                            <div id="pubedPager"></div>-->
+                              <div class="box-footer clearfix">
+                                  <?php echo $pub_articles->appends(['tab'=>1])->render(); ?>
+
+                              </div>
                         </div>
                     </div>
               </div>

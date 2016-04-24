@@ -98,8 +98,8 @@
 
                 <!--隐藏型删除表单-->
                 <form method="post" action="{{ route('admin.person.index') }}" accept-charset="utf-8" id="hidden-delete-form">
-                <input name="_method" type="hidden" value="delete">
-                <input type="hidden" name="_token" value="{{ csrf_token() }}">
+                    <input name="_method" type="hidden" value="delete">
+<!--                    <input type="hidden" name="_token" value="{{ csrf_token() }}">-->
                 </form>
 
               </div>
@@ -115,8 +115,8 @@
               <span class="pull-left"><i class="icon fa fa-file"></i> 代表作品</span><span id="modalTitle"></span>
             </h4>
          </div>
-         <div class="modal-body">
-            <ul class="list-group"></ul>
+         <div class="modal-body" id="commentBox">
+            <ul class="list-group" ></ul>
          </div>
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->
@@ -125,23 +125,47 @@
 
 
 @section('filledScript')
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    var token = '{{ csrf_token() }}';
+    var rowIndex;
     $('.openModal').click(function () {
+      rowIndex = $('table tr').index($(this).closest('tr'));
       var commentData = $(this).data('works');
       var artTitle = $(this).data('title');
       <!-- console.log(commentData) -->
+
       var commentHtml = '';
       for (var i = 0; i < commentData.length; i++) {
-        commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-1"><img src="{{$serverUrl}}/'+commentData[i].avatar+'" style="height: 35px;width: 35px"></div><div class="col-md-11"><h4 class="list-group-item-heading">'+commentData[i].name+' - '+commentData[i].role+' - '+commentData[i].time+'</h4><p class="list-group-item-text">'+commentData[i].category+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="delComment/" data-id="'+commentData[i].id+'"></i></a></li>';
+        commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-1"><img src="{{$serverUrl}}/'+commentData[i].avatar+'" style="height: 35px;width: 35px"></div><div class="col-md-11"><h4 class="list-group-item-heading">'+commentData[i].name+' - '+commentData[i].role+' - '+commentData[i].time+'</h4><p class="list-group-item-text">'+commentData[i].category+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="'+commentData[i].id+'"></i></a></li>';
       }
       $('#pageModal').find('#modalTitle').html(artTitle).end().find('.modal-body .list-group').html(commentHtml);
     })
         <!--jQuery 提交表单，实现DELETE删除资源-->
         //jQuery submit form
-        $('.delete_item').click(function(){
-            var action = '{{ route('admin.article.index') }}';
+    $('body').on('click', '.delete_item', function () {
+        var self = $(this);
+        var commentIndex = $('#commentBox li').index(self.closest('li'));
+        if (confirm('确定删除吗？')) {
             var id = $(this).data('id');
-            var new_action = action + '/' + id;
-            $('#hidden-delete-form').attr('action', new_action);
-            $('#hidden-delete-form').submit();
-        });
+            var action = 'delWork/';
+
+            $.post("{{ route('admin.person.index') }}/"+action + id, function(data) {
+                self.closest('.list-group-item').remove();
+                var trs = $('table tr');
+                var modalBtn = trs.eq(rowIndex).find('.openModal');
+
+                //trs.eq(rowIndex).find('.numBox').text($('#commentBox li').length);
+                var commentData = modalBtn.data('works');
+                <!-- console.log(commentData) -->
+                commentData.splice(commentIndex, 1);
+                <!-- console.log(commentIndex,commentData) -->
+                modalBtn.data('works',commentData);
+            })
+
+        }
+    });
 @stop
