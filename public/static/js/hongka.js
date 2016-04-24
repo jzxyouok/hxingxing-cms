@@ -27,28 +27,32 @@ $(function(){
 
 
 
-window.onunload = function() {
-    if(is_form_changed()) {
+//window.onunload = function() {
+//    if(is_form_changed()) {
+//
+//        return '您的修改内容还没有保存，确定离开吗？';
+//
+//    }
+//}
 
-        return '您的修改内容还没有保存，确定离开吗？';
 
+var submit_clicked = false;
+$('.btn').click(function(){
+    submit_clicked = true;
+});
+
+
+window.onbeforeunload = function closeEditorWarning(){
+
+    /** Check to see if the settings warning is displayed */
+    if(/*($('#unsaved-settings').css('display') !== 'none') && */submit_clicked === false){
+        bol_option_changed = true;
     }
-}
+
+    /** Display a warning if the user is trying to leave the page with unsaved settings */
+    if(bol_option_changed === true){
+        return '';
+    }
 
 
-//$('input[name="Submit"]').off('onbeforeunload');
-//
-//window.onbeforeunload = function closeEditorWarning(){
-//
-//    /** Check to see if the settings warning is displayed */
-//    if($('#unsaved-settings').css('display') !== 'none'){
-//        bol_option_changed = true;
-//    }
-//
-//    /** Display a warning if the user is trying to leave the page with unsaved settings */
-//    if(bol_option_changed === true){
-//        return '';
-//    }
-//
-//
-//};
+};

@@ -89,12 +89,14 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('/article/updViewNum/{id}/{num}', 'Admin\AdminArticleController@updViewNum');
 	Route::post('/article/delComment/{id}/{newsId}', 'Admin\AdminArticleController@delComment');
 	Route::post('/person/checkMobile', 'Admin\AdminPersonController@checkMobile');
+    Route::post('/person/delWork/{id}', 'Admin\AdminPersonController@delWork');
 	Route::resource('person', 'Admin\AdminPersonController');
 	Route::resource('/pushMsg', 'Admin\AdminPushMsgController@index');
 	Route::resource('/feedback', 'Admin\AdminFeedbackController@index');
 	Route::resource('report', 'Admin\AdminReportController');
 	Route::resource('opera', 'Admin\AdminOperaController');
 	Route::resource('jobs', 'Admin\AdminJobsController');
+	Route::resource('statistics', 'Admin\AdminStatisticsController');
 
 	# 文章
 	Route::resource('article', 'Admin\AdminArticleController');
