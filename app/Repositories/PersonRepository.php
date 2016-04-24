@@ -51,6 +51,7 @@ class PersonRepository extends BaseRepository
         $person->mobile = e($inputs['mobile']);
         $person->company = e($inputs['company']);
         $person->position = e($inputs['position']);
+        $person->updTime = round(microtime(true)*1000);
 
         $person->save();
         return $person;
@@ -174,6 +175,7 @@ class PersonRepository extends BaseRepository
     {
         unset($inputs['_url']);
         unset($inputs['uid']);
+        $inputs['updTime'] = round(microtime(true)*1000);
         $this->model->where('uid', $id)->update((array)$inputs);
     }
     public function checkMobile($mobile,$uid)
