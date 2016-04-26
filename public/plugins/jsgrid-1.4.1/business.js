@@ -11,8 +11,8 @@ $(function() {
     $.getJSON(operaController+'/tagsData', function(tagsData) {
         tagsData.jobCategory.unshift({id:0,name:""});
         tagsData.jobTopic.unshift({id:0,name:""});
-        tagsData.startTime.unshift({id:0,name:""});
-        tagsData.shootPeriod.unshift({id:0,name:""});
+        tagsData.jumuStart.unshift({id:0,name:""});
+        tagsData.jumuRunTime.unshift({id:0,name:""});
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -59,17 +59,16 @@ $(function() {
             },
             fields: [
                 {headerTemplate: function() {
-                    return $("<button>").attr({"type":"button","class":"btn btn-default btn-sm checkbox-toggle"}).html("<i class='fa fa-square-o' title='全选/反全选'></i>");
-                    /*return $("<button>").attr({"type":"button","class":"btn btn-default btn-sm"}).html("<i class='fa fa-trash-o' title='删除'></i>")
-                            .on("click", function () {
-                                deleteSelectedItems();
-                            });*/
+                    return $("<button>").attr({"type":"button","class":"btn btn-primary btn-sm"}).text('发布')
+                        .on("click", function () {
+                            pubOpera();
+                        });
                     },
                     filterTemplate: function() {
                         // return $("<button>").attr({"type":"button","class":"btn btn-default btn-sm checkbox-toggle"}).html("<i class='fa fa-square-o' title='全选/反全选'></i>");
                     },
                     itemTemplate: function(_, item) {
-                        return $("<input>").attr({"type":"checkbox","class":"table-operation","data-id":item.id});
+                        return $("<input>").attr({"type":"checkbox","class":"table-operation hide","data-id":item.id});
                     },
                     align: "center",width: 30,sorting: false
                 },
@@ -103,10 +102,10 @@ $(function() {
                 { name: "categoryC", title: "类型", type: "select", width: 30, items: tagsData.jobCategory, valueField: "id", textField: "name" },
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name: "site", title: "地点", type: "text", width: 30 },
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.startTime,valueField:"id",textField:"name", width: 30},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.shootPeriod,valueField:"id",textField:"name", width: 30},
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 30},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 30},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
-                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,row:3 },
+                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,height:1 },
                 { name: "producer", title: "制片方", type: "text", width: 30 },
                 { name: "creator", title: "主创", type: "text", width: 30 },
                 { name: "platform", title: "播放平台", type: "text", width: 30 },
@@ -118,49 +117,10 @@ $(function() {
                 { type: "control", editButton: false,deleteButton:manageRole }
             ],
             onDataLoaded: function(args) {
-                $('.dropdown-toggle').dropdownHover().dropdown();
-
-                /*$('.table-operation').iCheck({
-                    checkboxClass: 'icheckbox_flat-blue',
-                    radioClass: 'iradio_flat-blue'
-                });
-                $('.table-operation').on('ifChecked', function(){
-                    selectItem($(this).data('id'));
-                });
-                $('.table-operation').on('ifUnchecked', function(){
-                    unselectItem($(this).data('id'));
-                });*/
-
-                $(".table-operation").change(function(){
-                    // console.log(34)
-                    if($(this).is(':checked')){
-                        selectItem($(this).data('id'));
-                    }else{
-                        unselectItem($(this).data('id'));
-                    }
-                })
-                //Enable check and uncheck all functionality
-                $(".checkbox-toggle").data("clicks", false);
-                $(".checkbox-toggle").click(function () {
-                    var clicks = $(this).data('clicks');
-                    console.log(clicks);
-                    if (clicks) {
-                      //Uncheck all checkboxes
-                      // $(".table-operation").iCheck("uncheck");
-                      $(".table-operation").prop('checked', false)
-                      selectedItems = [];
-                      $(".fa", this).removeClass("fa-check-square-o").addClass('fa-square-o');
-                    } else {
-                      //Check all checkboxes
-                      // $(".table-operation").iCheck("check");
-                      $(".table-operation").each(function(index, el) {
-                          $(this).prop('checked', true);
-                          selectItem($(this).data('id'));
-                      }); 
-                      $(".fa", this).removeClass("fa-square-o").addClass('fa-check-square-o');
-                    }
-                    $(this).data("clicks", !clicks);
-                });
+                setIcheck();
+            },
+            onRefreshed: function(args) {
+                setIcheck();
             }
         });
         $("#pubed").jsGrid({
@@ -208,8 +168,8 @@ $(function() {
                 { name:"categoryC",title:"类型",type:"select",items: tagsData.jobCategory,valueField:"id",textField:"name", width: 30},
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name: "site", title: "地点", type: "text", width: 30 },
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.startTime,valueField:"id",textField:"name", width: 30},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.shootPeriod,valueField:"id",textField:"name", width: 30},
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 30},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 30},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
                 { name: "outline", title: "剧目介绍", type: "textarea", width: 140,row:3 },
                 { name: "producer", title: "制片方", type: "text", width: 30 },
@@ -227,8 +187,20 @@ $(function() {
             }
         });
     });
-    $('#pubOpera').click(function(event) {
-        // console.log(selectedItems)
+    function setIcheck() {
+        $('.table-operation').iCheck({
+          checkboxClass: 'icheckbox_flat-blue',
+          radioClass: 'iradio_flat-blue'
+        });
+    }
+    var pubOpera = function() {
+        var selectedItems = [];
+        $('.table-operation').each(function(index, el) {
+            if ($(this).parent('[class*="icheckbox"]').hasClass("checked")) {
+                selectedItems.push($(this).data('id'));
+            }
+        });
+        console.log(selectedItems)
         if(!selectedItems.length){
             alert('请选择剧目！');
             return;
@@ -241,9 +213,10 @@ $(function() {
             url: operaController+'/pubOpera/'+selectedItems,
             data: {_token:_token}
         }).done(function() {
-            location.reload();
+            $("#unpub").jsGrid("search");
+            $("#pubed").jsGrid("search");
         });
-    });
+    };
 
     $('#pushBtn').click(function(event) {
         var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
@@ -285,11 +258,4 @@ $(function() {
           }
         }
     })
-    $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-        if ($(e.target).attr('href')=='#tab_1') {
-            $('#pubOpera').show();
-        }else{
-            $('#pubOpera').hide();
-        }
-    });
 });

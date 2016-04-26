@@ -18,9 +18,7 @@
     .error{color: red;border-color: red;}
 </style>
 @parent
-    @if($manageRole)
-      <button class="btn btn-primary" id="pubOpera"><i class="fa fa-fw fa-plus"></i> 发布</button>&nbsp;
-    @endif
+
     <ol class="breadcrumb">
       <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
       <li class="active">剧目管理</li>
@@ -39,7 +37,7 @@
 
       <div class="nav-tabs-custom">
           
-          <ul class="nav nav-tabs">
+          <ul id="mainTab" class="nav nav-tabs">
             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">未发布</a></li>
             <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>
           </ul>
@@ -109,7 +107,7 @@
                           <label for="" class="col-md-2 control-label">公司</label>
                           <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany"></div>
                         </div>
-                        <div class="row">
+                        <div class="form-group">
                           <label for="" class="col-md-2 control-label">职务</label>
                           <div class="col-md-10"><input type="text" class="form-control" name="position" id="contactPosition"></div>
                         </div>
@@ -140,6 +138,7 @@
               </div>
             </form>
             
+            @if($manageRole)
             <div class="panel panel-default">
               <div class="panel-heading">
                   <h3 class="pull-left panel-title">推送</h3>
@@ -193,6 +192,7 @@
                   </div>
                </div>
             </div>
+            @endif
          </div>
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->
@@ -222,7 +222,6 @@
   var _token = '{{ csrf_token() }}';
   var rowIndex,statusTable;
   var token = '{{ csrf_token() }}';
-
 
     $('body').on('click','.openModal',function () {
         $('#myModal').find('.alert').hide();
@@ -256,7 +255,11 @@
         });
         //console.log(selectedItems)
     };
- 
+
+    $('body').on('click','.jsgrid-pager-page a',function () {
+        setIcheck();
+    });
+
     var deleteSelectedItems = function() {
         if(!selectedItems.length || !confirm("确定删除吗?"))
             return;

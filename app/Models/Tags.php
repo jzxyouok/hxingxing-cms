@@ -12,5 +12,5 @@ use Eloquent;
 class Tags extends Eloquent
 {
 	protected $connection = 'mysql_front_tables';
-    protected $table = 'tree_category';
+    protected $table = 'tags';
 }

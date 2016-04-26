@@ -83,7 +83,7 @@ class AdminController extends CommonController
                     // 这里根据客户端上传文件扩展名来验证，存在一定的安全隐患，请将上传目录执行权限去掉
                     //----------
 
-                    $check_ext = in_array($ext, array('jpg', 'png', 'gif', 'bmp'), true);
+                    $check_ext = in_array($ext, array('jpg', 'png', 'gif', 'bmp','webp'), true);
 
                     if ($check_ext) {
                         $uniqid = uniqid().'_'.date('s');
