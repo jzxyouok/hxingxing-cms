@@ -23,7 +23,7 @@ $(function() {
             sorting: true,
             paging: true,
             autoload: true,
-            pageSize: 2,
+            pageSize: 15,
             pageButtonCount: 5,
             pagerContainer: "#unpubPager",
             deleteConfirm: "确定删除吗?",
