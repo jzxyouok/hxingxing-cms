@@ -5,7 +5,8 @@
     @inject('article_service', 'Douyasi\Services\ArticleService')
     <h1>修改文章
         @if($data->is_draft == 1)
-            <button class="btn btn-warning" id="submitDraftBtn">保存为草稿</button>
+<!--            <button class="btn btn-warning" id="submitDraftBtn" onclick="is_form_changed1()">保存为草稿</button>-->
+            <button class="btn btn-warning" id="submitDraftBtn" >保存为草稿</button>
             <button class="btn btn-primary" id="submitPubBtn">保存并发布</button>
         @else
             <button class="btn btn-primary" id="submitBtn">保存</button>
@@ -155,6 +156,41 @@
   <!--引入Chosen组件-->
 
   <script src="{{ asset('static/js/hongka.js') }}" type="text/javascript"></script>
+<!--<script>
+    // 后台编辑页面，检测表单是否被修改
+    function is_form_changed() {
+        var is_changed = false;
+        $("#article_form input, #article_form textarea, #article_form select").each(function() {
+            var _v = $(this).attr('_value');
+            if(typeof(_v) == 'undefined') _v = '';
+            console.log(_v,$(this).val());
+            console.log();
+            if(_v != $(this).val()){
+                is_changed = true;
+                return true;
+            }
+        });
+        return is_changed;
+    }
+//    function is_form_changed1() {
+//        var res = is_form_changed();
+//        console.log(res);
+//    }
+
+    $(function(){
+        $("#article_form input, #article_form textarea, #article_form select").each(function() {
+            $(this).attr('_value', $(this).val());
+        });
+    });
+
+    window.onbeforeunload = function() {
+        var res = is_form_changed();
+        console.log(res);
+        if(res) {
+            event.returnValue="您的修改内容还没有保存，确定离开吗？";
+        }
+    }
+</script>-->
   @include('scripts.endChosen')
 
 @stop
@@ -162,15 +198,18 @@
 
 @section('filledScript')
     $("#submitDraftBtn").click(function() {
-        $("#article_form").append('<input type="hidden" name="is_draft" value="1"/>');
+        $("#article_form").append('<input type="hidden" name="is_draft" value="1" _value="1"/>');
+        window.onbeforeunload = function(){};
         $("#article_form").submit();
     });
     $("#submitPubBtn").click(function() {
-        $("#article_form").append('<input type="hidden" name="is_draft" value="0"/>');
+        $("#article_form").append('<input type="hidden" name="is_draft" value="0" _value="0"/>');
+        window.onbeforeunload = function(){};
         $("#article_form").submit();
     });
     $("#submitBtn").click(function() {
-        $("#article_form").append('<input type="hidden" name="is_draft" value="0"/>');
+        $("#article_form").append('<input type="hidden" name="is_draft" value="0" _value="0"/>');
+        window.onbeforeunload = function(){};
         $("#article_form").submit();
     });
         $('#title').select();

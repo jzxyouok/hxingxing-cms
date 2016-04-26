@@ -143,14 +143,16 @@
 
 
 @section('filledScript')
-        $("#submitDraftBtn").click(function() {
-          $("#article_form").append('<input type="hidden" name="is_draft" value="1"/>');
+      $("#submitDraftBtn").click(function() {
+          $("#article_form").append('<input type="hidden" name="is_draft" value="1" _value="1"/>');
+          window.onbeforeunload = function(){};
           $("#article_form").submit();
-        });
-        $("#submitPubBtn").click(function() {
-            $("#article_form").append('<input type="hidden" name="is_draft" value="0"/>');
-            $("#article_form").submit();
-        });
+      });
+      $("#submitPubBtn").click(function() {
+          $("#article_form").append('<input type="hidden" name="is_draft" value="0" _value="0"/>');
+          window.onbeforeunload = function(){};
+          $("#article_form").submit();
+      });
         $('#title').select();
         <!--启用iCheck响应checkbox与radio表单控件-->
         $('input[type="radio"]').iCheck({
