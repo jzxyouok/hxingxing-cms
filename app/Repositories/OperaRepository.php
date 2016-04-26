@@ -5,6 +5,7 @@ namespace Douyasi\Repositories;
 use Douyasi\Models\Opera;
 use Douyasi\Models\Meta;
 use Douyasi\Models\Tags;
+use Douyasi\Models\Person;
 use DB;
 /**
  * 内容仓库ContentRepository
@@ -30,10 +31,13 @@ class OperaRepository extends BaseRepository
      */
     public function __construct(
         Opera $content,
-        Meta $meta)
+        Meta $meta,
+        Person $person
+    )
     {
         $this->model = $content;
         $this->meta = $meta;
+        $this->person = $person;
     }
 
     /**
@@ -161,7 +165,7 @@ class OperaRepository extends BaseRepository
     public function store($inputs, $user_id = '0')
     {
         $content = new $this->model;
-            $content = $this->saveContent($content, $inputs, $user_id);
+        $content = $this->saveContent($content, $inputs, $user_id);
         return $content;
     }
 

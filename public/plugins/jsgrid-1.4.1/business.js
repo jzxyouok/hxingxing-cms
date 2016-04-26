@@ -39,6 +39,7 @@ $(function() {
                     item.pubStatus=0;
                     $.post(operaController,item,function(result){
                         return result;
+
                     });
                 },
                 updateItem: function(item) {

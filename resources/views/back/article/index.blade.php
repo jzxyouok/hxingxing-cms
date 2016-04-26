@@ -109,9 +109,9 @@
                               <input type="number" value="{{ $art->viewNum }}" style="width: 60px;">
                               <label class="control-label">是否显示浏览数</label>
                               <div class="input-group">
-                                  <input type="radio" name="is_show" value="0" {{ ((isset($art) ? $art->is_show_viewNum : 0) === 0) ? 'checked' : '' }}>
+                                  <input type="radio" name="is_show_{{ $art->id }}" value="0" {{ ((isset($art->is_show_viewNum) ? $art->is_show_viewNum : 0) === 0) ? 'checked' : '' }}>
                                   <label class="choice" for="radiogroup">否</label>
-                                  <input type="radio" name="is_show" value="1" {{ ((isset($art) ? $art->is_show_viewNum : 0) === 1) ? 'checked' : '' }}>
+                                  <input type="radio" name="is_show_{{ $art->id }}" value="1" {{ ((isset($art->is_show_viewNum) ? $art->is_show_viewNum : 0) === 1) ? 'checked' : '' }}>
                                   <label class="choice" for="radiogroup">是</label>
                               </div>
                               <a href="javascript:void(0);" class="subViewNum" data-id="{{ $art->id }}">
@@ -193,12 +193,12 @@
                             <span class="numTxt">{{ $art->viewNum }}</span> <a href="javascript:void(0);" class="editViewNum"><i class="fa fa-edit"></i></a>
                           </span>
                           <span class="editBox" style="display:none">
-                            <input type="number" value="{{ $art->viewNum }}" style="width: 60px;">
+                            <input type="number" value="{{ $art->viewNum }}" style="width: 60px;"><br/>
                             <label class="control-label">是否显示浏览数</label>
                             <div class="input-group">
-                                <input type="radio" name="is_show" value="0" {{ ((isset($art) ? $art->is_show_viewNum : 0) === 0) ? 'checked' : '' }}>
+                                <input type="radio" name="is_show_{{ $art->id }}" value="0" {{ ((isset($art->is_show_viewNum) ? $art->is_show_viewNum : 0) === 0) ? 'checked' : '' }}>
                                 <label class="choice" for="radiogroup">否</label>
-                                <input type="radio" name="is_show" value="1" {{ ((isset($art) ? $art->is_show_viewNum : 0) === 1) ? 'checked' : '' }}>
+                                <input type="radio" name="is_show_{{ $art->id }}" value="1" {{ ((isset($art->is_show_viewNum) ? $art->is_show_viewNum : 0) === 1) ? 'checked' : '' }}>
                                 <label class="choice" for="radiogroup">是</label>
                             </div>
                             <a href="javascript:void(0);" class="subViewNum" data-id="{{ $art->id }}">
@@ -293,7 +293,7 @@
       var ptd = $(this).closest('td');
       var aid = $(this).data('id');
       var newNum = ptd.find('input[type="number"]').val();
-      var is_show = ptd.find('input[type="radio"]').val();
+      var is_show = ptd.find('input[type="radio"]:checked').val();
       $.post("{{ route('admin.article.index') }}/updViewNum/" + aid+"/"+newNum+"/"+is_show, function(data) {
         ptd.find('.numTxt').text(newNum).end().find('.showBox').show().end().find('.editBox').hide().end().addClass('bg-success');
       })

@@ -333,10 +333,16 @@
               complete: function( xhr ) {
                   self.prop('disabled', false);
               },
-          }).done(function() {
+          }).done(function(result) {
               var trs = $('#'+statusTable+' .jsgrid-grid-body tr:visible');
-              var modalBtn = trs.eq(rowIndex).find('.openModal');
-              modalBtn.data('comment',oldContact);
+              if(uid>0){
+                var modalBtn = trs.eq(rowIndex).find('.openModal');
+                modalBtn.data('comment',oldContact);
+              }else{
+                    console.log('新增结果:'+result);
+                    $('#uid').val(result);
+              }
+
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });
         }

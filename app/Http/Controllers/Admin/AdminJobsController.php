@@ -45,12 +45,18 @@ class AdminJobsController extends BackController
     public function index(Request $request)
     {
         //
+
         $data = [
             'name' => $request->input('s_name'),
         ];
         $items = $this->jobs->index($data, 'manager', Cache::get('page_size', '10'));
         $serverUrl = 'http://112.74.86.237:8080/img/';
         return view('back.jobs.index', compact('items','serverUrl'));
+//        $manageRole = false;
+//        if (user('object')->can('customer_service')) {
+//            $manageRole = true;
+//        }
+//        return view('back.jobs.index');
     }
 
 
