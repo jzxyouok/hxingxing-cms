@@ -92,16 +92,16 @@ class OperaRepository extends BaseRepository
                 $content->flag = $tmp_flag;
             }
 
-        $allFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline','producer','creator','platform','pubStatus');
+        $allFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline','producer','creator','platform','pubStatus','uid');
         foreach ($allFields as $k => $val) {
             if (array_key_exists($val, $inputs)) {
                 $content->$val = e($inputs[$val]) ;
             }
         }
         $content->created_uid = user('id');
-        if ($user_id) {
+        /*if ($user_id) {
             $content->uid = $user_id;
-        }
+        }*/
         // var_dump($content);die();
         $content->save();
         $content = $this->model->with('contact')->findOrFail($content->id);

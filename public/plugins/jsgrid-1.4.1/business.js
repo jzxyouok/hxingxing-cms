@@ -32,7 +32,10 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
+                    var uid= $('#uid').val();
                     item._token=_token;
+                    uid = uid>0?uid:0;
+                    item.uid=uid;
                     item.pubStatus=0;
                     $.post(operaController,item,function(result){
                         return result;
