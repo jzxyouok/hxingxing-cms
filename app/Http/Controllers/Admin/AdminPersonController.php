@@ -76,6 +76,7 @@ class AdminPersonController extends BackController
     {
         //
         $data = $request->all();
+        //var_dump($data);var_dump('store');die;
         $manager = $this->person->store($data, 'manager');
         if ($manager->id) {  //添加成功
             //记录系统日志，这里并未使用事件监听来记录日志
@@ -87,7 +88,7 @@ class AdminPersonController extends BackController
             SystemLogger::write($log);
 
             // return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
-            echo 1;
+            echo $manager->id;
         } else {
             echo 1;
             // return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
@@ -122,7 +123,7 @@ class AdminPersonController extends BackController
     {
         //
         $data = $request->all();
-        //var_dump($data);//die;
+        //var_dump($data);var_dump('update');die;
         $this->person->update($id, $data, 'manager');
         echo 1;
     }

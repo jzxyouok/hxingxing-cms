@@ -127,7 +127,7 @@ class AdminOperaController extends BackController
     public function store(OperaRequest $request)
     {
         $data = $request->all();  //获取请求过来的数据
-        // var_dump($data);die();
+         //var_dump($data);die();
         $content = $this->content->store($data, user('id'));  //使用仓库方法存储
         if ($content->id) {  //添加成功
             echo json_encode($content,JSON_NUMERIC_CHECK);

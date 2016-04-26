@@ -244,22 +244,10 @@
         $('#myModal').modal('show');
     })
 
-    var selectedItems = [];
-    var selectItem = function(item) {
-        selectedItems.push(item);
-        //console.log(selectedItems)
-    };
-    var unselectItem = function(item) {
-        selectedItems = $.grep(selectedItems, function(i) {
-            return i !== item;
-        });
-        //console.log(selectedItems)
-    };
-
     $('body').on('click','.jsgrid-pager-page a',function () {
         setIcheck();
     });
-
+    
     var deleteSelectedItems = function() {
         if(!selectedItems.length || !confirm("确定删除吗?"))
             return;
@@ -318,10 +306,12 @@
         },
         submitHandler: function(form) {
           var self = $('#commitModal');
+
           var item = modalForm.serialize();
           var oldContact= modalForm.serializeObject();
           var uid= $('#uid').val();
           console.log(uid);
+
           item._token=_token;
           if (uid>0) {
               var method = 'PUT';
@@ -343,10 +333,16 @@
               complete: function( xhr ) {
                   self.prop('disabled', false);
               },
-          }).done(function() {
+          }).done(function(result) {
               var trs = $('#'+statusTable+' .jsgrid-grid-body tr:visible');
-              var modalBtn = trs.eq(rowIndex).find('.openModal');
-              modalBtn.data('comment',oldContact);
+              if(uid>0){
+                var modalBtn = trs.eq(rowIndex).find('.openModal');
+                modalBtn.data('comment',oldContact);
+              }else{
+                    console.log('新增结果:'+result);
+                    $('#uid').val(result);
+              }
+
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });
         }
