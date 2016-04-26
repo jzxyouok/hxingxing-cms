@@ -110,7 +110,7 @@
                           <label for="" class="col-md-2 control-label">公司</label>
                           <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany"></div>
                         </div>
-                        <div class="row">
+                        <div class="form-group">
                           <label for="" class="col-md-2 control-label">职务</label>
                           <div class="col-md-10"><input type="text" class="form-control" name="position" id="contactPosition"></div>
                         </div>
@@ -141,6 +141,7 @@
               </div>
             </form>
             
+            @if($manageRole)
             <div class="panel panel-default">
               <div class="panel-heading">
                   <h3 class="pull-left panel-title">推送</h3>
@@ -194,6 +195,7 @@
                   </div>
                </div>
             </div>
+            @endif
          </div>
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->
