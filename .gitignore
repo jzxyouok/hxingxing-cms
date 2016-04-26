@@ -3,6 +3,7 @@
 .env
 /.idea
 /config/database.php
+/config/app.php
 /doc
 /storage
 
