@@ -16,8 +16,9 @@
     .error{color: red;border-color: red;}
 </style>
 @parent
-
-    <button class="btn btn-primary" id="pubOpera"><i class="fa fa-fw fa-plus"></i> 发布</button>&nbsp;
+    <?php if($manageRole): ?>
+      <button class="btn btn-primary" id="pubOpera"><i class="fa fa-fw fa-plus"></i> 发布</button>&nbsp;
+    <?php endif; ?>
     <ol class="breadcrumb">
       <li><a href="<?php echo e(route('admin')); ?>"><i class="fa fa-dashboard"></i> 主页</a></li>
       <li class="active">剧目管理</li>
@@ -216,9 +217,11 @@
   var operaController = '<?php echo e(route("admin.opera.index")); ?>';
   var personController = '<?php echo e(route("admin.person.index")); ?>';
   var checkMobileController = '<?php echo e(route("admin.person.index")); ?>/checkMobile';
+  var manageRole = '<?php echo e($manageRole); ?>';
   var _token = '<?php echo e(csrf_token()); ?>';
   var rowIndex,statusTable;
   var token = '<?php echo e(csrf_token()); ?>';
+
 
     $('body').on('click','.openModal',function () {
         $('#myModal').find('.alert').hide();
@@ -339,9 +342,6 @@
           }).done(function() {
               var trs = $('#'+statusTable+' .jsgrid-grid-body tr:visible');
               var modalBtn = trs.eq(rowIndex).find('.openModal');
-              //console.log(oldContact);
-              //console.log(JSON.stringify(oldContact));
-              //modalBtn.attr('data-comment',JSON.stringify(oldContact));
               modalBtn.data('comment',oldContact);
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });

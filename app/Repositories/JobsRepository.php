@@ -163,7 +163,7 @@ class JobsRepository extends BaseRepository
         $users = $this->model->customer()->with('opera')
                             ->where('name', 'like', '%'.e($data['name']).'%')
                             ->orderBy('uid', 'desc')
-                            // ->get()->toArray();
+                             //->get()->toArray();
                             ->paginate($size);
                             // var_dump($users);die();
         return $users;
