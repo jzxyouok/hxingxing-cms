@@ -39,7 +39,7 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
-                    console.log(item)
+                    console.log(item);
                     item._token=_token;
                     return $.ajax({
                         type: "PUT",
@@ -71,16 +71,16 @@ $(function() {
                     itemTemplate: function(_, item) {
                         return $("<input>").attr({"type":"checkbox","class":"table-operation","data-id":item.id});
                     },
-                    align: "center",width: 30,sorting: false,
+                    align: "center",width: 30,sorting: false
                 },
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function() {
-                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal"><i class="icon fa fa-edit"></i></a>';
+                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
                     },
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal">'+(item.contact?item.contact.name:'')+'</a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'')+'</a>';
                     },
-                    align: "center",width: 40,sorting: false,
+                    align: "center",width: 40,sorting: false
                 },
                 { name: "name", title: "剧名", type: "text", width: 50, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
                         var result;
@@ -143,7 +143,7 @@ $(function() {
                 $(".checkbox-toggle").data("clicks", false);
                 $(".checkbox-toggle").click(function () {
                     var clicks = $(this).data('clicks');
-                    console.log(clicks)
+                    console.log(clicks);
                     if (clicks) {
                       //Uncheck all checkboxes
                       // $(".table-operation").iCheck("uncheck");
@@ -201,7 +201,7 @@ $(function() {
                     itemTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal">'+(item.contact?item.contact.name:'')+'</a>';
                     },
-                    align: "center",width: 40,sorting: false,
+                    align: "center",width: 40,sorting: false
                 },
                 { name: "name", title: "剧名", type: "text", width: 50 },
                 { name: "invest", title: "总投资", type: "text", width: 30 },
@@ -278,7 +278,7 @@ $(function() {
                 },
                 complete: function( xhr ) {
                     self.prop('disabled', false);
-                },
+                }
             }).done(function(data) {
                 msgBox.text('已发送！').removeClass('alert-warning').removeClass('alert-info').addClass('alert-success').show();
             });

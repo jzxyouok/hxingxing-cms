@@ -65,9 +65,9 @@ class Content extends Eloquent
         //模型名 外键 本键
         return $this->hasMany('Douyasi\Models\newsComment', 'newsId', 'id');
     }
-    public function updViewNum($id,$num)
+    public function updViewNum($id,$num,$is_show)
     {
-        return $this->where('id', $id)->update(['viewNum' => $num]);
+        return $this->where('id', $id)->update(['viewNum' => $num,'is_show_viewNum'=>$is_show]);
     }
     public function delComment($id,$newsId)
     {

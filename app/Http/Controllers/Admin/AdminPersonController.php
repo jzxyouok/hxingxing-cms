@@ -121,10 +121,9 @@ class AdminPersonController extends BackController
     {
         //
         $data = $request->all();
+        //var_dump($data);//die;
         $this->person->update($id, $data, 'manager');
-
         echo 1;
-
     }
 
     public function delWork($id){
