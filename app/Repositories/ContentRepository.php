@@ -261,9 +261,9 @@ class ContentRepository extends BaseRepository
         $content->delete();
         $this->model->getCommentByNewsId($id);
     }
-    public function updViewNum($id,$num)
+    public function updViewNum($id,$num,$is_show)
     {
-        $this->model->updViewNum($id,$num);
+        $this->model->updViewNum($id,$num,$is_show);
     }
     public function delComment($id,$newsId)
     {

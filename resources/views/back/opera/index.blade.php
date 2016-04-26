@@ -110,9 +110,13 @@
                           <label for="" class="col-md-2 control-label">公司</label>
                           <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany"></div>
                         </div>
-                        <div class="row">
+                        <div class="form-group">
                           <label for="" class="col-md-2 control-label">职务</label>
                           <div class="col-md-10"><input type="text" class="form-control" name="position" id="contactPosition"></div>
+                        </div>
+                        <div class="row">
+                             <label for="" class="col-md-2 control-label">备注</label>
+                             <div class="col-md-10"><input type="text" class="form-control" name="remark" id="remark"></div>
                         </div>
                      </div>
                      <div class="tab-pane fade" id="other">
@@ -137,6 +141,7 @@
               </div>
             </form>
             
+            @if($manageRole)
             <div class="panel panel-default">
               <div class="panel-heading">
                   <h3 class="pull-left panel-title">推送</h3>
@@ -190,6 +195,7 @@
                   </div>
                </div>
             </div>
+            @endif
          </div>
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->
@@ -205,6 +211,7 @@
 
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.js"></script>
 <script type="text/javascript" src="{{ asset('plugins/jsgrid-1.4.1/zh.js') }}"></script>
+
 <script>
     $.ajaxSetup({
         headers: {
@@ -218,35 +225,39 @@
   var _token = '{{ csrf_token() }}';
   var rowIndex,statusTable;
   var token = '{{ csrf_token() }}';
-  $('body').on('click', '.openModal', function () {
-      $('#myModal').find('.alert').hide();
-      statusTable = $(this).attr('status-table');
-      rowIndex = $('#'+statusTable+' .jsgrid-grid-body tr:visible').index($('.jsgrid-edit-row'));
-      var commentData = $(this).data('comment');
-      console.log(commentData)
-      var artTitle = $(this).data('title');
-      $('#modalTitle').text(artTitle);
-      $('#uid').val(commentData.uid);
-      $('#contactName').val(commentData.name);
-      $('#fakeMobile').val(commentData.fakeMobile);
-      $('#realMobile').val(commentData.mobile);
-      $('#contactCompany').val(commentData.company);
-      $('#contactPosition').val(commentData.position);
-      $('#otherName').val(commentData.otherName);
-      $('#otherMobile').val(commentData.otherMobile);
-      $('#otherCompany').val(commentData.otherCompany);
-      $('#myModal').modal('show');
-  })
+
+    $('body').on('click','.openModal',function () {
+        $('#myModal').find('.alert').hide();
+        statusTable = $(this).attr('status-table');
+        rowIndex = $('#'+statusTable+' .jsgrid-grid-body tr:visible').index($('.jsgrid-edit-row'));
+        var commentData = $(this).data('comment');
+        console.log(commentData);
+        var artTitle = $(this).data('title');//s
+        $('#modalTitle').text(artTitle);
+        $('#uid').val(commentData.uid);
+        $('#contactName').val(commentData.name);
+        $('#fakeMobile').val(commentData.fakeMobile);
+        $('#realMobile').val(commentData.mobile);
+        $('#contactCompany').val(commentData.company);
+        $('#contactPosition').val(commentData.position);
+        $('#otherName').val(commentData.otherName);
+        $('#otherMobile').val(commentData.otherMobile);
+        $('#otherCompany').val(commentData.otherCompany);
+        $('#remark').val(commentData.remark);
+        $('#myModal').modal('show');
+    })
+
+
     var selectedItems = [];
     var selectItem = function(item) {
         selectedItems.push(item);
-        console.log(selectedItems)
+        //console.log(selectedItems)
     };
     var unselectItem = function(item) {
         selectedItems = $.grep(selectedItems, function(i) {
             return i !== item;
         });
-        console.log(selectedItems)
+        //console.log(selectedItems)
     };
  
     var deleteSelectedItems = function() {
@@ -267,6 +278,7 @@
 </script>
 <script src="{{ asset('plugins/jsgrid-1.4.1/business.js') }}" type="text/javascript"></script>
 <script src="{{ asset('static/js/bootstrap-hover-dropdown.js') }}" type="text/javascript"></script>
+
 <script src="{{ asset('static/js/jquery.form.js') }}" type="text/javascript"></script>
 <script src="{{ asset('static/js/jquery.validate.js') }}" type="text/javascript"></script>
 @stop
@@ -306,10 +318,12 @@
         },
         submitHandler: function(form) {
           var self = $('#commitModal');
-          var item = modalForm.serialize()
-          var oldContact= modalForm.serializeObject()
-          var uid= $('#uid').val()
-          console.log(uid)
+
+          var item = modalForm.serialize();
+          var oldContact= modalForm.serializeObject();
+          var uid= $('#uid').val();
+          console.log(uid);
+
           item._token=_token;
           if (uid>0) {
               var method = 'PUT';
@@ -334,7 +348,6 @@
           }).done(function() {
               var trs = $('#'+statusTable+' .jsgrid-grid-body tr:visible');
               var modalBtn = trs.eq(rowIndex).find('.openModal');
-              console.log(modalBtn,oldContact)
               modalBtn.data('comment',oldContact);
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });

@@ -74,6 +74,7 @@ class AdminArticleController extends BackController
         //使用仓库方法获取文章列表
         $draft_articles = $this->content->index($data,1, array('1', '2','3'), Cache::get('page_size', '10'));
         $pub_articles = $this->content->index($data, 0,array('1', '2','3'), Cache::get('page_size', '10'));
+        //var_dump($draft_articles);var_dump($pub_articles);die;
         //注意：因为已经使用 Bootstrap 后台模版，故无须再传入自定义的分页样式
         //传入自定义的分页Presenter
         //$links = page_links($articles, $data);
@@ -100,6 +101,7 @@ class AdminArticleController extends BackController
             $returnC[$val['slug']][] = $val;
         }
         $flags = $this->flag->index();
+        //var_dump($returnC);var_dump("<br/>");var_dump($flags);die;
         return view('back.article.create', compact('returnC', 'flags'));
     }
 
@@ -178,11 +180,11 @@ class AdminArticleController extends BackController
         // return redirect()->route('admin.article.index')->with('message', '删除文章成功！');
         echo 1;
     }
-    public function updViewNum($id,$num){
+    public function updViewNum($id,$num,$is_show){
         if (! user('object')->can('manage_users') || ! user('object')->can('manage_system')) {
             die('权限不足！');
         }
-        $this->content->updViewNum($id,$num);
+        $this->content->updViewNum($id,$num,$is_show);
         echo 1;
     }
     public function delComment($id,$newsId){

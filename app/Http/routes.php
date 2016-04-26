@@ -86,7 +86,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::get('/opera/tagsData', 'Admin\AdminOperaController@tagsData');
 	Route::post('/opera/pushMsg', 'Admin\AdminOperaController@pushMsg');
 	Route::post('/opera/checkOpera', 'Admin\AdminOperaController@checkOpera');
-	Route::post('/article/updViewNum/{id}/{num}', 'Admin\AdminArticleController@updViewNum');
+	Route::post('/article/updViewNum/{id}/{num}/{is_show}', 'Admin\AdminArticleController@updViewNum');
 	Route::post('/article/delComment/{id}/{newsId}', 'Admin\AdminArticleController@delComment');
 	Route::post('/person/checkMobile', 'Admin\AdminPersonController@checkMobile');
     Route::post('/person/delWork/{id}', 'Admin\AdminPersonController@delWork');

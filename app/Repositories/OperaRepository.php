@@ -128,7 +128,7 @@ class OperaRepository extends BaseRepository
         // var_dump($data);die();
         $query = $this->model->with(array(
                                     'contact' => function ($query) {
-                                        $query->get(['uid', 'name','fakeMobile','mobile','company','position','otherName','otherMobile','otherCompany']);
+                                        $query->get(['uid', 'name','fakeMobile','mobile','company','position','otherName','otherMobile','otherCompany','remark']);
                                     }
                                 ));
         if ($onlySelf) {
@@ -143,8 +143,8 @@ class OperaRepository extends BaseRepository
         return $query->where('pubStatus', e($data['pubStatus']))->orderBy('id', 'desc')->get()->toArray();
     }
     public function tags($data = []){
-        $ret = Tags::select('category', DB::raw('GROUP_CONCAT(id) as ids,GROUP_CONCAT(name) AS labels'))
-        ->groupBy('category')->whereIn('category', ['jobCategory','jobTopic','startTime','shootPeriod'])
+        $ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
+        ->groupBy('category')->whereIn('category', ['jobCategory','jobTopic','jumuStart','jumuRunTime'])
            ->get()->toArray();
         // $ret = Tags::groupBy('category')->get();
         // var_dump($ret);die();

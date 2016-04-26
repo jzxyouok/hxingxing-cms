@@ -105,7 +105,18 @@
                             <span class="numTxt">{{ $art->viewNum }}</span> <a href="javascript:void(0);" class="editViewNum"><i class="fa fa-edit"></i></a>
                           </span>
                           <span class="editBox" style="display:none">
-                            <input type="number" value="{{ $art->viewNum }}" style="width: 60px;"><a href="javascript:void(0);" class="subViewNum" data-id="{{ $art->id }}"><i class="fa fa-save"></i></a>
+
+                              <input type="number" value="{{ $art->viewNum }}" style="width: 60px;">
+                              <label class="control-label">是否显示浏览数</label>
+                              <div class="input-group">
+                                  <input type="radio" name="is_show" value="0" {{ ((isset($art) ? $art->is_show_viewNum : 0) === 0) ? 'checked' : '' }}>
+                                  <label class="choice" for="radiogroup">否</label>
+                                  <input type="radio" name="is_show" value="1" {{ ((isset($art) ? $art->is_show_viewNum : 0) === 1) ? 'checked' : '' }}>
+                                  <label class="choice" for="radiogroup">是</label>
+                              </div>
+                              <a href="javascript:void(0);" class="subViewNum" data-id="{{ $art->id }}">
+                                  <i class="fa fa-save"></i>
+                              </a>
                           </span>
                                         </td>
                                         <td>{{ $art->likeNum }}</td>
@@ -182,7 +193,17 @@
                             <span class="numTxt">{{ $art->viewNum }}</span> <a href="javascript:void(0);" class="editViewNum"><i class="fa fa-edit"></i></a>
                           </span>
                           <span class="editBox" style="display:none">
-                            <input type="number" value="{{ $art->viewNum }}" style="width: 60px;"><a href="javascript:void(0);" class="subViewNum" data-id="{{ $art->id }}"><i class="fa fa-save"></i></a>
+                            <input type="number" value="{{ $art->viewNum }}" style="width: 60px;">
+                            <label class="control-label">是否显示浏览数</label>
+                            <div class="input-group">
+                                <input type="radio" name="is_show" value="0" {{ ((isset($art) ? $art->is_show_viewNum : 0) === 0) ? 'checked' : '' }}>
+                                <label class="choice" for="radiogroup">否</label>
+                                <input type="radio" name="is_show" value="1" {{ ((isset($art) ? $art->is_show_viewNum : 0) === 1) ? 'checked' : '' }}>
+                                <label class="choice" for="radiogroup">是</label>
+                            </div>
+                            <a href="javascript:void(0);" class="subViewNum" data-id="{{ $art->id }}">
+                                <i class="fa fa-save"></i>
+                            </a>
                           </span>
                                         </td>
                                         <td>{{ $art->likeNum }}</td>
@@ -271,8 +292,9 @@
     $('.subViewNum').click(function () {
       var ptd = $(this).closest('td');
       var aid = $(this).data('id');
-      var newNum = ptd.find('input').val();
-      $.post("{{ route('admin.article.index') }}/updViewNum/" + aid+"/"+newNum, function(data) {
+      var newNum = ptd.find('input[type="number"]').val();
+      var is_show = ptd.find('input[type="radio"]').val();
+      $.post("{{ route('admin.article.index') }}/updViewNum/" + aid+"/"+newNum+"/"+is_show, function(data) {
         ptd.find('.numTxt').text(newNum).end().find('.showBox').show().end().find('.editBox').hide().end().addClass('bg-success');
       })
     })

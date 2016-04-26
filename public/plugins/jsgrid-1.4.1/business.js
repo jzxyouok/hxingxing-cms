@@ -11,8 +11,8 @@ $(function() {
     $.getJSON(operaController+'/tagsData', function(tagsData) {
         tagsData.jobCategory.unshift({id:0,name:""});
         tagsData.jobTopic.unshift({id:0,name:""});
-        tagsData.startTime.unshift({id:0,name:""});
-        tagsData.shootPeriod.unshift({id:0,name:""});
+        tagsData.jumuStart.unshift({id:0,name:""});
+        tagsData.jumuRunTime.unshift({id:0,name:""});
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -39,7 +39,7 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
-                    console.log(item)
+                    console.log(item);
                     item._token=_token;
                     return $.ajax({
                         type: "PUT",
@@ -71,16 +71,16 @@ $(function() {
                     itemTemplate: function(_, item) {
                         return $("<input>").attr({"type":"checkbox","class":"table-operation","data-id":item.id});
                     },
-                    align: "center",width: 30,sorting: false,
+                    align: "center",width: 30,sorting: false
                 },
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function() {
-                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal"><i class="icon fa fa-edit"></i></a>';
+                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
                     },
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal">'+(item.contact?item.contact.name:'')+'</a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'')+'</a>';
                     },
-                    align: "center",width: 40,sorting: false,
+                    align: "center",width: 40,sorting: false
                 },
                 { name: "name", title: "剧名", type: "text", width: 50, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
                         var result;
@@ -103,8 +103,8 @@ $(function() {
                 { name: "categoryC", title: "类型", type: "select", width: 30, items: tagsData.jobCategory, valueField: "id", textField: "name" },
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name: "site", title: "地点", type: "text", width: 30 },
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.startTime,valueField:"id",textField:"name", width: 30},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.shootPeriod,valueField:"id",textField:"name", width: 30},
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 30},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 30},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
                 { name: "outline", title: "剧目介绍", type: "textarea", width: 140,row:3 },
                 { name: "producer", title: "制片方", type: "text", width: 30 },
@@ -143,7 +143,7 @@ $(function() {
                 $(".checkbox-toggle").data("clicks", false);
                 $(".checkbox-toggle").click(function () {
                     var clicks = $(this).data('clicks');
-                    console.log(clicks)
+                    console.log(clicks);
                     if (clicks) {
                       //Uncheck all checkboxes
                       // $(".table-operation").iCheck("uncheck");
@@ -201,15 +201,15 @@ $(function() {
                     itemTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal">'+(item.contact?item.contact.name:'')+'</a>';
                     },
-                    align: "center",width: 40,sorting: false,
+                    align: "center",width: 40,sorting: false
                 },
                 { name: "name", title: "剧名", type: "text", width: 50 },
                 { name: "invest", title: "总投资", type: "text", width: 30 },
                 { name:"categoryC",title:"类型",type:"select",items: tagsData.jobCategory,valueField:"id",textField:"name", width: 30},
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name: "site", title: "地点", type: "text", width: 30 },
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.startTime,valueField:"id",textField:"name", width: 30},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.shootPeriod,valueField:"id",textField:"name", width: 30},
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 30},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 30},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
                 { name: "outline", title: "剧目介绍", type: "textarea", width: 140,row:3 },
                 { name: "producer", title: "制片方", type: "text", width: 30 },
@@ -278,7 +278,7 @@ $(function() {
                 },
                 complete: function( xhr ) {
                     self.prop('disabled', false);
-                },
+                }
             }).done(function(data) {
                 msgBox.text('已发送！').removeClass('alert-warning').removeClass('alert-info').addClass('alert-success').show();
             });
