@@ -167,9 +167,6 @@ class AdminOperaController extends BackController
     }
     public function pubOpera(Request $request,$ids)
     {
-        if (! user('object')->can('manage_users') || ! user('object')->can('manage_system')) {
-            die('权限不足！');
-        }
         $ids = explode(',',$ids);
         $this->content->pubOpera($ids);
         echo 1;
