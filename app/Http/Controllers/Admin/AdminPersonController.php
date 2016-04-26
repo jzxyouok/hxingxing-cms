@@ -31,7 +31,8 @@ class AdminPersonController extends BackController
         $this->person = $person;
 
         $actionName = $route->getActionName();
-        if (in_array($actionName, ['index','delWork']) && !user('object')->can('manage_users')) {
+        list($class, $method) = explode('@', $actionName);
+        if (in_array($method, ['index','delWork']) && !user('object')->can('manage_users')) {
             $this->middleware('deny403');
         }
     }

@@ -19,9 +19,6 @@
 </style>
 @parent
 
-    @if($manageRole)
-      <button class="btn btn-primary" id="pubOpera"><i class="fa fa-fw fa-plus"></i> 发布</button>&nbsp;
-    @endif
     <ol class="breadcrumb">
       <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
       <li class="active">剧目管理</li>
@@ -40,7 +37,7 @@
 
       <div class="nav-tabs-custom">
           
-          <ul class="nav nav-tabs">
+          <ul id="mainTab" class="nav nav-tabs">
             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">未发布</a></li>
             <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>
           </ul>
@@ -247,19 +244,10 @@
         $('#myModal').modal('show');
     })
 
-
-    var selectedItems = [];
-    var selectItem = function(item) {
-        selectedItems.push(item);
-        //console.log(selectedItems)
-    };
-    var unselectItem = function(item) {
-        selectedItems = $.grep(selectedItems, function(i) {
-            return i !== item;
-        });
-        //console.log(selectedItems)
-    };
- 
+    $('body').on('click','.jsgrid-pager-page a',function () {
+        setIcheck();
+    });
+    
     var deleteSelectedItems = function() {
         if(!selectedItems.length || !confirm("确定删除吗?"))
             return;
