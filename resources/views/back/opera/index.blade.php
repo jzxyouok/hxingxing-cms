@@ -19,13 +19,9 @@
 </style>
 @parent
 
-<<<<<<< HEAD
-    <button class="btn btn-primary" id="pubOpera"><i class="fa fa-fw fa-plus"></i> 发布</button>&nbsp;
-=======
     @if($manageRole)
       <button class="btn btn-primary" id="pubOpera"><i class="fa fa-fw fa-plus"></i> 发布</button>&nbsp;
     @endif
->>>>>>> 613e776110456ce390ad0c7be5361f7292c359ac
     <ol class="breadcrumb">
       <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
       <li class="active">剧目管理</li>
@@ -227,7 +223,6 @@
   var _token = '{{ csrf_token() }}';
   var rowIndex,statusTable;
   var token = '{{ csrf_token() }}';
-<<<<<<< HEAD
 
     $('body').on('click','.openModal',function () {
         $('#myModal').find('.alert').hide();
@@ -250,27 +245,7 @@
         $('#myModal').modal('show');
     })
 
-=======
-  $('body').on('click', '.openModal', function () {
-      $('#myModal').find('.alert').hide();
-      statusTable = $(this).attr('status-table');
-      rowIndex = $('#'+statusTable+' .jsgrid-grid-body tr:visible').index($('.jsgrid-edit-row'));
-      var commentData = $(this).data('comment');
-      console.log(commentData)
-      var artTitle = $(this).data('title');
-      $('#modalTitle').text(artTitle);
-      $('#uid').val(commentData.uid);
-      $('#contactName').val(commentData.name);
-      $('#fakeMobile').val(commentData.fakeMobile);
-      $('#realMobile').val(commentData.mobile);
-      $('#contactCompany').val(commentData.company);
-      $('#contactPosition').val(commentData.position);
-      $('#otherName').val(commentData.otherName);
-      $('#otherMobile').val(commentData.otherMobile);
-      $('#otherCompany').val(commentData.otherCompany);
-      $('#myModal').modal('show');
-  })
->>>>>>> 613e776110456ce390ad0c7be5361f7292c359ac
+
     var selectedItems = [];
     var selectItem = function(item) {
         selectedItems.push(item);
@@ -341,17 +316,12 @@
         },
         submitHandler: function(form) {
           var self = $('#commitModal');
-<<<<<<< HEAD
+
           var item = modalForm.serialize();
           var oldContact= modalForm.serializeObject();
           var uid= $('#uid').val();
           console.log(uid);
-=======
-          var item = modalForm.serialize()
-          var oldContact= modalForm.serializeObject()
-          var uid= $('#uid').val()
-          console.log(uid)
->>>>>>> 613e776110456ce390ad0c7be5361f7292c359ac
+
           item._token=_token;
           if (uid>0) {
               var method = 'PUT';
