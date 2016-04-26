@@ -96,6 +96,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::resource('report', 'Admin\AdminReportController');
 	Route::resource('opera', 'Admin\AdminOperaController');
 	Route::resource('jobs', 'Admin\AdminJobsController');
+	Route::resource('statistics', 'Admin\AdminStatisticsController');
 
 	# 文章
 	Route::resource('article', 'Admin\AdminArticleController');

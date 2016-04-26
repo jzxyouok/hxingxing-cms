@@ -2,6 +2,7 @@
 
 namespace Douyasi\Http\Controllers\Admin;
 
+use Illuminate\Routing\Route;
 use Douyasi\Http\Requests\PersonRequest;
 use Douyasi\Http\Controllers\Controller;
 use Douyasi\Models\Works;
@@ -18,8 +19,6 @@ use Cache;
  */
 class AdminPersonController extends BackController
 {
-
-
     /**
      * The UserRepository instance.
      *
@@ -27,18 +26,16 @@ class AdminPersonController extends BackController
      */
     protected $person;
 
-    public function __construct(
-        PersonRepository $person
-    )
-    {
+    public function __construct(PersonRepository $person,Route $route){
         parent::__construct();
         $this->person = $person;
-        if (! user('object')->can('manage_users')) {
+
+        $actionName = $route->getActionName();
+        if (in_array($actionName, ['index','delWork']) && !user('object')->can('manage_users')) {
             $this->middleware('deny403');
         }
     }
     
-
     /**
      * Display a listing of the resource.
      *
@@ -57,7 +54,6 @@ class AdminPersonController extends BackController
         return view('back.person.index', compact('persons','serverUrl'));
     }
 
-
     /**
      * Show the form for creating a new resource.
      *
@@ -69,7 +65,6 @@ class AdminPersonController extends BackController
         $roles = $this->person->role();
         return view('back.person.create', ['roles' => $roles]);
     }
-
 
     /**
      * Store a newly created resource in storage.
@@ -90,14 +85,13 @@ class AdminPersonController extends BackController
             ];
             SystemLogger::write($log);
 
-            return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
-
+            // return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
+            echo 1;
         } else {
-            return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
+            echo 1;
+            // return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
         }
     }
-
-
 
     /**
      * Show the form for editing the specified resource.
@@ -140,5 +134,4 @@ class AdminPersonController extends BackController
         $this->person->delWork($id);
         echo 1;
     }
-
 }

@@ -77,7 +77,11 @@
                             <img src="<?php echo e($serverUrl); ?>/<?php echo e($user->avatar); ?>" style="height: 35px;width: 35px">
                             <?php endif; ?>
                         </td>
-                        <td class="text-muted"><?php if( count($user->works) > 1): ?><a href="javascript:void(0)" data-title="<?php echo e($user->name); ?>" data-works="<?php echo e($user->works); ?>" class="openModal" data-toggle="modal" data-target="#pageModal"><i class="fa fa-file-video-o"></i></a><?php endif; ?></td>
+                        <td class="text-muted">
+                            <?php if( count($user->works) > 1): ?>
+                                <a href="javascript:void(0)" data-title="<?php echo e($user->name); ?>" data-works="<?php echo e($user->works); ?>" class="openModal" data-toggle="modal" data-target="#pageModal"><i class="fa fa-file-video-o"></i></a>
+                            <?php endif; ?>
+                        </td>
                         <td class="text-muted"><?php echo e($user->likeNum); ?></td>
                         <td class="text-muted"><?php echo e($user->viewNum); ?></td>
                         <td class="text-muted"><?php echo e($user->status); ?></td>
@@ -127,7 +131,7 @@
       <!-- console.log(commentData) -->
       var commentHtml = '';
       for (var i = 0; i < commentData.length; i++) {
-        commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-1"><img src="<?php echo e($serverUrl); ?>/'+commentData[i].avatar+'" style="height: 35px;width: 35px"></div><div class="col-md-11"><h4 class="list-group-item-heading">'+commentData[i].name+' - '+commentData[i].role+' - '+commentData[i].time+'</h4><p class="list-group-item-text">'+commentData[i].category+'</p></div></li>';
+        commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-1"><img src="<?php echo e($serverUrl); ?>/'+commentData[i].avatar+'" style="height: 35px;width: 35px"></div><div class="col-md-11"><h4 class="list-group-item-heading">'+commentData[i].name+' - '+commentData[i].role+' - '+commentData[i].time+'</h4><p class="list-group-item-text">'+commentData[i].category+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="delComment/" data-id="'+commentData[i].id+'"></i></a></li>';
       }
       $('#pageModal').find('#modalTitle').html(artTitle).end().find('.modal-body .list-group').html(commentHtml);
     })

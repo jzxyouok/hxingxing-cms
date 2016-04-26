@@ -49,7 +49,7 @@ class AdminOperaController extends BackController
         parent::__construct();
         $this->content = $content;
         $this->flag = $flag;
-        if (! user('object')->can('manage_contents')) {
+        if (! user('object')->can('manage_operas') &&! user('object')->can('customer_service')) {
             $this->middleware('deny403');
         }
         if (!Cache::has('flags')) {  //如果推荐位缓存不存在
@@ -66,7 +66,11 @@ class AdminOperaController extends BackController
      */
     public function index(Request $request)
     {
-        return view('back.opera.index');
+        $manageRole = false;
+        if (user('object')->can('customer_service')) {
+            $manageRole = true;
+        }
+        return view('back.opera.index',compact('typeRole','manageRole'));
     }
     
     public function tagsData(Request $request)
@@ -94,7 +98,11 @@ class AdminOperaController extends BackController
             $data[$val] = $request->input($val);
         }
         $data['pubStatus'] = $pubStatus;
-        $operas = $this->content->index($data, 'article', Cache::get('page_size', '10'));
+        $onlySelf = false;
+        if (! user('object')->can('customer_service')) {
+            $onlySelf = true;
+        }
+        $operas = $this->content->index($data, $onlySelf, Cache::get('page_size', '10'));
         // var_dump($operas);die();
         echo json_encode($operas);
     }
@@ -175,6 +183,9 @@ class AdminOperaController extends BackController
      */
     public function destroy($ids)
     {
+        if (! user('object')->can('customer_service')) {
+            die('权限不足！');
+        }
         $this->content->destroy($ids, 'article');
         echo 1;
         // return redirect()->route('admin.opera.index')->with('message', '删除剧目成功！');
