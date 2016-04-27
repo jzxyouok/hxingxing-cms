@@ -62,7 +62,8 @@
               <ul class="treeview-menu">
                 <li><a href="{{ route('admin.person.index') }}"><i class="fa fa-user"></i>注册用户</a></li>
                 <li><a href="{{ route('admin.opera.index') }}"><i class="fa fa-th-list"></i> 剧目</a></li>
-                <li><a href="{{ route('admin.jobs.index') }}"><i class="fa fa-th-large"></i> 职位</a></li>
+                <li><a href="{{ route('admin.jobs.index') }}"><i class="fa fa-th-large"></i> 招聘职位</a></li>
+                <li><a href="{{ route('admin.jobsWant.index') }}"><i class="fa fa-newspaper-o"></i> 应聘名片</a></li>
                 <!-- <li><a href="{{ route('admin.pushMsg.index') }}"><i class="fa fa-comments"></i> 推消息</a></li> -->
                 <li><a href="{{ route('admin.article.index') }}"><i class="fa fa-newspaper-o"></i> 文章</a></li>
                 <!-- <li><a href="{{ route('admin.page.index') }}"><i class="fa fa-file-o"></i> 单页</a></li> -->

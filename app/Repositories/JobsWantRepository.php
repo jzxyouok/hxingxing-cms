@@ -2,7 +2,7 @@
 
 namespace Douyasi\Repositories;
 
-use Douyasi\Models\Opera;
+use Douyasi\Models\JobsWant;
 use Douyasi\Models\Meta;
 use Douyasi\Models\Tags;
 use Douyasi\Models\Person;
@@ -12,7 +12,7 @@ use DB;
  *
  * @author raoyc<raoyc2009@gmail.com>
  */
-class OperaRepository extends BaseRepository
+class JobsWantRepository extends BaseRepository
 {
 
     /**
@@ -30,7 +30,7 @@ class OperaRepository extends BaseRepository
      * @return void
      */
     public function __construct(
-        Opera $content,
+        JobsWant $content,
         Meta $meta,
         Person $person
     )
@@ -144,11 +144,11 @@ class OperaRepository extends BaseRepository
                 $query->where($val, 'like', '%'.e($data[$val]).'%');
             }
         }
-        return $query->where('pubStatus', e($data['pubStatus']))->orderBy('id', 'desc')->get()->toArray();
+        return $query->orderBy('id', 'desc')->get()->toArray();
     }
     public function tags($data = []){
         $ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
-        ->groupBy('category')->whereIn('category', ['jobCategory','jobTopic','jumuStart','jumuRunTime'])
+        ->groupBy('category')->whereIn('category', ['jobType','jobCategory','jobTopic','jobSalary','jobSalaryUnit'/*,'jobSalary',''*/])
            ->get()->toArray();
         // $ret = Tags::groupBy('category')->get();
         //var_dump($ret);die();
