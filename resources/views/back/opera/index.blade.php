@@ -220,7 +220,7 @@
   var checkMobileController = '{{ route("admin.person.index") }}/checkMobile';
   var manageRole = '{{$manageRole}}';
   var _token = '{{ csrf_token() }}';
-  var rowIndex,statusTable;
+  var rowIndex,statusTable,insertedId=0;
   var token = '{{ csrf_token() }}';
 
     $('body').on('click','.openModal',function () {
@@ -335,13 +335,12 @@
               },
           }).done(function(result) {
               var trs = $('#'+statusTable+' .jsgrid-grid-body tr:visible');
-              if(uid>0){
-                var modalBtn = trs.eq(rowIndex).find('.openModal');
-                modalBtn.data('comment',oldContact);
-              }else{
-                    console.log('新增结果:'+result);
-                    $('#uid').val(result);
+              if(!uid){
+                insertedId = result
+                console.log(insertedId);
               }
+              var modalBtn = trs.eq(rowIndex).find('.openModal');
+              modalBtn.data('comment',oldContact);
 
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });
