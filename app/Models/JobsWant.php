@@ -12,7 +12,7 @@ use Eloquent;
 class JobsWant extends Eloquent
 {
     protected $connection = 'mysql_front_tables';
-    protected $table = 'operas';
+    protected $table = 'jobs_want';
     /**
      * 分类
      * 模型对象关系：内容对应的分类[仅文章存在分类]

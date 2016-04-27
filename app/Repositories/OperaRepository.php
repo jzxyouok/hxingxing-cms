@@ -151,7 +151,7 @@ class OperaRepository extends BaseRepository
         ->groupBy('category')->whereIn('category', ['jobCategory','jobTopic','jumuStart','jumuRunTime'])
            ->get()->toArray();
         // $ret = Tags::groupBy('category')->get();
-        //var_dump($ret);die();
+        // var_dump($ret);die();
         return $ret;
     }
     /**

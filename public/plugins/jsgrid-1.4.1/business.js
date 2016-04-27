@@ -33,7 +33,7 @@ $(function() {
                 },
                 insertItem: function(item) {
                     var uid= insertedId;
-                    console.log(uid)
+                    console.log(uid);
                     item._token=_token;
                     item.uid=uid;
                     item.pubStatus=0;

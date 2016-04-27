@@ -2,7 +2,7 @@
 
 namespace Douyasi\Http\Controllers\Admin;
 
-//use Douyasi\Http\Requests\OperaRequest;  //请求层
+use Douyasi\Http\Requests\OperaRequest;  //请求层
 use Douyasi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Douyasi\Repositories\JobsWantRepository;  //名片仓库层
@@ -66,11 +66,11 @@ class AdminJobsWantController extends BackController
      */
     public function index(Request $request)
     {
-        /*$manageRole = false;
+        $manageRole = false;
         if (user('object')->can('customer_service')) {
             $manageRole = true;
-        }*/
-        return view('back.jobsWant.index');
+        }
+        return view('back.jobsWant.index',compact('typeRole','manageRole'));
     }
     
     public function tagsData(Request $request)
@@ -130,7 +130,7 @@ class AdminJobsWantController extends BackController
     public function store(OperaRequest $request)
     {
         $data = $request->all();  //获取请求过来的数据
-         //var_dump($data);die();
+         //var_dump($data);//die();
         $content = $this->content->store($data, user('id'));  //使用仓库方法存储
         if ($content->id) {  //添加成功
             echo json_encode($content,JSON_NUMERIC_CHECK);
@@ -165,6 +165,7 @@ class AdminJobsWantController extends BackController
     {
         //
         $data = $request->all();
+        var_dump($data);die;
         $this->content->update($id, $data, 'article');
         // return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }

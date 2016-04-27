@@ -15,6 +15,7 @@ $(function() {
         tagsData.jobSalary.unshift({id:0,name:""});
         tagsData.jobSalaryUnit.unshift({id:0,name:""});
 
+
         $("#unpub").jsGrid({
             height: "650px",
             width: "100%",
@@ -33,9 +34,9 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
-                    var uid= $('#uid').val();
+                    var uid= insertedId;
+                    console.log(uid);
                     item._token=_token;
-                    uid = uid>0?uid:0;
                     item.uid=uid;
                     item.pubStatus=0;
                     $.post(operaController,item,function(result){
@@ -63,11 +64,11 @@ $(function() {
                 }
             },
             fields: [
-                {   headerTemplate: function() {
-                        return $("<button>").attr({"type":"button","class":"btn btn-primary btn-sm"}).text('发布')
-                        .on("click", function () {
-                            pubOpera();
-                        });
+                {headerTemplate: function() {
+//                    return $("<button>").attr({"type":"button","class":"btn btn-primary btn-sm"}).text('发布')
+//                        .on("click", function () {
+//                            //pubOpera();
+//                        });
                     },
                     filterTemplate: function() {
                         // return $("<button>").attr({"type":"button","class":"btn btn-default btn-sm checkbox-toggle"}).html("<i class='fa fa-square-o' title='全选/反全选'></i>");
@@ -77,28 +78,53 @@ $(function() {
                     },
                     align: "center",width: 30,sorting: false
                 },
-//                {headerTemplate: function() {return '联系人';},
-//                    insertTemplate: function() {
-//                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
-//                    },
-//                    itemTemplate: function(_, item) {
-//                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
-//                    },
-//                    align: "center",width: 40,sorting: false
-//                },
+                {headerTemplate: function() {return '联系人';},
+                    insertTemplate: function() {
+                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
+                    },
+                    itemTemplate: function(_, item) {
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
+                    },
+                    align: "center",width: 40,sorting: false
+                },
+                /*{ name: "name", title: "剧名", type: "text", width: 50, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
+                    var result;
+                    if (value=='') {
+                        result = false;
+                    }else{
+                        $.ajax({
+                            type: "POST",
+                            url : operaController+'/checkOpera',
+                            data: {name:value,id:item.id},
+                            async:false,
+                            success : function(data){
+                                result = data;
+                            }
+                        });
+                    }
+                    return result;
+                }}},*/
                 { name: "nameC", title: "职位", type: "select", width: 30, items: tagsData.jobType, valueField: "id", textField: "name" },
                 { name: "categoryC", title: "类型", type: "select", width: 30, items: tagsData.jobCategory, valueField: "id", textField: "name" },
-                { name:"topicC1",title:"题材1",type:"select",width: 30,items: tagsData.jobTopic,valueField:"id",textField:"name" },
-                { name:"topicC2",title:"题材2",type:"select",width: 30,items: tagsData.jobTopic,valueField:"id",textField:"name"},
-                { name:"topicC3",title:"题材3",type:"select",width: 30,items: tagsData.jobTopic,valueField:"id",textField:"name"},
-                { name:"salaryC",title:"薪资",type:"select",width: 30,items: tagsData.jobSalary,valueField:"id",textField:"name"},
-                { name:"salaryUnitC",title:"薪资单位",type:"select",width: 30,items: tagsData.salaryUnitC,valueField:"id",textField:"name"}
+                { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
+                { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
+                { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
+                { name:"salaryC",title:"薪资",type:"select",items: tagsData.jobSalary,valueField:"id",textField:"name", width: 30},
+                { name:"topicC3",title:"薪资单位",type:"select",items: tagsData.jobSalaryUnit,valueField:"id",textField:"name", width: 30},
+                { name: "provinceC", title: "省", type: "text", width: 30,align: "center" },
+                { name: "siteC", title: "期望地点", type: "text", width: 30,align: "center" },
+                // {headerTemplate: function() {return '封面';},
+                //     itemTemplate: function(_, item) {
+                //         return '<img src="'+item.cover+'" style="height: 35px;width: 35px">';
+                //     },width: 40,sorting: false,
+                // },
+                { type: "control", editButton: false,deleteButton:manageRole }
             ],
             onDataLoaded: function(args) {
-                //setIcheck();
+                setIcheck();
             },
             onRefreshed: function(args) {
-                //setIcheck();
+                setIcheck();
             }
         });
 

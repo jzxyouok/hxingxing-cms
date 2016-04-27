@@ -95,20 +95,20 @@ class JobsWantRepository extends BaseRepository
                 }
                 $content->flag = $tmp_flag;
             }
-
-        $allFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline','producer','creator','platform','pubStatus','uid');
+        $allFields = array('nameC','categoryC','topicC1','topicC2','topicC3','salaryC','salaryUnitC','provinceC','siteC');
         foreach ($allFields as $k => $val) {
             if (array_key_exists($val, $inputs)) {
                 $content->$val = e($inputs[$val]) ;
             }
         }
-        $content->created_uid = user('id');
+        //$content->created_uid = user('id');
         /*if ($user_id) {
             $content->uid = $user_id;
         }*/
-        // var_dump($content);die();
+        //var_dump($content);die();
+        $content->updTime = round(microtime(true)*1000);
         $content->save();
-        $content = $this->model->with('contact')->findOrFail($content->id);
+        //$content = $this->model->with('contact')->findOrFail($content->id);
         return $content;
     }
 
@@ -138,13 +138,14 @@ class JobsWantRepository extends BaseRepository
         if ($onlySelf) {
             $query->where('created_uid', user('id'));
         }
-        $searchFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline');
+        $searchFields = array('nameC','categoryC','topicC1','topicC2','topicC3','salaryC','salaryUnitC','provinceC','siteC');
         foreach ($searchFields as $k => $val) {
             if (!is_numeric($data[$val])&&trim($data[$val])!=''|| is_numeric($data[$val])&&$data[$val]>0) {
                 $query->where($val, 'like', '%'.e($data[$val]).'%');
             }
         }
-        return $query->orderBy('id', 'desc')->get()->toArray();
+        //return $query->orderBy('id', 'desc')->get()->toArray();
+        return $query/*->where('id','>','300')*/->orderBy('id', 'desc')->get()->toArray();
     }
     public function tags($data = []){
         $ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
