@@ -97,13 +97,13 @@
                           <div class="col-md-4">
                               <input type="text" class="form-control" name="mobile" id="realMobile">
                           </div>
-                          <button class="pull-left btn btn-primary pubMan" style="display: none">发布</button>
+                          <button class="pull-left btn btn-primary pubMan">发布</button>
                           <label for="realMobile" id="realMobile-error" class="row col-md-5 error"></label>
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">虚拟手机</label>
                           <div class="col-md-4"><input type="text" class="form-control" name="fakeMobile" id="fakeMobile"></div>
-                          <button class="pull-left btn btn-primary pubMan" style="display: none">发布</button>
+                          <button class="pull-left btn btn-primary pubMan">发布</button>
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">公司</label>
@@ -245,7 +245,9 @@
         $('#otherCompany').val(commentData.otherCompany);
         $('#remark').val(commentData.remark);
         if (commentData.isPubed==0) {
-          $('.pubMan').show();
+          $('.pubMan').text('发布').prop('disabled', false);
+        }else{
+          $('.pubMan').text('已发布').prop('disabled', true);
         }
         $('#myModal').modal('show');
     })

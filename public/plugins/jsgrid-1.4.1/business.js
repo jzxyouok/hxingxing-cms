@@ -281,7 +281,7 @@ $(function() {
                     url: personController+'/pubMan',
                     data: {mobile:mobile.val(),uid:uid},
                     error: function( xhr ) {
-                        msgBox.text('出错了');
+                        alert('出错了');
                     },
                     /*complete: function( xhr ) {
                         alert('发布成功\n初始密码为123456，请尽快修改。');
