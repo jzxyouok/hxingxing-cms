@@ -102,7 +102,7 @@ $(function() {
                         }
                         return result;
                     }}},
-                { name: "invest", title: "总投资", type: "text", width: 30 },
+                { name: "invest", title: "总投资", type: "number", width: 30 },
                 { name: "categoryC", title: "类型", type: "select", width: 30, items: tagsData.jobCategory, valueField: "id", textField: "name" },
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name: "site", title: "地点", type: "text", width: 30 },
@@ -168,7 +168,7 @@ $(function() {
                     align: "center",width: 40,sorting: false
                 },
                 { name: "name", title: "剧名", type: "text", width: 50 },
-                { name: "invest", title: "总投资", type: "text", width: 30 },
+                { name: "invest", title: "总投资", type: "number", width: 30 },
                 { name:"categoryC",title:"类型",type:"select",items: tagsData.jobCategory,valueField:"id",textField:"name", width: 30},
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name: "site", title: "地点", type: "text", width: 30 },
