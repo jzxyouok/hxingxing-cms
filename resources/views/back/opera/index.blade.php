@@ -90,18 +90,20 @@
                      <div class="tab-pane fade in active" id="main">
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">姓名</label>
-                          <div class="col-md-10"><input type="hidden" name="uid" id="uid"><input type="text" class="form-control" name="name" id="contactName"></div>
+                          <div class="col-md-10"><input type="hidden" name="uid" id="uid"><input type="hidden" id="isPubed"><input type="text" class="form-control" name="name" id="contactName"></div>
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">真实手机</label>
-                          <div class="col-md-6">
+                          <div class="col-md-4">
                               <input type="text" class="form-control" name="mobile" id="realMobile">
                           </div>
-                          <label for="realMobile" id="realMobile-error" class="row col-md-4 error"></label>
+                          <button class="pull-left btn btn-primary pubMan" style="display: none">发布</button>
+                          <label for="realMobile" id="realMobile-error" class="row col-md-5 error"></label>
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">虚拟手机</label>
-                          <div class="col-md-10"><input type="text" class="form-control" name="fakeMobile" id="fakeMobile"></div>
+                          <div class="col-md-4"><input type="text" class="form-control" name="fakeMobile" id="fakeMobile"></div>
+                          <button class="pull-left btn btn-primary pubMan" style="display: none">发布</button>
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">公司</label>
@@ -232,6 +234,7 @@
         var artTitle = $(this).data('title');//s
         $('#modalTitle').text(artTitle);
         $('#uid').val(commentData.uid);
+        $('#isPubed').val(commentData.isPubed);
         $('#contactName').val(commentData.name);
         $('#fakeMobile').val(commentData.fakeMobile);
         $('#realMobile').val(commentData.mobile);
@@ -241,6 +244,9 @@
         $('#otherMobile').val(commentData.otherMobile);
         $('#otherCompany').val(commentData.otherCompany);
         $('#remark').val(commentData.remark);
+        if (commentData.isPubed==0) {
+          $('.pubMan').show();
+        }
         $('#myModal').modal('show');
     })
 

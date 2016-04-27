@@ -262,4 +262,40 @@ $(function() {
           }
         }
     })
+
+    $('.pubMan').click(function(event) {
+        var self = $(this);
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        var mobile = $(this).prev().find('input');
+        if(!myreg.test(mobile.val())) { 
+            alert('请输入有效的手机号码！'); 
+            mobile.select();
+            return false; 
+        }
+        
+        var uid = $('#uid').val();
+        if (uid>0) {
+            if (confirm('确定创建这个人吗？')) {
+                $.ajax({
+                    type: "post",
+                    url: personController+'/pubMan',
+                    data: {mobile:mobile.val(),uid:uid},
+                    error: function( xhr ) {
+                        msgBox.text('出错了');
+                    },
+                    /*complete: function( xhr ) {
+                        alert('发布成功\n初始密码为123456，请尽快修改。');
+                        self.prop('disabled', false);
+                    }*/
+                }).done(function(data) {
+                    if (data) {
+                        alert('发布成功\n初始密码为123456，请尽快修改。');
+                        $('.pubMan').text('已发布').prop('disabled', true);
+                    }else{
+                        alert('出错了');
+                    }
+                });
+            }
+        }
+    })
 });
