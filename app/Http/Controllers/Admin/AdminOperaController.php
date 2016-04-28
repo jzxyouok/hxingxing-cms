@@ -162,7 +162,8 @@ class AdminOperaController extends BackController
     {
         //
         $data = $request->all();
-        $this->content->update($id, $data, 'article');
+        //var_dump($data);
+        return $this->content->update($id, $data, 'article');
         // return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }
     public function pubOpera(Request $request,$ids)

@@ -198,8 +198,14 @@ class OperaRepository extends BaseRepository
      */
     public function update($id, $inputs, $type = 'article')
     {
-        $content = $this->model->findOrFail($id);
-        $content = $this->saveContent($content, $inputs);
+        $content = $this->model->findOrFail($id);//查表
+        if($content->name != $inputs['name']){
+            $ret = $this->checkOpera($inputs['name'],$id);
+            if(!is_null($ret)){
+                $inputs['name'] = $content->name;//如果查重了，还是修改，但是用原来值
+            }
+        }
+        return $this->saveContent($content, $inputs);
     }
 
     /**

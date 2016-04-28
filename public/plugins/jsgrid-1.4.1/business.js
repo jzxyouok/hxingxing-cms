@@ -45,11 +45,20 @@ $(function() {
                 updateItem: function(item) {
                     console.log(item);
                     item._token=_token;
-                    return $.ajax({
+                    $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
-                        data: item
+                        data: item,
+                        async:false,
+                        success : function(data){
+                            console.log(data);
+                            if(data.name != item.name){
+                                alert('剧名已存在！');
+                            }
+                            result = data;
+                        }
                     });
+                    return result;
                 },
                 deleteItem: function(item) {
                     item._method='delete';
@@ -85,7 +94,8 @@ $(function() {
                     },
                     align: "center",width: 40,sorting: false
                 },
-                { name: "name", title: "剧名", type: "text", width: 50, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
+                { name: "name", title: "剧名", type: "text", width: 50/*, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
+                        console.log(value,item);
                         var result;
                         if (value=='') {
                             result = false;
@@ -101,7 +111,7 @@ $(function() {
                             });
                         }
                         return result;
-                    }}},
+                    }}*/},
                 { name: "invest", title: "总投资", type: "number", width: 30 },
                 { name: "categoryC", title: "类型", type: "select", width: 30, items: tagsData.jobCategory, valueField: "id", textField: "name" },
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
@@ -143,6 +153,7 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/1',filter);
                 },
                 updateItem: function(item) {
+                    console.log(item);
                     item._token=_token;
                     return $.ajax({
                         type: "PUT",
