@@ -6,7 +6,7 @@ use Douyasi\Http\Requests\StatisticsRequest;
 use Douyasi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Douyasi\Logger\SystemLogger as SystemLogger;
-use Douyasi\Repositories\StatisticsRepository;
+use Douyasi\Repositories\ContentRepository;
 use Cache;
 
 /**
@@ -23,13 +23,13 @@ class AdminStatisticsController extends BackController
      *
      * @var Douyasi\Repositories\UserRepository
      */
-    protected $Statistics;
+    protected $content;
 
     public function __construct(
-        StatisticsRepository $Statistics)
+        ContentRepository $content)
     {
         parent::__construct();
-        $this->Statistics = $Statistics;
+        $this->content = $content;
 
         if (! user('object')->can('manage_users')) {
             $this->middleware('deny403');
@@ -49,11 +49,11 @@ class AdminStatisticsController extends BackController
             's_name' => $request->input('s_name'),
             's_phone' => $request->input('s_phone'),
         ];
-        $reports = $this->report->index($data, 'manager', Cache::get('page_size', '10'));
+        $reports = $this->content->index($data, 'manager', Cache::get('page_size', '10'));
 // var_dump($reports);die();
         // $reports = $reports->toJson();
         $reportType = (object)['ad' => '广告'];
-        return view('back.report.index', compact('reports','reportType'));
+        return view('back.statistics.index', compact('reports','reportType'));
     }
 
 
