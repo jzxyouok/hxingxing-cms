@@ -13,6 +13,7 @@ $(function() {
         tagsData.jobTopic.unshift({id:0,name:""});
         tagsData.jumuStart.unshift({id:0,name:""});
         tagsData.jumuRunTime.unshift({id:0,name:""});
+        tagsData.city.unshift({id:0,name:""});
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -115,7 +116,7 @@ $(function() {
                 { name: "invest", title: "总投资", type: "number", width: 30 },
                 { name: "categoryC", title: "类型", type: "select", width: 30, items: tagsData.jobCategory, valueField: "id", textField: "name" },
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
-                { name: "site", title: "地点", type: "text", width: 30 },
+                { name: "site", title: "地点", type:"select",items: tagsData.city,valueField:"id",textField:"name", width: 30},
                 { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 30},
                 { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 30},
                 { name: "runTime", title: "片长", type: "text", width: 30 },

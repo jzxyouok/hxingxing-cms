@@ -143,7 +143,7 @@ class AdminPersonController extends BackController
         $data['isPubed'] = 1;
         // var_dump($data);die();
         $return = $this->person->update($data['uid'], $data, 'article');
-        var_dump($return);die();
+        //var_dump($return);die();
         echo 1;
     }
 }

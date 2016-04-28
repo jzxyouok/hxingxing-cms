@@ -14,6 +14,7 @@ $(function() {
         tagsData.jobTopic.unshift({id:0,name:""});
         tagsData.jobSalary.unshift({id:0,name:""});
         tagsData.jobSalaryUnit.unshift({id:0,name:""});
+        tagsData.city.unshift({id:0,name:""});
 
 
         $("#unpub").jsGrid({
@@ -41,7 +42,6 @@ $(function() {
                     item.pubStatus=0;
                     $.post(operaController,item,function(result){
                         return result;
-
                     });
                 },
                 updateItem: function(item) {
@@ -111,8 +111,8 @@ $(function() {
                 { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name:"salaryC",title:"薪资",type:"select",items: tagsData.jobSalary,valueField:"id",textField:"name", width: 30},
                 { name:"salaryUnitC",title:"薪资单位",type:"select",items: tagsData.jobSalaryUnit,valueField:"id",textField:"name", width: 30},
-                { name: "provinceC", title: "省", type: "text", width: 30,align: "center" },
-                { name: "siteC", title: "期望地点", type: "text", width: 30,align: "center" },
+//                { name: "provinceC", title: "省", type: "text", width: 30,align: "center" },
+                { name: "siteC", title: "期望地点", type:"select", items: tagsData.city,valueField:"id",textField:"name", width: 30},
                 // {headerTemplate: function() {return '封面';},
                 //     itemTemplate: function(_, item) {
                 //         return '<img src="'+item.cover+'" style="height: 35px;width: 35px">';

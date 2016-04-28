@@ -97,13 +97,15 @@
                           <div class="col-md-4">
                               <input type="text" class="form-control" name="mobile" id="realMobile">
                           </div>
-                          <button class="pull-left btn btn-primary pubMan">发布</button>
+<!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
+                            <input type="button" class="pull-left btn btn-primary pubMan" value="发布"/>
                           <label for="realMobile" id="realMobile-error" class="row col-md-5 error"></label>
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">虚拟手机</label>
                           <div class="col-md-4"><input type="text" class="form-control" name="fakeMobile" id="fakeMobile"></div>
-                          <button class="pull-left btn btn-primary pubMan">发布</button>
+<!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
+                            <input type="button" class="pull-left btn btn-primary pubMan" value="发布">
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">公司</label>
