@@ -96,7 +96,7 @@ class OperaRepository extends BaseRepository
                 $content->flag = $tmp_flag;
             }
 
-        $allFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline','producer','creator','platform','pubStatus','uid');
+        $allFields = array('name','invest','categoryC','topicC1','siteC','startTimeC','periodC','runTime','outline','producer','creator','platform','pubStatus','uid');
         foreach ($allFields as $k => $val) {
             if (array_key_exists($val, $inputs)) {
                 $content->$val = e($inputs[$val]) ;
