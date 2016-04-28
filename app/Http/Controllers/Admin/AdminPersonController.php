@@ -136,4 +136,14 @@ class AdminPersonController extends BackController
         $this->person->delWork($id);
         echo 1;
     }
+    public function pubMan(PersonRequest $request){
+        $data = $request->all();
+        unset($data['_url']);
+        $data['password'] = md5(md5('123456').'fuck_salt');
+        $data['isPubed'] = 1;
+        // var_dump($data);die();
+        $return = $this->person->update($data['uid'], $data, 'article');
+        //var_dump($return);die();
+        echo 1;
+    }
 }

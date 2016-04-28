@@ -13,6 +13,7 @@ $(function() {
         tagsData.jobTopic.unshift({id:0,name:""});
         tagsData.jumuStart.unshift({id:0,name:""});
         tagsData.jumuRunTime.unshift({id:0,name:""});
+        tagsData.city.unshift({id:0,name:""});
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -33,7 +34,7 @@ $(function() {
                 },
                 insertItem: function(item) {
                     var uid= insertedId;
-                    console.log(uid)
+                    console.log(uid);
                     item._token=_token;
                     item.uid=uid;
                     item.pubStatus=0;
@@ -45,11 +46,20 @@ $(function() {
                 updateItem: function(item) {
                     console.log(item);
                     item._token=_token;
-                    return $.ajax({
+                    $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
-                        data: item
+                        data: item,
+                        async:false,
+                        success : function(data){
+                            console.log(data);
+                            if(data.name != item.name){
+                                alert('剧名已存在！');
+                            }
+                            result = data;
+                        }
                     });
+                    return result;
                 },
                 deleteItem: function(item) {
                     item._method='delete';
@@ -85,7 +95,8 @@ $(function() {
                     },
                     align: "center",width: 40,sorting: false
                 },
-                { name: "name", title: "剧名", type: "text", width: 50, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
+                { name: "name", title: "剧名", type: "text", width: 50/*, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
+                        console.log(value,item);
                         var result;
                         if (value=='') {
                             result = false;
@@ -101,11 +112,11 @@ $(function() {
                             });
                         }
                         return result;
-                    }}},
+                    }}*/},
                 { name: "invest", title: "总投资", type: "number", width: 30 },
                 { name: "categoryC", title: "类型", type: "select", width: 30, items: tagsData.jobCategory, valueField: "id", textField: "name" },
                 { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
-                { name: "site", title: "地点", type: "text", width: 30 },
+                { name: "site", title: "地点", type:"select",items: tagsData.city,valueField:"id",textField:"name", width: 30},
                 { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 30},
                 { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 30},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
@@ -143,6 +154,7 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/1',filter);
                 },
                 updateItem: function(item) {
+                    console.log(item);
                     item._token=_token;
                     return $.ajax({
                         type: "PUT",
@@ -260,6 +272,42 @@ $(function() {
                 msgBox.text('已发送！').removeClass('alert-warning').removeClass('alert-info').addClass('alert-success').show();
             });
           }
+        }
+    })
+
+    $('.pubMan').click(function(event) {
+        var self = $(this);
+        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+        var mobile = $(this).prev().find('input');
+        if(!myreg.test(mobile.val())) { 
+            alert('请输入有效的手机号码！'); 
+            mobile.select();
+            return false; 
+        }
+        
+        var uid = $('#uid').val();
+        if (uid>0) {
+            if (confirm('确定创建这个人吗？')) {
+                $.ajax({
+                    type: "post",
+                    url: personController+'/pubMan',
+                    data: {mobile:mobile.val(),uid:uid},
+                    error: function( xhr ) {
+                        alert('出错了');
+                    },
+                    /*complete: function( xhr ) {
+                        alert('发布成功\n初始密码为123456，请尽快修改。');
+                        self.prop('disabled', false);
+                    }*/
+                }).done(function(data) {
+                    if (data) {
+                        alert('发布成功\n初始密码为123456，请尽快修改。');
+                        $('.pubMan').text('已发布').prop('disabled', true);
+                    }else{
+                        alert('出错了');
+                    }
+                });
+            }
         }
     })
 });

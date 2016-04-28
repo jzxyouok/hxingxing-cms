@@ -84,7 +84,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('/opera/pubOpera/{ids}', 'Admin\AdminOperaController@pubOpera');
 	Route::get('/opera/indexData/{pubStatus}', 'Admin\AdminOperaController@indexData');
 	Route::get('/opera/tagsData', 'Admin\AdminOperaController@tagsData');
+    Route::get('/jobsWant/tagsData', 'Admin\AdminJobsWantController@tagsData');
+    Route::get('/jobsWant/indexData/{pubStatus}', 'Admin\AdminJobsWantController@indexData');
 	Route::post('/opera/pushMsg', 'Admin\AdminOperaController@pushMsg');
+	Route::post('/person/pubMan', 'Admin\AdminPersonController@pubMan');
 	Route::post('/opera/checkOpera', 'Admin\AdminOperaController@checkOpera');
 	Route::post('/article/updViewNum/{id}/{num}/{is_show}', 'Admin\AdminArticleController@updViewNum');
 	Route::post('/article/delComment/{id}/{newsId}', 'Admin\AdminArticleController@delComment');
@@ -100,6 +103,9 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 
 	# 文章
 	Route::resource('article', 'Admin\AdminArticleController');
+
+    # 招聘名片
+    Route::resource('jobsWant', 'Admin\AdminJobsWantController');
 	
 	# 单页
 	Route::resource('page', 'Admin\AdminPageController');

@@ -2,7 +2,7 @@
 
 namespace Douyasi\Repositories;
 
-use Douyasi\Models\Opera;
+use Douyasi\Models\JobsWant;
 use Douyasi\Models\Meta;
 use Douyasi\Models\Tags;
 use Douyasi\Models\Person;
@@ -12,7 +12,7 @@ use DB;
  *
  * @author raoyc<raoyc2009@gmail.com>
  */
-class OperaRepository extends BaseRepository
+class JobsWantRepository extends BaseRepository
 {
 
     /**
@@ -30,7 +30,7 @@ class OperaRepository extends BaseRepository
      * @return void
      */
     public function __construct(
-        Opera $content,
+        JobsWant $content,
         Meta $meta,
         Person $person
     )
@@ -95,20 +95,20 @@ class OperaRepository extends BaseRepository
                 }
                 $content->flag = $tmp_flag;
             }
-
-        $allFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline','producer','creator','platform','pubStatus','uid');
+        $allFields = array('nameC','categoryC','topicC1','topicC2','topicC3','salaryC','salaryUnitC','provinceC','siteC');
         foreach ($allFields as $k => $val) {
             if (array_key_exists($val, $inputs)) {
                 $content->$val = e($inputs[$val]) ;
             }
         }
-        $content->created_uid = user('id');
+        //$content->created_uid = user('id');
         /*if ($user_id) {
             $content->uid = $user_id;
         }*/
-        // var_dump($content);die();
+        //var_dump($content);die();
+        $content->updTime = round(microtime(true)*1000);
         $content->save();
-        $content = $this->model->with('contact')->findOrFail($content->id);
+        //$content = $this->model->with('contact')->findOrFail($content->id);
         return $content;
     }
 
@@ -132,29 +132,30 @@ class OperaRepository extends BaseRepository
         // var_dump($data);die();
         $query = $this->model->with(array(
                                     'contact' => function ($query) {
-                                        $query->get(['uid','isPubed', 'name','fakeMobile','mobile','company','position','otherName','otherMobile','otherCompany','remark']);
+                                        $query->get(['uid', 'name','fakeMobile','mobile','company','position','otherName','otherMobile','otherCompany','remark']);
                                     }
                                 ));
         if ($onlySelf) {
             $query->where('created_uid', user('id'));
         }
-        $searchFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline');
+        $searchFields = array('nameC','categoryC','topicC1','topicC2','topicC3','salaryC','salaryUnitC','provinceC','siteC');
         foreach ($searchFields as $k => $val) {
             if (!is_numeric($data[$val])&&trim($data[$val])!=''|| is_numeric($data[$val])&&$data[$val]>0) {
                 $query->where($val, 'like', '%'.e($data[$val]).'%');
             }
         }
-        return $query->where('pubStatus', e($data['pubStatus']))->orderBy('id', 'desc')->get()->toArray();
+        //return $query->orderBy('id', 'desc')->get()->toArray();
+        return $query/*->where('id','>','300')*/->orderBy('id', 'desc')->get()->toArray();
     }
     public function tags($data = []){
         $ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
-        ->groupBy('category')->whereIn('category', ['jobCategory','jobTopic','jumuStart','jumuRunTime'])
+        ->groupBy('category')->whereIn('category', ['jobType','jobCategory','jobTopic','jobSalary','jobSalaryUnit'])
         ->orWhere(function($query){
-            $query->whereIn('category', ['city'])
-                ->where('parentId', '<>', '0')->where('code', '<>', '0');
+                $query->whereIn('category', ['city'])
+                    ->where('parentId', '<>', '0')->where('code', '<>', '0');
         })->get()->toArray();
         // $ret = Tags::groupBy('category')->get();
-        // var_dump($ret);die();
+        //var_dump($ret);die();
         return $ret;
     }
     /**
@@ -201,14 +202,8 @@ class OperaRepository extends BaseRepository
      */
     public function update($id, $inputs, $type = 'article')
     {
-        $content = $this->model->findOrFail($id);//查表
-        if($content->name != $inputs['name']){
-            $ret = $this->checkOpera($inputs['name'],$id);
-            if(!is_null($ret)){
-                $inputs['name'] = $content->name;//如果查重了，还是修改，但是用原来值
-            }
-        }
-        return $this->saveContent($content, $inputs);
+        $content = $this->model->findOrFail($id);
+        $content = $this->saveContent($content, $inputs);
     }
 
     /**

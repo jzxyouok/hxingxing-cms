@@ -5,7 +5,7 @@ namespace Douyasi\Http\Controllers\Admin;
 use Douyasi\Http\Requests\OperaRequest;  //请求层
 use Douyasi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Douyasi\Repositories\OperaRepository;  //模型仓库层
+use Douyasi\Repositories\JobsWantRepository;  //名片仓库层
 use Douyasi\Repositories\FlagRepository;  //推荐位仓库层
 use Douyasi\Cache\DataCache;
 use Douyasi\Extensions\ChuanglanSmsApi;
@@ -17,7 +17,7 @@ use Cache;
  *
  * @author raoyc <raoyc2009@gmail.com>
  */
-class AdminOperaController extends BackController
+class AdminJobsWantController extends BackController
 {
 
 
@@ -43,19 +43,19 @@ class AdminOperaController extends BackController
     protected $flags;
 
     public function __construct(
-        OperaRepository $content,
-        FlagRepository $flag)
+        JobsWantRepository $content/*,
+        FlagRepository $flag*/)
     {
         parent::__construct();
         $this->content = $content;
-        $this->flag = $flag;
+        //$this->flag = $flag;
         if (! user('object')->can('manage_operas') &&! user('object')->can('customer_service')) {
             $this->middleware('deny403');
         }
         if (!Cache::has('flags')) {  //如果推荐位缓存不存在
             DataCache::cacheFlags();
         }
-        $this->flags = Cache::get('flags');
+        //$this->flags = Cache::get('flags');
     }
 
 
@@ -70,12 +70,13 @@ class AdminOperaController extends BackController
         if (user('object')->can('customer_service')) {
             $manageRole = true;
         }
-        return view('back.opera.index',compact('typeRole','manageRole'));
+        return view('back.jobsWant.index',compact('typeRole','manageRole'));
     }
     
     public function tagsData(Request $request)
     {
         $tags = $this->content->tags();
+        //var_dump($tags);
         $returnTags = [];
         foreach ($tags as $k => $val) {
             $category = [];
@@ -83,21 +84,23 @@ class AdminOperaController extends BackController
             $labelArr = explode(',', $val['labels']);
             foreach ($idArr as $k_c => $val_c) {
                 $label= isset($labelArr[$k_c])?$labelArr[$k_c]:'';
-                array_push($category, ['id'=>$val_c,'name'=>$labelArr[$k_c]]);
+                array_push($category, ['id'=>$val_c,'name'=>$label]);
             }
             $returnTags[$val['category']] = $category;
         }
+        //var_dump($returnTags);die;
         echo json_encode($returnTags,JSON_NUMERIC_CHECK);
     }
 
     public function indexData(Request $request,$pubStatus)
     {
         $data = [];
-        $searchFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline');
+        //var_dump('123');die;
+        $searchFields = array('nameC','categoryC','topicC1','topicC2','topicC3','salaryC','salaryUnitC','provinceC','siteC');
         foreach ($searchFields as $k => $val) {
             $data[$val] = $request->input($val);
         }
-        $data['pubStatus'] = $pubStatus;
+        //$data['pubStatus'] = $pubStatus;
         $onlySelf = false;
         if (! user('object')->can('customer_service')) {
             $onlySelf = true;
@@ -127,7 +130,7 @@ class AdminOperaController extends BackController
     public function store(OperaRequest $request)
     {
         $data = $request->all();  //获取请求过来的数据
-         //var_dump($data);die();
+         //var_dump($data);//die();
         $content = $this->content->store($data, user('id'));  //使用仓库方法存储
         if ($content->id) {  //添加成功
             echo json_encode($content,JSON_NUMERIC_CHECK);
@@ -162,8 +165,8 @@ class AdminOperaController extends BackController
     {
         //
         $data = $request->all();
-        //var_dump($data);
-        return $this->content->update($id, $data, 'article');
+        //var_dump($data);die;
+        $this->content->update($id, $data, 'article');
         // return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }
     public function pubOpera(Request $request,$ids)
