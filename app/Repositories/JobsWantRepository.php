@@ -149,8 +149,11 @@ class JobsWantRepository extends BaseRepository
     }
     public function tags($data = []){
         $ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
-        ->groupBy('category')->whereIn('category', ['jobType','jobCategory','jobTopic','jobSalary','jobSalaryUnit'/*,'jobSalary',''*/])
-           ->get()->toArray();
+        ->groupBy('category')->whereIn('category', ['jobType','jobCategory','jobTopic','jobSalary','jobSalaryUnit'])
+        ->orWhere(function($query){
+                $query->whereIn('category', ['city'])
+                    ->where('parentId', '<>', '0')->where('code', '<>', '0');
+        })->get()->toArray();
         // $ret = Tags::groupBy('category')->get();
         //var_dump($ret);die();
         return $ret;
