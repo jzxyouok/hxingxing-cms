@@ -224,34 +224,52 @@
   var checkMobileController = '{{ route("admin.person.index") }}/checkMobile';
   var manageRole = '{{$manageRole}}';
   var _token = '{{ csrf_token() }}';
-  var rowIndex,statusTable,insertedId=0;
+  var activeBtn;
   var token = '{{ csrf_token() }}';
 
     $('body').on('click','.openModal',function () {
-        $('#myModal').find('.alert').hide();
-        statusTable = $(this).attr('status-table');
-        rowIndex = $('#'+statusTable+' .jsgrid-grid-body tr:visible').index($('.jsgrid-edit-row'));
-        var commentData = $(this).data('comment');
-        console.log(commentData);
-        var artTitle = $(this).data('title');//s
-        $('#modalTitle').text(artTitle);
-        $('#uid').val(commentData.uid);
-        $('#isPubed').val(commentData.isPubed);
-        $('#contactName').val(commentData.name);
-        $('#fakeMobile').val(commentData.fakeMobile);
-        $('#realMobile').val(commentData.mobile);
-        $('#contactCompany').val(commentData.company);
-        $('#contactPosition').val(commentData.position);
-        $('#otherName').val(commentData.otherName);
-        $('#otherMobile').val(commentData.otherMobile);
-        $('#otherCompany').val(commentData.otherCompany);
-        $('#remark').val(commentData.remark);
-        if (commentData.isPubed==0) {
-          $('.pubMan').val('发布').prop('disabled', false);
+        //console.log($(this).closest('tr').attr('class'));
+        if($(this).closest('tr').hasClass('jsgrid-edit-row')){
+            activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
+            //console.log($(this).closest('tr.jsgrid-edit-row').next().attr('style'));
         }else{
-          $('.pubMan').val('已发布').prop('disabled', true);
+            activeBtn = $(this);
         }
+
+        console.log(activeBtn.attr('data-comment'));
+        //清空原有数据,编辑初始化
+        $('#modalForm').find('input[type="text"]','input[type="hidden"]').val('');
+        $('#myModal').find('.alert').hide();
+        try{
+            var commentData = JSON.parse(activeBtn.attr('data-comment'));
+            console.log(commentData);
+            var artTitle = $(this).data('title');//s
+            $('#modalTitle').text(artTitle);
+            $('#uid').val(commentData.uid);
+            $('#isPubed').val(commentData.isPubed);
+            $('#contactName').val(commentData.name);
+            $('#fakeMobile').val(commentData.fakeMobile);
+            $('#realMobile').val(commentData.mobile);
+            $('#contactCompany').val(commentData.company);
+            $('#contactPosition').val(commentData.position);
+            $('#otherName').val(commentData.otherName);
+            $('#otherMobile').val(commentData.otherMobile);
+            $('#otherCompany').val(commentData.otherCompany);
+            $('#remark').val(commentData.remark);
+            if (commentData.isPubed==0) {
+                $('.pubMan').val('发布').prop('disabled', false);
+            }else{
+                $('.pubMan').val('已发布').prop('disabled', true);
+            }
+        }catch(e) {
+
+        }
+
+
+
+
         $('#myModal').modal('show');
+        //console.log($(this).closest('tr').attr('class'));
     })
 
     $('body').on('click','.jsgrid-pager-page a',function () {
@@ -343,14 +361,12 @@
               complete: function( xhr ) {
                   self.prop('disabled', false);
               },
-          }).done(function(result) {
-              var trs = $('#'+statusTable+' .jsgrid-grid-body tr:visible');
-              if(!uid){
-                insertedId = result
-                console.log(insertedId);
-              }
-              var modalBtn = trs.eq(rowIndex).find('.openModal');
-              modalBtn.data('comment',oldContact);
+          }).done(function(result) {//联系人操作
+
+              if(!uid)  oldContact.uid = result;
+              console.log(JSON.stringify(oldContact));
+              console.log(activeBtn);
+              activeBtn.attr('data-comment',JSON.stringify(oldContact));
 
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });
