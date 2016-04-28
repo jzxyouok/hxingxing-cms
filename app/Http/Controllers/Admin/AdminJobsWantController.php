@@ -165,7 +165,7 @@ class AdminJobsWantController extends BackController
     {
         //
         $data = $request->all();
-        var_dump($data);die;
+        //var_dump($data);die;
         $this->content->update($id, $data, 'article');
         // return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }

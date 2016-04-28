@@ -110,7 +110,7 @@ $(function() {
                 { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
                 { name:"salaryC",title:"薪资",type:"select",items: tagsData.jobSalary,valueField:"id",textField:"name", width: 30},
-                { name:"topicC3",title:"薪资单位",type:"select",items: tagsData.jobSalaryUnit,valueField:"id",textField:"name", width: 30},
+                { name:"salaryUnitC",title:"薪资单位",type:"select",items: tagsData.jobSalaryUnit,valueField:"id",textField:"name", width: 30},
                 { name: "provinceC", title: "省", type: "text", width: 30,align: "center" },
                 { name: "siteC", title: "期望地点", type: "text", width: 30,align: "center" },
                 // {headerTemplate: function() {return '封面';},
