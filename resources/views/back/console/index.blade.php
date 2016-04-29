@@ -29,20 +29,28 @@
               </div>
             </div> --><!-- ./col -->
             @if($manageSystem)
-            <div id="container" style="min-width:700px;height:300px"></div>
-            <div class="col-md-12">
-              <div class="col-md-4">
-                <p>本月</p>
-                <h3>{{$monthCount}}</h3>
-              </div>
-              <div class="col-md-4">
-                <p>本周</p>
-                <h3>{{$weekCount}}</h3>
-              </div>
-              <div class="col-md-4"></div>
-            </div>
+              <div id="container" style="min-width:700px;height:300px"></div>
+              <nav>
+                <ul class="pager">
+                  <li class="previous"><a href="{{ route('admin.console.index') }}?month={{$month-1}}"><span aria-hidden="true">&larr;</span> 上个月</a></li>
+                  @if($month<$curMonth)
+                  <li class="next"><a href="{{ route('admin.console.index') }}?month={{$month+1}}">下个月 <span aria-hidden="true">&rarr;</span></a></li>
+                  @endif
+                </ul>
+              </nav>
+              <!-- <div class="col-md-12">
+                <div class="col-md-4">
+                  本月
+                  <b>{{$monthCount}}</b>
+                </div>
+                <div class="col-md-4">
+                  本周
+                  <b>{{$weekCount}}</b>
+                </div>
+                <div class="col-md-4"></div>
+              </div> -->
             @else
-            <h3 class="text-center">欢迎!</h3>
+              <h3 class="text-center">欢迎!</h3>
             @endif
             <!-- <div class="col-lg-3 col-xs-6">
               small box
@@ -86,7 +94,7 @@ for(i = 1; i < 31; i += 1){
 $(function () {
     $('#container').highcharts({
         title: {
-            text: '本月文章统计',
+            text: '{{$month}}月@if($month==$curMonth)(本月)@endif文章统计',
             x: -20 //center
         },
         xAxis: {

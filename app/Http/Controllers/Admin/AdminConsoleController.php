@@ -18,17 +18,26 @@ class AdminConsoleController extends BackController
      *
      * @return Response
      */
-    public function getIndex()
+    public function getIndex(Request $request)
     {	
         $manageSystem = false;
         if (user('object')->can('manage_system')) {
             $manageSystem = true;
         }
+
         // $mondayTimestamp = mktime(0, 0, 0, date("n"), date("j") - date("N") + 1);
+        $curMonth = date("n");
         $mondayDate = date("j") - date("N") + 1;
-        $monthBegin = date('Y-m-01', strtotime(date("Y-m-d")));
+
+        $_data = $request->all();
+        if (!isset($_data['month'])) {
+            $_data['month'] = $curMonth;
+        }
+        $month = $_data['month'];
+        // var_dump($month);
+        $monthDate = date('Y-m-d',strtotime($_data['month']-$curMonth.' months'));
+        $monthBegin = date('Y-m-01', strtotime($monthDate));
         $monthEnd   = date('Y-m-d', strtotime("$monthBegin +1 month -1 day"));
-        // var_dump($mondayDate,$monthBegin,$monthEnd);
         
         $articles = DB::table('contents')->join('users', 'users.id', '=', 'contents.user_id')->select(['contents.id','contents.user_id','contents.created_at','users.realname'])->where('contents.created_at','>',$monthBegin)->where('contents.created_at','<',$monthEnd)->get();
         // var_dump($articles);
@@ -58,6 +67,6 @@ class AdminConsoleController extends BackController
         }
         // var_dump($dataFinal);die();
         $dataFinal = json_encode($dataFinal,JSON_UNESCAPED_UNICODE);
-    	return view('back.console.index', compact('dataFinal','monthCount','weekCount','manageSystem'));
+    	return view('back.console.index', compact('dataFinal','monthCount','weekCount','manageSystem','month','curMonth'));
     }
 }
