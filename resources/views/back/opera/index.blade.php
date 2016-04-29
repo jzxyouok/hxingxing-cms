@@ -201,6 +201,95 @@
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->
 </div><!-- /.modal -->
+
+
+<!-- 另一个弹框 模态框（Modal） -->
+<div class="modal fade" id="otherModal" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close"
+                        data-dismiss="modal" aria-hidden="true">
+                    &times;
+                </button>
+                <h4 class="modal-title text-center row" id="myModalLabel">
+                    <span id="modalTitle"></span>
+                </h4>
+            </div>
+            <div class="modal-body">
+                <form action="" class="form-horizontal" id="modalForm">
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 发布职位</h3>
+                            <input type="button" class="pull-right btn btn-primary" id="" value="提交更改">
+                            <input type="button" class="pull-right btn btn-primary" id="" value="&nbsp;+&nbsp;" style="margin-right:5px;">
+                            <div class="pull-right alert alert-success">操作成功！</div>
+                            <div class="clearfix"></div>
+                        </div>
+
+                        <div class="panel-group" id="accordion">
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseOne">
+                                            点击折叠
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseOne" class="panel-collapse collapse in">
+                                    <div class="panel-body">
+                                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+                                        vice lomo.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseTwo">
+                                            点击折叠
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseTwo" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+                                        vice lomo.
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="panel panel-default">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapseThree">
+                                            点击折叠
+                                        </a>
+                                    </h4>
+                                </div>
+                                <div id="collapseThree" class="panel-collapse collapse">
+                                    <div class="panel-body">
+                                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson
+                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
+                                        vice lomo.
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </form>
+
+
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+</div><!-- /.modal -->
 @stop
 
 @section('extraPlugin')
@@ -242,7 +331,7 @@
         $('#myModal').find('.alert').hide();
         try{
             var commentData = JSON.parse(activeBtn.attr('data-comment'));
-            console.log(commentData);
+            //console.log(commentData);
             var artTitle = $(this).data('title');//s
             $('#modalTitle').text(artTitle);
             $('#uid').val(commentData.uid);
@@ -265,11 +354,49 @@
 
         }
 
-
-
-
         $('#myModal').modal('show');
         //console.log($(this).closest('tr').attr('class'));
+    })
+
+    $('body').on('click','.openOtherModal',function () {
+        //console.log($(this).closest('tr').attr('class'));
+//        if($(this).closest('tr').hasClass('jsgrid-edit-row')){
+//            activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
+//            //console.log($(this).closest('tr.jsgrid-edit-row').next().attr('style'));
+//        }else{
+//            activeBtn = $(this);
+//        }
+//
+//        console.log(activeBtn.attr('data-comment'));
+//        //清空原有数据,编辑初始化
+//        $('#modalForm').find('input[type="text"]','input[type="hidden"]').val('');
+//        $('#myModal').find('.alert').hide();
+//        try{
+//            var commentData = JSON.parse(activeBtn.attr('data-comment'));
+//            console.log(commentData);
+//            var artTitle = $(this).data('title');//s
+//            $('#modalTitle').text(artTitle);
+//            $('#uid').val(commentData.uid);
+//            $('#isPubed').val(commentData.isPubed);
+//            $('#contactName').val(commentData.name);
+//            $('#fakeMobile').val(commentData.fakeMobile);
+//            $('#realMobile').val(commentData.mobile);
+//            $('#contactCompany').val(commentData.company);
+//            $('#contactPosition').val(commentData.position);
+//            $('#otherName').val(commentData.otherName);
+//            $('#otherMobile').val(commentData.otherMobile);
+//            $('#otherCompany').val(commentData.otherCompany);
+//            $('#remark').val(commentData.remark);
+//            if (commentData.isPubed==0) {
+//                $('.pubMan').val('发布').prop('disabled', false);
+//            }else{
+//                $('.pubMan').val('已发布').prop('disabled', true);
+//            }
+//        }catch(e) {
+//
+//        }
+
+        $('#otherModal').modal('show');
     })
 
     $('body').on('click','.jsgrid-pager-page a',function () {
@@ -338,7 +465,7 @@
           var item = modalForm.serialize();
           var oldContact= modalForm.serializeObject();
           var uid= $('#uid').val();
-          console.log(uid);
+          //console.log(uid);
 
           item._token=_token;
           if (uid>0) {
@@ -364,8 +491,8 @@
           }).done(function(result) {//联系人操作
 
               if(!uid)  oldContact.uid = result;
-              console.log(JSON.stringify(oldContact));
-              console.log(activeBtn);
+              //console.log(JSON.stringify(oldContact));
+              //console.log(activeBtn);
               activeBtn.attr('data-comment',JSON.stringify(oldContact));
 
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
