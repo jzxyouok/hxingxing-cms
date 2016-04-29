@@ -28,6 +28,7 @@
                 <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div> --><!-- ./col -->
+            @if($manageSystem)
             <div id="container" style="min-width:700px;height:300px"></div>
             <div class="col-md-12">
               <div class="col-md-4">
@@ -40,6 +41,9 @@
               </div>
               <div class="col-md-4"></div>
             </div>
+            @else
+            <h3 class="text-center">欢迎!</h3>
+            @endif
             <!-- <div class="col-lg-3 col-xs-6">
               small box
               <div class="small-box bg-yellow">
@@ -74,6 +78,7 @@
 @stop
 
 @section('filledScript')
+@if($manageSystem)
 dates = []
 for(i = 1; i < 31; i += 1){
             dates.push(i);
@@ -112,5 +117,5 @@ $(function () {
         series: JSON.parse('{{$dataFinal}}'.replace(/&quot;/g, '"'))
     });
 });
-        
+@endif
 @stop
