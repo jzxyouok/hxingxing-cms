@@ -314,7 +314,6 @@
   var manageRole = '{{$manageRole}}';
   var _token = '{{ csrf_token() }}';
   var activeBtn;
-  var token = '{{ csrf_token() }}';
 
     $('body').on('click','.openModal',function () {
         //console.log($(this).closest('tr').attr('class'));
@@ -491,8 +490,8 @@
           }).done(function(result) {//联系人操作
 
               if(!uid)  oldContact.uid = result;
-              //console.log(JSON.stringify(oldContact));
-              //console.log(activeBtn);
+              console.log(JSON.stringify(oldContact));
+              console.log(activeBtn.closest('tr').attr('class'));
               activeBtn.attr('data-comment',JSON.stringify(oldContact));
 
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();

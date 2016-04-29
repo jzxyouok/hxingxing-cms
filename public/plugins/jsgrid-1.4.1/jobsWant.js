@@ -35,18 +35,23 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
-                    var uid= insertedId;
-                    console.log(uid);
+                    if(activeBtn){
+                        var data = JSON.parse(activeBtn.attr('data-comment'));
+                        console.log(data);
+                    }
                     item._token=_token;
-                    item.uid=uid;
-                    item.pubStatus=0;
+                    item.uid= data ? data.uid:0;
                     $.post(operaController,item,function(result){
-                        return result;
+                        return item;
                     });
                 },
                 updateItem: function(item) {
-                    console.log(item);
+                    if(activeBtn){
+                        data = JSON.parse(activeBtn.attr('data-comment'));
+                        console.log(data);
+                    }
                     item._token=_token;
+                    item.uid= data ? data.uid:0;
                     return $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
