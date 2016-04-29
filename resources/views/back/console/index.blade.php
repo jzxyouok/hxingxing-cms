@@ -110,6 +110,14 @@ $(function () {
                 color: '#808080'
             }]
         },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
         credits: {
            enabled: false
         },
