@@ -33,10 +33,10 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
-                    var uid= insertedId;
-                    console.log(uid);
+                    data = JSON.parse(activeBtn.attr('data-comment'));
+                    console.log(data);
                     item._token=_token;
-                    item.uid=uid;
+                    item.uid= data.uid;
                     item.pubStatus=0;
                     $.post(operaController,item,function(result){
                         return result;
@@ -44,8 +44,11 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
-                    console.log(item);
+                    data = JSON.parse(activeBtn.attr('data-comment'));
+                    console.log(data);
                     item._token=_token;
+                    item.uid= data.uid;
+
                     $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
@@ -129,6 +132,15 @@ $(function() {
                 //         return '<img src="'+item.cover+'" style="height: 35px;width: 35px">';
                 //     },width: 40,sorting: false,
                 // },
+                {headerTemplate: function() {return '职位发布';},
+                    insertTemplate: function() {
+                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openOtherModal" >新增<i class="icon fa fa-edit"></i></a>';
+                    },
+                    itemTemplate: function(_, item) {
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openOtherModal" >修改<i class="icon fa fa-edit"></i></a>';
+                    },
+                    align: "center",width: 40,sorting: false
+                },
                 { type: "control", editButton: false,deleteButton:manageRole }
             ],
             onDataLoaded: function(args) {
