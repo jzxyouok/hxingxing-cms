@@ -41,17 +41,25 @@ $(function() {
                     }
                     item._token=_token;
                     item.uid= data ? data.uid:0;
+                    console.log(item);
+                    var name = data? data.name:'';
+                    var cotact = {name:name};
+                    item.contact = cotact ;///*****跑错
+                    item.pubStatus=0;
+                    //console.log(item);
                     $.post(operaController,item,function(result){
-                        return item;
+                        //console.log(result);
+                        return result;
                     });
                 },
                 updateItem: function(item) {
                     if(activeBtn){
-                        data = JSON.parse(activeBtn.attr('data-comment'));
+                        var data = JSON.parse(activeBtn.attr('data-comment'));
                         console.log(data);
                     }
                     item._token=_token;
                     item.uid= data ? data.uid:0;
+                    item.pubStatus=0;
                     return $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,

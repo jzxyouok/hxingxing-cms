@@ -44,6 +44,7 @@ $(function() {
                     var cotact = {name:name};
                     item.contact = cotact ;///*****跑错
                     item.pubStatus=0;
+                    console.log(item);
                     $.post(operaController,item,function(result){
                         return item;
                     });
