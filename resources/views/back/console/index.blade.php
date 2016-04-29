@@ -88,7 +88,7 @@
 @section('filledScript')
 @if($manageSystem)
 dates = []
-for(i = 1; i < 31; i += 1){
+for(i = 1; i < {{$monthEnd}}; i += 1){
             dates.push(i);
     }
 $(function () {
@@ -112,7 +112,7 @@ $(function () {
         },
         credits: {
            enabled: false
-    },
+        },
         tooltip: {
             valueSuffix: '篇'
         },

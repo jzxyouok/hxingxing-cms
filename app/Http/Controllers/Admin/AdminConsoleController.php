@@ -67,6 +67,6 @@ class AdminConsoleController extends BackController
         }
         // var_dump($dataFinal);die();
         $dataFinal = json_encode($dataFinal,JSON_UNESCAPED_UNICODE);
-    	return view('back.console.index', compact('dataFinal','monthCount','weekCount','manageSystem','month','curMonth'));
+    	return view('back.console.index', compact('dataFinal','monthCount','weekCount','manageSystem','month','curMonth','monthEnd'));
     }
 }
