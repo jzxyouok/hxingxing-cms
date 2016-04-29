@@ -31,7 +31,7 @@ class AdminJobsController extends BackController
         parent::__construct();
         $this->jobs = $jobs;
 
-        if (! user('object')->can('manage_users')) {
+        if (! user('object')->can('type_in')) {
             $this->middleware('deny403');
         }
     }
