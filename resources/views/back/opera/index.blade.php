@@ -221,10 +221,9 @@
                 <form action="" class="form-horizontal" id="modalForm">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 联系人资料</h3>
-                            <button type="submit" class="pull-right btn btn-primary" id="commitModal">
-                                提交更改
-                            </button>
+                            <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 发布职位</h3>
+                            <input type="button" class="pull-right btn btn-primary" id="" value="提交更改">
+                            <input type="button" class="pull-right btn btn-primary" id="" value="&nbsp;+&nbsp;" style="margin-right:5px;">
                             <div class="pull-right alert alert-success">操作成功！</div>
                             <div class="clearfix"></div>
                         </div>
@@ -235,7 +234,7 @@
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion"
                                            href="#collapseOne">
-                                            点击我进行展开，再次点击我进行折叠。第 1 部分
+                                            点击折叠
                                         </a>
                                     </h4>
                                 </div>
@@ -252,7 +251,7 @@
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion"
                                            href="#collapseTwo">
-                                            点击我进行展开，再次点击我进行折叠。第 2 部分
+                                            点击折叠
                                         </a>
                                     </h4>
                                 </div>
@@ -269,7 +268,7 @@
                                     <h4 class="panel-title">
                                         <a data-toggle="collapse" data-parent="#accordion"
                                            href="#collapseThree">
-                                            点击我进行展开，再次点击我进行折叠。第 3 部分
+                                            点击折叠
                                         </a>
                                     </h4>
                                 </div>
