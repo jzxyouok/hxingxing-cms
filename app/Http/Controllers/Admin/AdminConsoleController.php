@@ -20,6 +20,10 @@ class AdminConsoleController extends BackController
      */
     public function getIndex()
     {	
+        $manageSystem = false;
+        if (user('object')->can('manage_system')) {
+            $manageSystem = true;
+        }
         // $mondayTimestamp = mktime(0, 0, 0, date("n"), date("j") - date("N") + 1);
         $mondayDate = date("j") - date("N") + 1;
         $monthBegin = date('Y-m-01', strtotime(date("Y-m-d")));
@@ -54,6 +58,6 @@ class AdminConsoleController extends BackController
         }
         // var_dump($dataFinal);die();
         $dataFinal = json_encode($dataFinal,JSON_UNESCAPED_UNICODE);
-    	return view('back.console.index', compact('dataFinal','monthCount','weekCount'));
+    	return view('back.console.index', compact('dataFinal','monthCount','weekCount','manageSystem'));
     }
 }
