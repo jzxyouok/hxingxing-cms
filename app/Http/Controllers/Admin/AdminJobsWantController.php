@@ -49,7 +49,7 @@ class AdminJobsWantController extends BackController
         parent::__construct();
         $this->content = $content;
         //$this->flag = $flag;
-        if (! user('object')->can('manage_operas') &&! user('object')->can('customer_service')) {
+        if (! user('object')->can('type_in') &&! user('object')->can('customer_service')) {
             $this->middleware('deny403');
         }
         if (!Cache::has('flags')) {  //如果推荐位缓存不存在

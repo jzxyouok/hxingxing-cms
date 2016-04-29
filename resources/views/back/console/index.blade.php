@@ -28,19 +28,30 @@
                 <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
               </div>
             </div> --><!-- ./col -->
-            <div class="col-lg-3 col-xs-6">
-              <!-- small box -->
-              <div class="small-box bg-green">
-                <div class="inner">
-                  <h3>{{$articles}}<sup style="font-size: 20px">篇</sup></h3>
-                  <p>本周新增内容(文章)</p>
+            @if($manageSystem)
+              <div id="container" style="min-width:700px;height:300px"></div>
+              <nav>
+                <ul class="pager">
+                  <li class="previous"><a href="{{ route('admin.console.index') }}?month={{$month-1}}"><span aria-hidden="true">&larr;</span> 上个月</a></li>
+                  @if($month<$curMonth)
+                  <li class="next"><a href="{{ route('admin.console.index') }}?month={{$month+1}}">下个月 <span aria-hidden="true">&rarr;</span></a></li>
+                  @endif
+                </ul>
+              </nav>
+              <!-- <div class="col-md-12">
+                <div class="col-md-4">
+                  本月
+                  <b>{{$monthCount}}</b>
                 </div>
-                <div class="icon">
-                  <i class="ion ion-document"></i>
+                <div class="col-md-4">
+                  本周
+                  <b>{{$weekCount}}</b>
                 </div>
-                <a href="{{ route('admin.article.index') }}" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div><!-- ./col -->
+                <div class="col-md-4"></div>
+              </div> -->
+            @else
+              <h3 class="text-center">欢迎!</h3>
+            @endif
             <!-- <div class="col-lg-3 col-xs-6">
               small box
               <div class="small-box bg-yellow">
@@ -68,4 +79,59 @@
               </div>
             </div> --><!-- ./col -->
           </div><!-- /.row -->
+@stop
+
+@section('extraPlugin')
+<script src="{{ asset('static/js/highcharts.js') }}" type="text/javascript"></script>
+@stop
+
+@section('filledScript')
+@if($manageSystem)
+dates = []
+for(i = 1; i < {{$monthEnd}}; i += 1){
+            dates.push(i);
+    }
+$(function () {
+    $('#container').highcharts({
+        title: {
+            text: '{{$month}}月@if($month==$curMonth)(本月)@endif文章统计',
+            x: -20 //center
+        },
+        xAxis: {
+            categories: dates
+        },
+        yAxis: {
+        title: {
+                text: ''
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        plotOptions: {
+            line: {
+                dataLabels: {
+                    enabled: true
+                },
+                enableMouseTracking: false
+            }
+        },
+        credits: {
+           enabled: false
+        },
+        tooltip: {
+            valueSuffix: '篇'
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: JSON.parse('{{$dataFinal}}'.replace(/&quot;/g, '"'))
+    });
+});
+@endif
 @stop

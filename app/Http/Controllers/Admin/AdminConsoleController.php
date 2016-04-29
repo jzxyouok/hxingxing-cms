@@ -18,10 +18,55 @@ class AdminConsoleController extends BackController
      *
      * @return Response
      */
-    public function getIndex()
+    public function getIndex(Request $request)
     {	
-        $mondayTimestamp = mktime(0, 0, 0, date("n"), date("j") - date("N") + 1);
-    	$articles = DB::table('contents')->where('created_at','>',date('Y-m-d H:i:s',$mondayTimestamp))->where('type', 'article')->count();
-    	return view('back.console.index', compact('articles', 'articles'));
+        $manageSystem = false;
+        if (user('object')->can('manage_system')) {
+            $manageSystem = true;
+        }
+
+        // $mondayTimestamp = mktime(0, 0, 0, date("n"), date("j") - date("N") + 1);
+        $curMonth = date("n");
+        $mondayDate = date("j") - date("N") + 1;
+
+        $_data = $request->all();
+        if (!isset($_data['month'])) {
+            $_data['month'] = $curMonth;
+        }
+        $month = $_data['month'];
+        // var_dump($month);
+        $monthDate = date('Y-m-d',strtotime($_data['month']-$curMonth.' months'));
+        $monthBegin = date('Y-m-01', strtotime($monthDate));
+        $monthEnd   = date('Y-m-d', strtotime("$monthBegin +1 month -1 day"));
+        
+        $articles = DB::table('contents')->join('users', 'users.id', '=', 'contents.user_id')->select(['contents.id','contents.user_id','contents.created_at','users.realname'])->where('contents.created_at','>',$monthBegin)->where('contents.created_at','<',$monthEnd)->get();
+        // var_dump($articles);
+
+        $userData = $userFinal = $dataFinal = $weekArticle = [];
+        $weekCount = 0;
+        $monthCount = count($articles);
+        foreach ($articles as $key => $value) {
+            $date = substr($value->created_at,8,2);
+            if ($date>$mondayDate&&$date<$mondayDate+7) {
+                $weekCount ++;
+            }
+            $userData[$value->realname][$date][] = 1;
+        }
+        // var_dump($userData);die();
+        for ($i=1; $i <substr($monthEnd,8,2)+1 ; $i++) {
+            foreach ($userData as $key => $value) {
+                if (isset($value[$i])) {
+                    $userFinal[$key][] =count($value[$i]);
+                }else{
+                    $userFinal[$key][] = 0;
+                }
+            }
+        }
+        foreach ($userFinal as $key => $value) {
+            $dataFinal[] = ['name' => $key,'data' => $value];
+        }
+        // var_dump($dataFinal);die();
+        $dataFinal = json_encode($dataFinal,JSON_UNESCAPED_UNICODE);
+    	return view('back.console.index', compact('dataFinal','monthCount','weekCount','manageSystem','month','curMonth','monthEnd'));
     }
 }
