@@ -33,33 +33,41 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
-                    data = JSON.parse(activeBtn.attr('data-comment'));
-                    console.log(data);
+                    if(activeBtn){
+                        var data = JSON.parse(activeBtn.attr('data-comment'));
+                        console.log(data);
+                    }
                     item._token=_token;
-                    item.uid= data.uid;
+                    item.uid= data ? data.uid:0;
+                    console.log(item);
+                    var name = data? data.name:'';
+                    var cotact = {name:name};
+                    item.contact = cotact ;///*****跑错
                     item.pubStatus=0;
+                    console.log(item);
                     $.post(operaController,item,function(result){
-                        return result;
-
+                        return item;
                     });
                 },
                 updateItem: function(item) {
-                    data = JSON.parse(activeBtn.attr('data-comment'));
-                    console.log(data);
+                    if(activeBtn){
+                        var data = JSON.parse(activeBtn.attr('data-comment'));
+                        console.log(data);
+                    }
                     item._token=_token;
-                    item.uid= data.uid;
-
+                    item.uid= data ? data.uid:0;
+                    item.pubStatus=0;
                     $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
                         data: item,
                         async:false,
-                        success : function(data){
-                            console.log(data);
-                            if(data.name != item.name){
+                        success : function(data1){
+                            console.log(data1);
+                            if(data1.name != item.name){
                                 alert('剧名已存在！');
                             }
-                            result = data;
+                            result = data1;
                         }
                     });
                     return result;
@@ -90,8 +98,10 @@ $(function() {
                     align: "center",width: 30,sorting: false
                 },
                 {headerTemplate: function() {return '联系人';},
-                    insertTemplate: function() {
+                    insertTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
+                        //return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
+
                     },
                     itemTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
