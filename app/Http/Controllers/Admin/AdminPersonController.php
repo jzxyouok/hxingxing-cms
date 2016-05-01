@@ -49,10 +49,12 @@ class AdminPersonController extends BackController
             'name' => $request->input('s_name'),
             'mobile' => $request->input('s_phone'),
         ];
-        $persons = $this->person->index($data, 'manager', Cache::get('page_size', '10'));
-        //var_dump($persons);die;
+        $tab = isset($_GET['tab']) ? (is_numeric($_GET['tab']) ? $_GET['tab']: 0 ) :0;
+        $unpub = $this->person->index($data, 0, Cache::get('page_size', '10'));
+        $pubed = $this->person->index($data, 1, Cache::get('page_size', '10'));
+        // var_dump($persons);die;
         $serverUrl = 'http://112.74.86.237:8080/img/';
-        return view('back.person.index', compact('persons','serverUrl'));
+        return view('back.person.index', compact('unpub','pubed','serverUrl','tab'));
     }
 
     /**

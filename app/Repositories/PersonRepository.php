@@ -114,7 +114,7 @@ class PersonRepository extends BaseRepository
      * @param  boolean $show_all 是否显示所有客户（不限定专属客服）
      * @return Illuminate\Support\Collection
      */
-    public function index( $data = [], $type = 'manager', $size = '10', $show_all = false)
+    public function index( $data = [], $isPubed = 0, $size = '10', $show_all = false)
     {
         if (!ctype_digit($size)) {
             $size = '10';
@@ -123,6 +123,7 @@ class PersonRepository extends BaseRepository
         $users = $this->model->customer()->with('works')
                             ->where('name', 'like', '%'.e($data['name']).'%')
                             ->where('mobile', 'like', '%'.e($data['mobile']).'%')
+                            ->where('isPubed','=',$isPubed)
                             ->orderBy('uid', 'desc')
                             // ->get()->toArray();
                             ->paginate($size);
