@@ -206,17 +206,41 @@ class AdminOperaController extends BackController
             var_dump($users);die();
         }
     }
+
     public function hxPush($mobile,$content='',$uid){
         // var_dump($data);die();
         $h=$this->newEasemob();
-        $ext['a']="a";
-        $ext['b']="b";
+
+        $simpleCard = ['uname' => '红猩猩','msgType' => 'likeMe','time' => time(),'unread' => true,'avatar' => 'http://112.74.86.237:8081/logo.ico'];
         // $uids = ['73y'];
         $uids[] = $uid.'y';
         $uids[] = $uid.'z';
-        $result = $h->sendText('admin','users',$uids,$content,$ext);
-        // var_dump($result);
-        return $result['data'][$uid.'y']=='success'&&$result['data'][$uid.'z']=='success'?1:0;
+        $result = $h->sendText('admin','users',$uids,$content,['data' =>(object)$simpleCard]);
+
+        $return = [];
+        $ql='select+*+where+timestamp>1435536480000+from="admin"+and+to="'.$uid.'y"+or+to="'.$uid.'z"+limit=10+cursor=**';
+        // $cursor=$h->readCursor("chatfile.txt");
+        $history = $h->getChatRecord($ql);
+        // var_dump($history);
+        foreach ($history['entities'] as $k => $val) {
+            $return[date('m-d H:i',round($val['timestamp']/1000))] = $val['payload']['bodies'][0]['msg'];
+        }
+        // var_dump($return);die();
+        return $result['data'][$uid.'y']=='success'&&$result['data'][$uid.'z']=='success'?json_encode($return,JSON_UNESCAPED_UNICODE):0;
+    }
+    public function hxChatHistory($uid,$page){
+        // var_dump($data);die();
+        $h=$this->newEasemob();
+
+        $return = [];
+        $ql='select+*+where+timestamp>1435536480000+from="admin"+and+to="'.$uid.'y"+or+to="'.$uid.'z"+limit=10+cursor=**';
+        // $cursor=$h->readCursor("chatfile.txt");
+        $history = $h->getChatRecord($ql);
+        // var_dump($history);
+        foreach ($history['entities'] as $k => $val) {
+            $return[date('m-d H:i',round($val['timestamp']/1000))] = $val['payload']['bodies'][0]['msg'];
+        }
+        return $return;
     }
     private function newChuanglan(){
         $config = [
