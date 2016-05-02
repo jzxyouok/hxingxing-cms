@@ -221,8 +221,15 @@
                           <label for="" class="col-md-2 control-label">内容</label>
                           <div class="col-md-10">
                             <select class="form-control" id="msgTpl">
-                               <option value="哈喽">哈喽</option>
-                               <option value="喂">喂</option>
+                               <option value="">请选择模板</option>
+                               <option value="欢迎体验【红猩猩】，在这里可以找到它">欢迎体验【红猩猩】，在这里可以找到它</option>
+                               <option value="欢迎使用【红猩猩】APP，这是个影视人才资源平台。您的账号是：XXX（读取的真实手机号），密码是：123456,。请尽快登录修改密码。">欢迎使用【红猩猩】APP，这是个影视人才资源平台。您的账号是：XXX（读取的真实手机号），密码是：123456,。请尽快登录修改密码。</option>
+                               <option value="欢迎使用【红猩猩】APP，这是个影视人才资源平台。您的账号是：XXX（读取的虚拟手机号），密码是：123456,。请尽快登录，绑定为您自己的手机号，并修改密码。">欢迎使用【红猩猩】APP，这是个影视人才资源平台。您的账号是：XXX（读取的虚拟手机号），密码是：123456,。请尽快登录，绑定为您自己的手机号，并修改密码。</option>
+                               <option value="嘿！你知道吗？又有一批新的剧组和演职人员在红猩猩里面沟通了，去看看嘛。">嘿！你知道吗？又有一批新的剧组和演职人员在红猩猩里面沟通了，去看看嘛。</option>
+                               <option value="达令，你好久没来看人家了。">达令，你好久没来看人家了。</option>
+                               <option value="你真的真的，不要人家了吗？T-T 
+">你真的真的，不要人家了吗？T-T 
+</option>
                             </select>
                             <textarea class="form-control" rows="2" placeholder="嗨" id="msgInput">【红色咖啡】大人，周星驰发布了女主（求职意向岗位）微简历，他（她）是你的艺中人吗？</textarea>
                           </div>
@@ -272,6 +279,9 @@
     var token = '{{ csrf_token() }}';
     var rowIndex;
     
+    $('#msgTpl').change(function () {
+      $('#msgInput').val('')
+    })
     $('.openPush').click(function () {
       rowIndex = $('table tr').index($(this).closest('tr'));
       var uid = $(this).data('uid');
