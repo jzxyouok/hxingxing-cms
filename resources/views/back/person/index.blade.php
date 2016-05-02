@@ -308,7 +308,7 @@
           statusTable = self.attr('status-table');
           uid = $('#uid').val();
           content = $('#msgTpl').val()+$('#msgInput').val() + $('#msgInput').val();
-          console.log({pushType:pushType,uid:uid,mobile:mobile.val(),content:'123'})
+          <!-- console.log({pushType:pushType,uid:uid,mobile:mobile.val(),content:'123'}) -->
           if (uid>0) {
             $.ajax({
                 type: "post",
@@ -328,7 +328,7 @@
                 msgBox.text('已发送！').removeClass('label-warning').removeClass('label-info').addClass('label-success').show();
                 if(pushType=='hx'){
                   var history = JSON.parse(data);
-                  console.log(history)
+                  <!-- console.log(history) -->
 
                   var commentHtml = '';
                   for (var key in history) {
@@ -337,7 +337,7 @@
                     }
                   }
 
-                  console.log(commentHtml)
+                  <!-- console.log(commentHtml) -->
                   $('#hxHistory').html(commentHtml)
                 }
             });
