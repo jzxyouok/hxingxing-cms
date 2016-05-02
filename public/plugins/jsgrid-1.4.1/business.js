@@ -262,47 +262,6 @@ $(function() {
         });
     };
 
-    $('#pushBtn').click(function(event) {
-        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-        var mobileFinal = $('input[name="mobileFinal"]:checked').val();
-        mobile = $('#'+mobileFinal+'Mobile');
-        if(!myreg.test(mobile.val())) { 
-            alert('请输入有效的手机号码！'); 
-            mobile.select();
-            return false; 
-        }
-        
-        var self = $(this);
-        var msgBox = self.next();
-        if (confirm('确定发送吗？')) {
-          statusTable = self.attr('status-table');
-          pushType = $('input[name="pushType"]:checked').val();
-          uid = $('#uid').val();
-          // content = $('#msgTpl').val()+$('#msgInput').val();
-          content = $('#msgInput').val();
-          console.log({pushType:pushType,uid:uid,mobile:mobile.val(),content:'123'})
-          if (uid>0) {
-            $.ajax({
-                type: "post",
-                url: operaController+'/pushMsg',
-                data: {pushType:pushType,uid:uid,mobile:mobile.val(),content:content},
-                beforeSend: function( xhr ) {
-                    self.prop('disabled', true);
-                    msgBox.text('发送中...').removeClass('alert-success').removeClass('alert-warning').addClass('alert-info').show();
-                },
-                error: function( xhr ) {
-                    msgBox.text('发送失败').removeClass('alert-success').removeClass('alert-info').addClass('alert-warning').show();
-                },
-                complete: function( xhr ) {
-                    self.prop('disabled', false);
-                }
-            }).done(function(data) {
-                msgBox.text('已发送！').removeClass('alert-warning').removeClass('alert-info').addClass('alert-success').show();
-            });
-          }
-        }
-    })
-
     $('.pubMan').click(function(event) {
         //console.log('123');
         var self = $(this);
