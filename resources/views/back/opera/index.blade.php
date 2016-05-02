@@ -162,62 +162,6 @@
                  </div>
               </div>
             </form>
-            
-            @if($manageRole)
-            <div class="panel panel-default">
-              <div class="panel-heading">
-                  <h3 class="pull-left panel-title">推送</h3>
-                  <label class="checkbox-inline">
-                    <input type="radio" name="pushType" value="sms" checked> 短信
-                  </label>
-                  <label class="checkbox-inline">
-                    <input type="radio" name="pushType" value="hx">App消息
-                  </label>
-                  <button type="button" class="pull-right btn btn-info" id="pushBtn">
-                     <i class="icon fa fa-send"></i> 发送
-                  </button>
-                  <div class="pull-right alert alert-success">已发送！</div>
-                  <div class="clearfix"></div>
-               </div>
-               <div class="panel-body">
-                  <ul class="nav nav-tabs">
-                    <li class="active"><a href="#send" data-toggle="tab" aria-expanded="true">发送</a></li>
-                    <li><a href="#history" data-toggle="tab" aria-expanded="false">历史</a></li>
-                  </ul>
-
-                  <div class="tab-content">
-                      <div class="tab-pane active" id="send">
-                          <form action="" class="form-horizontal" id="pushForm">
-                            <div class="form-group">
-                                <label for="" class="col-md-2 control-label">选择手机</label>
-                                <label class="checkbox-inline">
-                                  <input type="radio" name="mobileFinal" value="real" checked> 真实手机
-                                </label>
-                                <label class="checkbox-inline">
-                                  <input type="radio" name="mobileFinal" value="fake">虚拟手机
-                                </label>
-                              </div>
-                            <!-- <div class="form-group col-md-6">
-                                <select class="form-control" id="msgTpl">
-                                   <option value="哈喽">哈喽</option>
-                                   <option value="喂">喂</option>
-                                </select>
-                            </div> -->
-                            <div class="row">
-                              <label for="" class="col-md-2 control-label">内容</label>
-                              <div class="col-md-10">
-                                <textarea class="form-control" rows="2" placeholder="嗨" id="msgInput">【红色咖啡】大人，周星驰发布了女主（求职意向岗位）微简历，他（她）是你的艺中人吗？</textarea>
-                              </div>
-                            </div>
-                          </form>
-                      </div>
-                      <div class="tab-pane" id="history">
-                        发送历史
-                      </div>
-                  </div>
-               </div>
-            </div>
-            @endif
          </div>
       </div><!-- /.modal-content -->
 </div><!-- /.modal -->
