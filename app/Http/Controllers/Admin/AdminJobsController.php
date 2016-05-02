@@ -78,6 +78,7 @@ class AdminJobsController extends BackController
     {
         //
         $data = $request->all();
+        var_dump('store');die;
         $manager = $this->person->store($data, 'manager');
         if ($manager->id) {  //添加成功
             //记录系统日志，这里并未使用事件监听来记录日志
@@ -119,6 +120,7 @@ class AdminJobsController extends BackController
     {
         //
         $data = $request->all();
+        var_dump('update');die;
         $this->user->update($id, $data, 'manager');
 
         $log = [

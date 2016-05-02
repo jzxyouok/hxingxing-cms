@@ -239,17 +239,17 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <form action="" class="form-horizontal" id="modalForm">
+                <form action="" class="form-horizontal" id="modalOtherForm">
                     <div class="panel panel-default">
                         <div class="panel-heading">
-                            <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 发布职位</h3>
-                            <input type="button" class="pull-right btn btn-primary" id="" value="提交更改">
-                            <input type="button" class="pull-right btn btn-primary" id="" value="&nbsp;+&nbsp;" style="margin-right:5px;">
+                            <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 职位</h3>
+                            <input type="button" class="pull-right btn btn-primary" id="commitOtherModal" value="提交更改">
+<!--                            <!--<input type="button" class="pull-right btn btn-primary" id="add" value="&nbsp;+&nbsp;" style="margin-right:5px;">-->
                             <div class="pull-right alert alert-success">操作成功！</div>
                             <div class="clearfix"></div>
                         </div>
 
-                        <div class="panel-group" id="accordion">
+                        <div class="panel-group" id="accordion" >
                             <div class="panel panel-default">
                                 <div class="panel-heading">
                                     <h4 class="panel-title">
@@ -257,47 +257,39 @@
                                            href="#collapseOne">
                                             点击折叠
                                         </a>
+                                        <input type="button" class="desc" value="-">
+                                        <div id="hidden2">
+                                            <input type="hidden" name="uid" id="uid">
+
+                                            <input type="hidden" name="operaId" id="operaId">
+                                        </div>
                                     </h4>
                                 </div>
                                 <div id="collapseOne" class="panel-collapse collapse in">
-                                    <div class="panel-body">
-                                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                                        vice lomo.
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">职位名 <small class="text-red">*</small></label>
+                                        <div class="col-md-5">
+                                            <input type="text" class="form-control" name="name" id="job" autocomplete="off" value="" placeholder="职位名">
+                                            <input type="hidden" name="id" value="" id="job_id">
+                                        </div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion"
-                                           href="#collapseTwo">
-                                            点击折叠
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseTwo" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                                        vice lomo.
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">薪资 <small class="text-red">*</small></label>
+                                        <div class="col-md-5"><input type="text" class="form-control" name="salary" id="salary" autocomplete="off" value="" placeholder=""></div>
                                     </div>
-                                </div>
-                            </div>
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion"
-                                           href="#collapseThree">
-                                            点击折叠
-                                        </a>
-                                    </h4>
-                                </div>
-                                <div id="collapseThree" class="panel-collapse collapse">
-                                    <div class="panel-body">
-                                        Nihil anim keffiyeh helvetica, craft beer labore wes anderson
-                                        cred nesciunt sapiente ea proident. Ad vegan excepteur butcher
-                                        vice lomo.
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">说明 <small class="text-red">*</small></label>
+                                        <div class="col-md-5"><input type="text" class="form-control" name="descrip" id="descrip" autocomplete="off" value="" placeholder=""></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">角色名 <small class="text-red">*</small></label>
+                                        <div class="col-md-5"><input type="text" class="form-control" name="role" id="role" autocomplete="off" value="" placeholder=""></div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label class="col-md-3 control-label">角色说明 <small class="text-red">*</small></label>
+                                        <div class="col-md-5"><input type="text" class="form-control" name="roleDescrip" id="roleDescrip" autocomplete="off" value="" placeholder=""></div>
                                     </div>
                                 </div>
                             </div>
@@ -333,6 +325,7 @@
   var personController = '{{ route("admin.person.index") }}';
   var checkMobileController = '{{ route("admin.person.index") }}/checkMobile';
   var searchMobileController = '{{ route("admin.person.index") }}/searchMobile';
+  var jobController = '{{ route("admin.jobs.index") }}';
   var manageRole = '{{$manageRole}}';
   var _token = '{{ csrf_token() }}';
   var activeBtn;
@@ -357,7 +350,7 @@
             console.log(commentData);
             var artTitle = $(this).data('title');//s
             $('#modalTitle').text(artTitle);
-            $('#uid').val(commentData.uid);
+            $('#myModal #uid').val(commentData.uid);
             console.log($('#uid'));
             $('#isPubed').val(commentData.isPubed);
             $('#contactName').val(commentData.name);
@@ -381,6 +374,47 @@
 
         $('#myModal').modal('show');
     })
+
+    $('body').on('click','.openOtherModal',function () {
+        if($(this).closest('tr').hasClass('jsgrid-edit-row')){
+            activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
+        }else{
+            activeBtn = $(this).closest('tr').find('.openModal');
+        }
+
+        //清空原有数据,编辑初始化
+        $('#otherModal').find('input[type="text"]','input[type="hidden"]').val('');
+        $('#otherModal').find('.alert').hide();
+        //console.log(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+        $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+
+        try{
+            console.log(activeBtn.attr('data-comment'));
+            var commentData = JSON.parse(activeBtn.attr('data-comment'));
+            console.log(commentData);
+            $('#otherModal').find('#uid').val(commentData.uid);
+            var jobData = JSON.parse(activeBtn.attr('data-job'));
+            $('#job').val(jobData.name);
+            $('#salary').val(jobData.salary);
+            $('#descrip').val(jobData.descrip);
+            $('#role').val(jobData.role);
+            $('#roleDescrip').val(jobData.roleDescrip);
+
+        }catch(e) {
+
+        }
+
+        $('#otherModal').modal('show');
+    })
+
+//    $('body').on('click','#add',function () {
+//        var html = $('OtherModal').find('.modal-body div.panel-group').html();
+//        $()
+//
+//
+//    })
+
+
 
 
 
@@ -484,6 +518,55 @@
 
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });
+        }
+    });
+
+    var modalOtherForm = $('#modalOtherForm');
+    var validator= modalOtherForm.validate({
+        onkeyup:false,
+        focusInvalid:false,
+        submitHandler: function(form) {
+            console.log('123');
+            var self = $('#commitOtherModal');
+
+            var item = modalOtherForm.serialize();
+            console.log(item);
+            var oldContact= modalOtherForm.serializeObject();
+
+            item._token=_token;
+
+            var personId = $("#modalOtherForm #job_id").val();
+            console.log(personId);
+            if (personId>0) {
+                var method = 'PUT';
+                var url = jobController+'/'+personId;
+            }else{
+                var method = 'post';
+                var url = jobController;
+            }
+            console.log(url);
+            $.ajax({
+                type: method,
+                url: url,
+                data: item,
+                beforeSend: function( xhr ) {
+                    self.prop('disabled', true);
+                },
+                error: function( xhr ) {
+                    self.next().text('操作失败').removeClass('alert-success').addClass('alert-warning').show();
+                },
+                complete: function( xhr ) {
+                    self.prop('disabled', false);
+                },
+            }).done(function(result) {//联系人操作
+
+                if(!personId)  oldContact.uid = result;
+                console.log(JSON.stringify(oldContact));
+                //console.log(activeBtn.closest('tr').attr('class'));
+                activeBtn.attr('data-job',JSON.stringify(oldContact));
+
+                self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
+            });
         }
     });
 @stop
