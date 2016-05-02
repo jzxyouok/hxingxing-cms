@@ -133,7 +133,9 @@ class OperaRepository extends BaseRepository
         $query = $this->model->with(array(
                                     'contact' => function ($query) {
                                         $query->get(['uid','isPubed', 'name','mobile','fakeName','fakeMobile','company','position','otherName','otherMobile','otherCompany','remark']);
-                                    },'jobs'));
+                                    },'jobs'=> function ($query) {
+                                        $query->get(['id','operaId', 'name','salary','descrip','role','age']);
+                                    }));
         if ($onlySelf) {
             $query->where('created_uid', user('id'));
         }
