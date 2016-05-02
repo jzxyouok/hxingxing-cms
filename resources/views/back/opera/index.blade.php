@@ -185,63 +185,50 @@
             <div class="modal-body">
                 <form action="" class="form-horizontal" id="modalOtherForm">
                     <div class="panel panel-default">
-                        <div class="panel-heading">
-                            <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 职位</h3>
-                            <input type="submit" class="pull-right btn btn-primary" id="commitOtherModal" value="提交更改">
-<!--                            <!--<input type="button" class="pull-right btn btn-primary" id="add" value="&nbsp;+&nbsp;" style="margin-right:5px;">-->
-                            <div class="pull-right alert alert-success">操作成功！</div>
-                            <div class="clearfix"></div>
-                        </div>
-
-                        <div class="panel-group" id="accordion" >
-                            <div class="panel panel-default">
-                                <div class="panel-heading">
-                                    <h4 class="panel-title">
-                                        <a data-toggle="collapse" data-parent="#accordion"
-                                           href="#collapseOne">
-                                            点击折叠
-                                        </a>
-                                        <input type="button" class="desc" value="-">
-                                        <div id="hidden2">
-                                            <input type="hidden" name="uid" id="uid">
-
-                                            <input type="hidden" name="operaId" id="operaId">
-                                        </div>
-                                    </h4>
-                                </div>
-                                <div id="collapseOne" class="panel-collapse collapse in">
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">职位名 <small class="text-red">*</small></label>
-                                        <div class="col-md-5">
-                                            <input type="text" class="form-control" name="name" id="job" autocomplete="off" value="" placeholder="职位名">
-                                            <input type="hidden" name="id" value="" id="job_id">
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">薪资 <small class="text-red">*</small></label>
-                                        <div class="col-md-5"><input type="text" class="form-control" name="salary" id="salary" autocomplete="off" value="" placeholder=""></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">说明 <small class="text-red">*</small></label>
-                                        <div class="col-md-5"><input type="text" class="form-control" name="descrip" id="descrip" autocomplete="off" value="" placeholder=""></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">角色名 <small class="text-red">*</small></label>
-                                        <div class="col-md-5"><input type="text" class="form-control" name="role" id="role" autocomplete="off" value="" placeholder=""></div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label class="col-md-3 control-label">角色说明 <small class="text-red">*</small></label>
-                                        <div class="col-md-5"><input type="text" class="form-control" name="roleDescrip" id="roleDescrip" autocomplete="off" value="" placeholder=""></div>
-                                    </div>
+                      <div class="panel-heading">
+                          <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 职位</h3>
+                          <a class="btn btn-default pull-right" data-toggle="collapse" href="#jobForm"><i class="icon fa fa-chevron-down"></i> 新增</a>
+                          <div class="pull-right alert alert-success">操作成功！</div>
+                          <div class="clearfix"></div>
+                      </div>
+                      
+                      <div id="jobForm" class="panel-collapse collapse">
+                        <div class="panel-body">
+                            <input type="hidden" name="uid" id="uid">
+                            <input type="hidden" name="operaId" id="operaId">
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">职位名 <small class="text-red">*</small></label>
+                                <div class="col-md-5">
+                                    <input type="text" class="form-control" name="name" id="job" autocomplete="off" value="" placeholder="职位名">
+                                    <input type="hidden" name="id" value="" id="job_id">
                                 </div>
                             </div>
-                        </div>
 
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">薪资 <small class="text-red">*</small></label>
+                                <div class="col-md-5"><input type="text" class="form-control" name="salary" id="salary" autocomplete="off" value="" placeholder=""></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">说明 <small class="text-red">*</small></label>
+                                <div class="col-md-5"><input type="text" class="form-control" name="descrip" id="descrip" autocomplete="off" value="" placeholder=""></div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">角色名 <small class="text-red">*</small></label>
+                                <div class="col-md-5"><input type="text" class="form-control" name="role" id="role" autocomplete="off" value="" placeholder=""></div>
+                            </div>
+
+                            <div class="form-group">
+                                <label class="col-md-3 control-label">角色说明 <small class="text-red">*</small></label>
+                                <div class="col-md-5"><input type="text" class="form-control" name="roleDescrip" id="roleDescrip" autocomplete="off" value="" placeholder=""></div>
+                            </div>
+                            <div class="row text-center">
+                              <input type="submit" class="btn btn-primary" id="commitOtherModal" value="提交更改">
+                            </div>
+                        </div>
+                      </div>
+                      <ul class="list-group"></ul>
                     </div>
                 </form>
-
 
             </div>
         </div><!-- /.modal-content -->
@@ -320,36 +307,36 @@
     })
 
     $('body').on('click','.openOtherModal',function () {
-        if($(this).closest('tr').hasClass('jsgrid-edit-row')){
-            activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
+      var closestTr = $(this).closest('tr');
+        if(closestTr.hasClass('jsgrid-edit-row')){
+            activeBtn = closestTr.find('.openOtherModal');
         }else{
-            activeBtn = $(this).closest('tr').find('.openModal');
+            activeBtn = closestTr.next().find('.openOtherModal');
         }
 
         //清空原有数据,编辑初始化
         $('#otherModal').find('input[type="text"]','input[type="hidden"]').val('');
         $('#otherModal').find('.alert').hide();
-        //console.log(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
         $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
 
+            var jobData = JSON.parse(activeBtn.attr('data-comment'));
+            console.log(jobData)
         try{
-            console.log(activeBtn.attr('data-comment'));
-            var commentData = JSON.parse(activeBtn.attr('data-comment'));
-            console.log(commentData);
-            $('#otherModal').find('#uid').val(commentData.uid);
-            var jobData = JSON.parse(activeBtn.attr('data-job'));
+            var commentHtml = '';
+            for (var i = 0; i < jobData.length; i++) {
+              commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData[i].name+'</h4>'+jobData[i].salary+' - '+jobData[i].descrip+' - '+jobData[i].role+'<p class="list-group-item-text">'+jobData[i].age+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="'+jobData[i].id+'"></i></a></li>';
+            }
+            /*$('#otherModal').find('#uid').val(jobData.uid);
             $('#job_id').val(jobData.id);
             $('#job').val(jobData.name);//job_id
             $('#salary').val(jobData.salary);
             $('#descrip').val(jobData.descrip);
             $('#role').val(jobData.role);
-            $('#roleDescrip').val(jobData.roleDescrip);
-
+            $('#roleDescrip').val(jobData.roleDescrip);*/
         }catch(e) {
 
         }
-
-        $('#otherModal').modal('show');
+        $('#otherModal').find('.modal-body .list-group').html(commentHtml!=''?commentHtml:'没有职位');
     })
 
 //    $('body').on('click','#add',function () {

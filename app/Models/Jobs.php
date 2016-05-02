@@ -2,23 +2,15 @@
 
 namespace Douyasi\Models;
 
-use Illuminate\Auth\Authenticatable;
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Auth\Passwords\CanResetPassword;
-use Illuminate\Contracts\Auth\Authenticatable as AuthenticatableContract;
-use Illuminate\Contracts\Auth\CanResetPassword as CanResetPasswordContract;
-use Zizaco\Entrust\Traits\EntrustUserTrait;
+use Eloquent;
 
 /**
  * 用户模型
  *
  * @author raoyc <raoyc2009@gmail.com>
  */
-class Jobs extends Model implements AuthenticatableContract, CanResetPasswordContract
+class Jobs extends Eloquent
 {
-    
-    use Authenticatable, CanResetPassword;
-    use EntrustUserTrait;
     
     protected $connection = 'mysql_front_tables';
     protected $table = 'jobs';
@@ -43,7 +35,7 @@ class Jobs extends Model implements AuthenticatableContract, CanResetPasswordCon
     public function opera()
     {
         //模型名 外键 本键
-        return $this->hasOne('Douyasi\Models\Opera', 'id', 'operaId');
+        return $this->belongsTo('Douyasi\Models\Opera', 'id', 'operaId');
     }
 
 }
