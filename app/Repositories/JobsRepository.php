@@ -43,17 +43,15 @@ class JobsRepository extends BaseRepository
      */
     private function saveManager($manager, $inputs)
     {
-        $manager->username = $manager->nickname = e($inputs['username']);
-        $manager->password = bcrypt(e($inputs['password']));
-        $manager->email = e($inputs['email']);
-        $manager->realname = e($inputs['realname']);
-        $manager->user_type = 'manager';  //管理型用户
-        $manager->confirmation_code = md5(uniqid(mt_rand(), true));
-        $manager->confirmed = true;  //确定用户已被验证激活
+        $manager->uid = e($inputs['uid']);
+        $manager->operaId = e($inputs['operaId']);
+        $manager->name = e($inputs['name']);
+        $manager->salary = e($inputs['salary']);
+        $manager->descrip = e($inputs['descrip']);  //管理型用户
+        $manager->role = e($inputs['role']);
+        $manager->roleDescrip = e($inputs['roleDescrip']); //确定用户已被验证激活
 
-        if ($manager->save()) {
-            $manager->roles()->attach($inputs['role']);  //附加上用户组（角色）
-        }
+        $manager->save();
 
         return $manager;
     }
@@ -68,34 +66,17 @@ class JobsRepository extends BaseRepository
      */
     private function updateManager($manager, $inputs)
     {
-        $manager->nickname = e($inputs['nickname']);
-        $manager->realname = e($inputs['realname']);
-        $manager->is_lock = e($inputs['is_lock']);
-        if ((!empty($inputs['password'])) && (!empty($inputs['password_confirmation']))) {
-            $manager->password = bcrypt(e($inputs['password']));
-        }
-        if ($manager->save()) {
+        //$manager->uid = e($inputs['uid']);
+        //$manager->operaId = e($inputs['operaId']);
+        $manager->name = e($inputs['name']);
+        $manager->salary = e($inputs['salary']);
+        $manager->descrip = e($inputs['descrip']);  //管理型用户
+        $manager->role = e($inputs['role']);
+        $manager->roleDescrip = e($inputs['roleDescrip']); //确定用户已被验证激活
 
-            //确保一个管理型用户只拥有一个角色
-            $roles = $manager->roles;
-            if ($roles->isEmpty()) {  //判断角色结果集是否为空
-                $manager->roles()->attach($inputs['role']);  //空角色，则直接同步角色
-            } else {
-                if (is_array($roles)) {
-                    //如果为对象数组，则表明该管理用户拥有多个角色
-                    //则删除多个角色，再同步新的角色
-                    $manager->detachRoles($roles);
-                    $manager->roles()->attach($inputs['role']);  //同步角色
-                } else {
-                    if ($roles->first()->id !== $inputs['role']) {
-                        $manager->detachRole($roles->first());
-                        $manager->roles()->attach($inputs['role']);  //同步角色
-                    }
-                }
-            }
-            //上面这一大段代码就是保证一个管理型用户只拥有一个角色
-            //Entrust扩展包自身是支持一个用户拥有多个角色的，但在本内容管理框架系统中，限定一个用户只能拥有一个角色
-        }
+        $manager->save();
+
+        return $manager;
     }
 
     /**

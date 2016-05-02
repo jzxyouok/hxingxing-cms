@@ -2,7 +2,7 @@
 
 namespace Douyasi\Http\Controllers\Admin;
 
-use Douyasi\Http\Requests\JobsRequest;
+//use Douyasi\Http\Requests\JobsRequest;
 use Douyasi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Douyasi\Logger\SystemLogger as SystemLogger;
@@ -31,9 +31,9 @@ class AdminJobsController extends BackController
         parent::__construct();
         $this->jobs = $jobs;
 
-        if (! user('object')->can('type_in')) {
-            $this->middleware('deny403');
-        }
+//        if (! user('object')->can('type_in')) {
+//            $this->middleware('deny403');
+//        }
     }
     
 
@@ -74,12 +74,12 @@ class AdminJobsController extends BackController
      *
      * @return Response
      */
-    public function store(PersonRequest $request)
+    public function store(Request $request)
     {
         //
         $data = $request->all();
-        var_dump('store');die;
-        $manager = $this->person->store($data, 'manager');
+        //var_dump('store');die;
+        $manager = $this->jobs->store($data, 'manager');
         if ($manager->id) {  //添加成功
             //记录系统日志，这里并未使用事件监听来记录日志
             $log = [
@@ -88,11 +88,12 @@ class AdminJobsController extends BackController
                 'content' => '管理员：成功新增一名管理用户'.$manager->username.'<'.$manager->email.'>。',
             ];
             SystemLogger::write($log);
-
-            return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
+            echo $manager->id;
+            //return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
 
         } else {
-            return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
+            echo false;
+            //return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
         }
     }
 
@@ -116,22 +117,23 @@ class AdminJobsController extends BackController
      * @param  int  $id
      * @return Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(Request $request)
     {
         //
         $data = $request->all();
-        var_dump('update');die;
-        $this->user->update($id, $data, 'manager');
+        //var_dump('update');die;
+        $this->jobs->update($data['id'], $data, 'manager');
+        echo 1;
 
-        $log = [
-            'user_id' => user('id'),
-            'url'=>route('admin.user.edit', $id),
-            'type'=>'manager',
-            'content'=>'管理员：超级管理员修改了id为'.$id.'的管理用户资料。',
-        ];
-
-        SystemLogger::write($log);
-        return redirect()->route('admin.user.index')->with('message', '修改管理员成功！');
+//        $log = [
+//            'user_id' => user('id'),
+//            'url'=>route('admin.user.edit', $data['id']),
+//            'type'=>'manager',
+//            'content'=>'管理员：超级管理员修改了id为'.$data['id'].'的管理用户资料。',
+//        ];
+//
+//        SystemLogger::write($log);
+//        return redirect()->route('admin.user.index')->with('message', '修改管理员成功！');
 
     }
 }

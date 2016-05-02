@@ -243,7 +243,7 @@
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 职位</h3>
-                            <input type="button" class="pull-right btn btn-primary" id="commitOtherModal" value="提交更改">
+                            <input type="submit" class="pull-right btn btn-primary" id="commitOtherModal" value="提交更改">
 <!--                            <!--<input type="button" class="pull-right btn btn-primary" id="add" value="&nbsp;+&nbsp;" style="margin-right:5px;">-->
                             <div class="pull-right alert alert-success">操作成功！</div>
                             <div class="clearfix"></div>
@@ -394,7 +394,8 @@
             console.log(commentData);
             $('#otherModal').find('#uid').val(commentData.uid);
             var jobData = JSON.parse(activeBtn.attr('data-job'));
-            $('#job').val(jobData.name);
+            $('#job_id').val(jobData.id);
+            $('#job').val(jobData.name);//job_id
             $('#salary').val(jobData.salary);
             $('#descrip').val(jobData.descrip);
             $('#role').val(jobData.role);
@@ -560,7 +561,7 @@
                 },
             }).done(function(result) {//联系人操作
 
-                if(!personId)  oldContact.uid = result;
+                if(!personId)  oldContact.id = result;
                 console.log(JSON.stringify(oldContact));
                 //console.log(activeBtn.closest('tr').attr('class'));
                 activeBtn.attr('data-job',JSON.stringify(oldContact));
