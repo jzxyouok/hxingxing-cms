@@ -69,7 +69,7 @@
             </h4>
          </div>
          <div class="modal-body">
-            <form action="" class="form-horizontal" id="modalForm">
+            <form action="" class="form-horizontal" id="modalForm" onkeydown="if(event.keyCode==13)return false;">
               <div class="panel panel-default">
                  <div class="panel-heading">
                     <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 联系人资料</h3>
@@ -89,23 +89,44 @@
                     <div id="myTabContent" class="tab-content">
                      <div class="tab-pane fade in active" id="main">
                         <div class="form-group">
-                          <label for="" class="col-md-2 control-label">姓名</label>
-                          <div class="col-md-10"><input type="hidden" name="uid" id="uid"><input type="hidden" id="isPubed"><input type="text" class="form-control" name="name" id="contactName"></div>
+                          <!--<label for="" class="col-md-2 control-label">姓名</label>-->
+                          <div class="col-md-10" id="hidden">
+                              <input type="hidden" name="uid" id="uid">
+
+                              <input type="hidden" name="operaId" id="operaId">
+                              <!--<input type="text" class="form-control" name="name" id="contactName">-->
+                          </div>
+                        </div>
+                         <div class="form-group">
+                             <label for="" class="col-md-2 control-label">搜索电话</label>
+                             <div class="col-md-10"><input type="text" class="form-control" name="search" id="search"></div>
+                         </div>
+                        <div class="form-group">
+                            <label for="" class="col-md-2 control-label">发布真实姓名</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="name" id="contactName">
+                            </div>
+                            <label for="" class="col-md-2 control-label">真实手机</label>
+                            <div class="col-md-3">
+                                 <input type="text" class="form-control" name="mobile" id="realMobile">
+                            </div>
+
+<!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
+                            <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="1"/>
+                            <label for="realMobile" id="realMobile-error" class="row col-md-5 error"></label>
                         </div>
                         <div class="form-group">
-                          <label for="" class="col-md-2 control-label">真实手机</label>
-                          <div class="col-md-4">
-                              <input type="text" class="form-control" name="mobile" id="realMobile">
+                            <label for="" class="col-md-2 control-label">发布虚拟姓名</label>
+                            <div class="col-md-2">
+                                <input type="text" class="form-control" name="fakeName" id="fakeName">
+                            </div>
+                          <label for="" class="col-md-2 control-label">虚拟手机</label>
+                          <div class="col-md-3">
+                              <input type="text" class="form-control" name="fakeMobile" id="fakeMobile">
                           </div>
 <!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
-                            <input type="button" class="pull-left btn btn-primary pubMan" value="发布"/>
-                          <label for="realMobile" id="realMobile-error" class="row col-md-5 error"></label>
-                        </div>
-                        <div class="form-group">
-                          <label for="" class="col-md-2 control-label">虚拟手机</label>
-                          <div class="col-md-4"><input type="text" class="form-control" name="fakeMobile" id="fakeMobile"></div>
-<!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
-                            <input type="button" class="pull-left btn btn-primary pubMan" value="发布" />
+                            <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="2"/>
+
                         </div>
                         <div class="form-group">
                           <label for="" class="col-md-2 control-label">公司</label>
@@ -311,6 +332,7 @@
   var operaController = '{{ route("admin.opera.index") }}';
   var personController = '{{ route("admin.person.index") }}';
   var checkMobileController = '{{ route("admin.person.index") }}/checkMobile';
+  var searchMobileController = '{{ route("admin.person.index") }}/searchMobile';
   var manageRole = '{{$manageRole}}';
   var _token = '{{ csrf_token() }}';
   var activeBtn;
@@ -319,25 +341,29 @@
         //console.log($(this).closest('tr').attr('class'));
         if($(this).closest('tr').hasClass('jsgrid-edit-row')){
             activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
-            //console.log($(this).closest('tr.jsgrid-edit-row').next().attr('style'));
         }else{
             activeBtn = $(this);
         }
 
-        console.log(activeBtn.attr('data-comment'));
+        //console.log(activeBtn.attr('data-comment'));
         //清空原有数据,编辑初始化
         $('#modalForm').find('input[type="text"]','input[type="hidden"]').val('');
         $('#myModal').find('.alert').hide();
+        //console.log(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+        $('#myModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
         try{
+            console.log(activeBtn.attr('data-comment'));
             var commentData = JSON.parse(activeBtn.attr('data-comment'));
-            //console.log(commentData);
+            console.log(commentData);
             var artTitle = $(this).data('title');//s
             $('#modalTitle').text(artTitle);
             $('#uid').val(commentData.uid);
+            console.log($('#uid'));
             $('#isPubed').val(commentData.isPubed);
             $('#contactName').val(commentData.name);
-            $('#fakeMobile').val(commentData.fakeMobile);
             $('#realMobile').val(commentData.mobile);
+            $('#fakeName').val(commentData.fakeName);
+            $('#fakeMobile').val(commentData.fakeMobile);
             $('#contactCompany').val(commentData.company);
             $('#contactPosition').val(commentData.position);
             $('#otherName').val(commentData.otherName);
@@ -354,49 +380,9 @@
         }
 
         $('#myModal').modal('show');
-        //console.log($(this).closest('tr').attr('class'));
     })
 
-    $('body').on('click','.openOtherModal',function () {
-        //console.log($(this).closest('tr').attr('class'));
-//        if($(this).closest('tr').hasClass('jsgrid-edit-row')){
-//            activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
-//            //console.log($(this).closest('tr.jsgrid-edit-row').next().attr('style'));
-//        }else{
-//            activeBtn = $(this);
-//        }
-//
-//        console.log(activeBtn.attr('data-comment'));
-//        //清空原有数据,编辑初始化
-//        $('#modalForm').find('input[type="text"]','input[type="hidden"]').val('');
-//        $('#myModal').find('.alert').hide();
-//        try{
-//            var commentData = JSON.parse(activeBtn.attr('data-comment'));
-//            console.log(commentData);
-//            var artTitle = $(this).data('title');//s
-//            $('#modalTitle').text(artTitle);
-//            $('#uid').val(commentData.uid);
-//            $('#isPubed').val(commentData.isPubed);
-//            $('#contactName').val(commentData.name);
-//            $('#fakeMobile').val(commentData.fakeMobile);
-//            $('#realMobile').val(commentData.mobile);
-//            $('#contactCompany').val(commentData.company);
-//            $('#contactPosition').val(commentData.position);
-//            $('#otherName').val(commentData.otherName);
-//            $('#otherMobile').val(commentData.otherMobile);
-//            $('#otherCompany').val(commentData.otherCompany);
-//            $('#remark').val(commentData.remark);
-//            if (commentData.isPubed==0) {
-//                $('.pubMan').val('发布').prop('disabled', false);
-//            }else{
-//                $('.pubMan').val('已发布').prop('disabled', true);
-//            }
-//        }catch(e) {
-//
-//        }
 
-        $('#otherModal').modal('show');
-    })
 
     $('body').on('click','.jsgrid-pager-page a',function () {
         setIcheck();
@@ -463,17 +449,19 @@
 
           var item = modalForm.serialize();
           var oldContact= modalForm.serializeObject();
-          var uid= $('#uid').val();
-          //console.log(uid);
 
           item._token=_token;
-          if (uid>0) {
+
+        var personId = $("#modalForm #uid").val();
+            console.log(personId);
+          if (personId>0) {
               var method = 'PUT';
-              var url = personController+'/'+uid;
+              var url = personController+'/'+personId;
           }else{
               var method = 'post';
               var url = personController;
           }
+            console.log(url);
           $.ajax({
               type: method,
               url: url,
@@ -489,9 +477,9 @@
               },
           }).done(function(result) {//联系人操作
 
-              if(!uid)  oldContact.uid = result;
+              if(!personId)  oldContact.uid = result;
               console.log(JSON.stringify(oldContact));
-              console.log(activeBtn.closest('tr').attr('class'));
+              //console.log(activeBtn.closest('tr').attr('class'));
               activeBtn.attr('data-comment',JSON.stringify(oldContact));
 
               self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();

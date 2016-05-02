@@ -33,16 +33,16 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
-                    if(activeBtn){
-                        var data = JSON.parse(activeBtn.attr('data-comment'));
-                        console.log(data);
-                    }
-                    item._token=_token;
-                    item.uid= data ? data.uid:0;
-                    console.log(item);
-                    var name = data? data.name:'';
-                    var cotact = {name:name};
-                    item.contact = cotact ;///*****跑错
+//                    if(activeBtn){
+//                        var data = JSON.parse(activeBtn.attr('data-comment'));
+//                        console.log(data);
+//                    }
+//                    item._token=_token;
+//                    item.uid= data ? data.uid:0;
+//                    console.log(item);
+//                    var name = data? data.name:'';
+//                    var cotact = {name:name};
+//                    item.contact = cotact ;///*****跑错
                     item.pubStatus=0;
                     console.log(item);
                     $.post(operaController,item,function(result){
@@ -50,13 +50,13 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
-                    if(activeBtn){
-                        var data = JSON.parse(activeBtn.attr('data-comment'));
-                        console.log(data);
-                    }
+//                    if(activeBtn){
+//                        var data = JSON.parse(activeBtn.attr('data-comment'));
+//                        console.log(data);
+//                    }
                     item._token=_token;
-                    item.uid= data ? data.uid:0;
-                    item.pubStatus=0;
+//                    item.uid= data ? data.uid:0;
+//                    item.pubStatus=0;
                     $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
@@ -99,7 +99,7 @@ $(function() {
                 },
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
+                       //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
                         //return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
 
                     },
@@ -144,10 +144,10 @@ $(function() {
                 // },
                 {headerTemplate: function() {return '职位发布';},
                     insertTemplate: function() {
-                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openOtherModal" >新增<i class="icon fa fa-edit"></i></a>';
+                        //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openOtherModal" >新增<i class="icon fa fa-edit"></i></a>';
                     },
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openOtherModal" >修改<i class="icon fa fa-edit"></i></a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+('<i class="icon fa fa-edit"></i>')+'</a>';
                     },
                     align: "center",width: 40,sorting: false
                 },
@@ -218,6 +218,12 @@ $(function() {
                         return item.cover?'<img src="'+item.cover+'" style="height: 35px;width: 35px">':'';
                     },width: 40,sorting: false,
                 },*/
+                {headerTemplate: function() {return '职位发布';},
+                    itemTemplate: function(_, item) {
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+('<i class="icon fa fa-edit"></i>')+'</a>';
+                    },
+                    align: "center",width: 40,sorting: false
+                },
                 { type: "control", editButton: false,deleteButton:manageRole,modeSwitchButton: false}
             ],
             onDataLoaded: function(args) {
@@ -298,38 +304,90 @@ $(function() {
     })
 
     $('.pubMan').click(function(event) {
+        //console.log('123');
         var self = $(this);
         var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
         var mobile = $(this).prev().find('input');
+        //console.log(mobile.val());
         if(!myreg.test(mobile.val())) { 
             alert('请输入有效的手机号码！'); 
             mobile.select();
             return false; 
         }
+
+        if(confirm('确定以这个号码发布招聘信息？')){
+            alert('发布成功\n初始密码为123456，请尽快修改。');
+            var isPubed = $(this).attr('isPubed');
+            console.log('isPubed:'+isPubed);
+            $('#modalForm').find('#hidden').append('<input type="hidden" name="isPubed" value="'+isPubed+'"/>');
+            $('.pubMan').val('已发布').prop('disabled', true);
+        }
         
-        var uid = $('#uid').val();
-        if (uid>0) {
-            if (confirm('确定创建这个人吗？')) {
-                $.ajax({
-                    type: "post",
-                    url: personController+'/pubMan',
-                    data: {mobile:mobile.val(),uid:uid},
-                    error: function( xhr ) {
-                        alert('出错了');
-                    },
-                    /*complete: function( xhr ) {
-                        alert('发布成功\n初始密码为123456，请尽快修改。');
-                        self.prop('disabled', false);
-                    }*/
-                }).done(function(data) {
-                    if (data) {
-                        alert('发布成功\n初始密码为123456，请尽快修改。');
-                        $('.pubMan').text('已发布').prop('disabled', true);
-                    }else{
-                        alert('出错了');
-                    }
-                });
+//        var uid = $('#uid').val();
+//        if (uid>0) {
+//            if (confirm('确定创建这个人吗？')) {
+//
+//                $.ajax({
+//                    type: "post",
+//                    url: personController+'/pubMan',
+//                    data: {mobile:mobile.val(),uid:uid},
+//                    error: function( xhr ) {
+//                        alert('出错了');
+//                    },
+//                    /*complete: function( xhr ) {
+//                        alert('发布成功\n初始密码为123456，请尽快修改。');
+//                        self.prop('disabled', false);
+//                    }*/
+//                }).done(function(data) {
+//                    if (data) {
+//                        alert('发布成功\n初始密码为123456，请尽快修改。');
+//                        $('.pubMan').text('已发布').prop('disabled', true);
+//                    }else{
+//                        alert('出错了');
+//                    }
+//                });
+//            }
+//        }
+    })
+
+    $('#search').on('keyup',function(e){
+        //console.log(e.keyCode);
+        var mobile = $(this).val();
+        if(e.keyCode == 13 && mobile.length == 11 ){
+            var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+            //console.log(mobile.val());
+            if(!myreg.test(mobile)) {
+                alert('请输入有效的手机号码！');
+                return false;
             }
+            $.ajax({
+                type: "POST",
+                url: searchMobileController,
+                data: {mobile:mobile}
+            }).done(function(result) {//联系人操作
+                if(result){
+                    $('#uid').val(result.uid);
+                    $('#isPubed').val(result.isPubed);
+                    $('#contactName').val(result.name);
+                    $('#fakeName').val(result.fakeName);
+                    $('#fakeMobile').val(result.fakeMobile);
+                    $('#realMobile').val(result.mobile);
+                    $('#contactCompany').val(result.company);
+                    $('#contactPosition').val(result.position);
+                    $('#otherName').val(result.otherName);
+                    $('#otherMobile').val(result.otherMobile);
+                    $('#otherCompany').val(result.otherCompany);
+                    $('#remark').val(result.remark);
+                    if (result.isPubed==0) {
+                        $('.pubMan').val('发布').prop('disabled', false);
+                    }else{
+                        $('.pubMan').val('已发布').prop('disabled', true);
+                    }
+                }else{
+                    alert('搜索的号码不存在!');
+                }
+
+            });
         }
     })
 });

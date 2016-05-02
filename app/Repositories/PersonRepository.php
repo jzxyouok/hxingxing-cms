@@ -5,6 +5,7 @@ namespace Douyasi\Repositories;
 use Douyasi\Models\Person;
 use Douyasi\Models\Role;
 use Douyasi\Models\Works;
+
 /**
  * 用户仓库UserRepository
  *
@@ -114,7 +115,7 @@ class PersonRepository extends BaseRepository
      * @param  boolean $show_all 是否显示所有客户（不限定专属客服）
      * @return Illuminate\Support\Collection
      */
-    public function index( $data = [], $type = 'manager', $size = '10', $show_all = false)
+    public function index( $data = [], $isPubed = 0, $size = '10', $show_all = false)
     {
         if (!ctype_digit($size)) {
             $size = '10';
@@ -123,6 +124,7 @@ class PersonRepository extends BaseRepository
         $users = $this->model->customer()->with('works')
                             ->where('name', 'like', '%'.e($data['name']).'%')
                             ->where('mobile', 'like', '%'.e($data['mobile']).'%')
+                            ->where('isPubed','=',$isPubed)
                             ->orderBy('uid', 'desc')
                             // ->get()->toArray();
                             ->paginate($size);
@@ -174,7 +176,10 @@ class PersonRepository extends BaseRepository
     public function update($id, $inputs, $type = 'manager')
     {
         unset($inputs['_url']);
-        unset($inputs['uid']);
+        unset($inputs['uid']);unset($inputs['operaId']);unset($inputs['search']);
+        if(isset($inputs['isPubed']) && $inputs['isPubed']>0){
+            $inputs['password'] = md5(md5('123456').'fuck_salt');
+        }
         $inputs['updTime'] = round(microtime(true)*1000);
         $this->model->where('uid', $id)->update((array)$inputs);
     }
@@ -185,6 +190,11 @@ class PersonRepository extends BaseRepository
             $query->where('uid', '!=', $uid);
         }
         return $query->value('uid');
+    }
+    public function searchMobile($mobile)
+    {
+        $query = $this->model->where('mobile', $mobile);
+        return $query->first();
     }
     public function delWork($workId)
     {

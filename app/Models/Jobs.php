@@ -45,4 +45,5 @@ class Jobs extends Model implements AuthenticatableContract, CanResetPasswordCon
         //模型名 外键 本键
         return $this->hasOne('Douyasi\Models\Opera', 'id', 'operaId');
     }
+
 }

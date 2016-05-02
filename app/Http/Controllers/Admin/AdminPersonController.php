@@ -9,7 +9,7 @@ use Douyasi\Models\Works;
 use Illuminate\Http\Request;
 use Douyasi\Logger\SystemLogger as SystemLogger;
 use Douyasi\Repositories\PersonRepository;
-
+use Douyasi\Repositories\OperaRepository;
 use Cache;
 
 /**
@@ -26,10 +26,10 @@ class AdminPersonController extends BackController
      */
     protected $person;
 
-    public function __construct(PersonRepository $person,Route $route){
+    public function __construct(PersonRepository $person,OperaRepository $opera,Route $route){
         parent::__construct();
         $this->person = $person;
-
+        $this->opera = $opera;
         $actionName = $route->getActionName();
         list($class, $method) = explode('@', $actionName);
         if (in_array($method, ['index','delWork']) && !user('object')->can('manage_users')) {
@@ -49,10 +49,12 @@ class AdminPersonController extends BackController
             'name' => $request->input('s_name'),
             'mobile' => $request->input('s_phone'),
         ];
-        $persons = $this->person->index($data, 'manager', Cache::get('page_size', '10'));
-        //var_dump($persons);die;
+        $tab = isset($_GET['tab']) ? (is_numeric($_GET['tab']) ? $_GET['tab']: 0 ) :0;
+        $unpub = $this->person->index($data, 0, Cache::get('page_size', '10'));
+        $pubed = $this->person->index($data, 1, Cache::get('page_size', '10'));
+        // var_dump($persons);die;
         $serverUrl = 'http://112.74.86.237:8080/img/';
-        return view('back.person.index', compact('persons','serverUrl'));
+        return view('back.person.index', compact('unpub','pubed','serverUrl','tab'));
     }
 
     /**
@@ -88,6 +90,9 @@ class AdminPersonController extends BackController
             SystemLogger::write($log);
 
             // return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
+            if(isset($data['operaId']) && $data['operaId']>0){
+                $this->opera->update($data['operaId'], array('uid'=>$manager->id), 'manager');
+            }
             echo $manager->id;
         } else {
             echo 1;
@@ -112,6 +117,12 @@ class AdminPersonController extends BackController
         $exsit = $this->person->checkMobile($mobile, $uid);
         echo $exsit?'false':'true';
     }
+    public function searchMobile(PersonRequest $request)
+    {
+        $mobile = $request->input('mobile');
+        $res = $this->person->searchMobile($mobile);
+        return $res ?$res:false;
+    }
 
     /**
      * Update the specified resource in storage.
@@ -124,7 +135,10 @@ class AdminPersonController extends BackController
         //
         $data = $request->all();
         //var_dump($data);var_dump('update');die;
-        $this->person->update($id, $data, 'manager');
+        $this->person->update($id, $data, 'manager');//修改用户信息
+        if(isset($data['operaId']) && $data['operaId']>0){
+            $this->opera->update($data['operaId'], array('uid'=>$data['uid']), 'manager');
+        }
         echo 1;
     }
 

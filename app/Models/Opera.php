@@ -29,4 +29,9 @@ class Opera extends Eloquent
     {   
         return $this->whereIn('id', $ids)->update(array('pubStatus' => 1));
     }
+    public function jobs()
+    {
+        //模型名 外键 本键
+        return $this->hasMany('Douyasi\Models\Jobs', 'operaId', 'id');
+    }
 }

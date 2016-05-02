@@ -2,11 +2,7 @@
 
 @section('content-header')
 @parent
-          <a href="{{ route('admin.person.create') }}" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i> 新增用户</a>
-          <ol class="breadcrumb">
-            <li><a href="{{ route('admin') }}"><i class="fa fa-dashboard"></i> 主页</a></li>
-            <li class="active">用户管理</li>
-          </ol>
+  
 @stop
 
 @section('content')
@@ -20,22 +16,26 @@
               @endif
 
               <!-- <a href="{{ route('admin.person.create') }}" class="btn btn-primary margin-bottom">新增管理员</a> -->
-
-              <div class="box box-primary">
-                <div class="box-header with-border">
-                  <h3 class="box-title">用户列表</h3>
-                  <div class="box-tools">
-                    <form action="{{ route('admin.person.index') }}" method="get">
-                      <div class="input-group">
-                        <input type="text" class="form-control input-sm pull-right" name="s_name" value="{{ Input::get('s_name') }}" style="width: 150px;" placeholder="搜索用户名">
-                        <input type="text" class="form-control input-sm pull-right" name="s_phone" value="{{ Input::get('s_phone') }}" style="width: 150px;" placeholder="搜索手机号">
-                        <div class="input-group-btn">
-                          <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
-                        </div>
-                      </div>
-                    </form>
+          
+          <div class="nav-tabs-custom">
+            <nav class="navbar" style="margin-bottom: 0">
+              <ul id="mainTab" class="nav nav-tabs navbar-nav">
+                <li @if($tab == 0)class="active"@endif><a href="#tab_1" data-toggle="tab" aria-expanded="true">未发布</a></li>
+                <li @if($tab == 1)class="active"@endif><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>
+              </ul>
+              <form action="{{ route('admin.person.index') }}?tab={{$tab}}" method="get" class="navbar-form navbar-right">
+                <div class="input-group">
+                  <input type="text" class="form-control input-sm pull-right" name="s_name" value="{{ Input::get('s_name') }}" style="width: 150px;" placeholder="搜索用户名">
+                  <input type="text" class="form-control input-sm pull-right" name="s_phone" value="{{ Input::get('s_phone') }}" style="width: 150px;" placeholder="搜索手机号">
+                  <div class="input-group-btn">
+                    <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
                   </div>
-                </div><!-- /.box-header -->
+                </div>
+              </form>
+            </nav>
+          <div class="tab-content">
+                  
+              <div @if($tab == 0)class="tab-pane active"@else class="tab-pane"@endif id="tab_1">
                 <div class="box-body table-responsive">
                   <table class="table table-hover table-bordered">
                     <tbody>
@@ -59,7 +59,7 @@
                         <th>注册时间</th>
                       </tr>
                       <!--tr-th end-->
-                      @foreach ($persons as $user)
+                      @foreach ($unpub as $user)
                       <tr>
                         <td>
                           <a href="{{ route('admin.person.index') }}/{{ $user->uid }}/edit"><i class="fa fa-fw fa-edit" title="修改"></i></a>  
@@ -86,23 +86,85 @@
                         <td class="text-muted">{{ $user->likeNum }}</td>
                         <td class="text-muted">{{ $user->viewNum }}</td>
                         <td class="text-muted">{{ $user->status }}</td>
-                        <td>{{ date('H:i m/d/Y', strtotime($user->updTime)) }}</td>
+                        <td>{{ str_limit($user->created_at, 16,'') }}</td>
                       </tr>
                       @endforeach
                     </tbody>
                   </table>
                 </div><!-- /.box-body -->
                 <div class="box-footer clearfix">
-                  {!! $persons->render() !!}
+                  {!! $unpub->appends(['tab'=>0])->render() !!}
                 </div>
-
-                <!--隐藏型删除表单-->
-                <form method="post" action="{{ route('admin.person.index') }}" accept-charset="utf-8" id="hidden-delete-form">
+              </div>
+          
+              <div @if($tab == 1)class="tab-pane active"@else class="tab-pane"@endif id="tab_2">
+                <div class="box-body table-responsive">
+                  <table class="table table-hover table-bordered">
+                    <tbody>
+                      <!--tr-th start-->
+                      <tr>
+                        <th></th>
+                        <th>手机号</th>
+                        <th>用户名</th>
+                        <th>性别</th>
+                        <th>毕业学院</th>
+                        <th>年龄</th>
+                        <th>身高</th>
+                        <th>体重</th>
+                        <th>公司/剧组</th>
+                        <th>职务</th>
+                        <th>头像</th>
+                        <th>代表作品</th>
+                        <th><i class="fa fa-heart"></i> 收藏</th>
+                        <th><i class="fa fa-eye"></i> 查看</th>
+                        <th>状态</th>
+                        <th>注册时间</th>
+                      </tr>
+                      <!--tr-th end-->
+                      @foreach ($pubed as $user)
+                      <tr>
+                        <td>
+                          <a href="{{ route('admin.person.index') }}/{{ $user->uid }}/edit"><i class="fa fa-fw fa-edit" title="修改"></i></a>  
+                        </td>
+                        <td>{{ $user->mobile }}</td>
+                        <td class="text-muted">{{ $user->name }}</td>
+                        <td class="text-muted">{{ $user->sex }}</td>
+                        <td class="text-muted">{{ $user->graduate }}</td>
+                        <td class="text-muted">{{ $user->age }}</td>
+                        <td class="text-muted">{{ $user->height }}</td>
+                        <td class="text-muted">{{ $user->weight }}</td>
+                        <td class="text-muted">{{ $user->company }}</td>
+                        <td class="text-muted">{{ $user->position }}</td>
+                        <td>
+                          @if($user->avatar)
+                            <img src="{{$serverUrl}}/{{ $user->avatar }}" style="height: 35px;width: 35px">
+                            @endif
+                        </td>
+                        <td class="text-muted">
+                            @if( count($user->works) > 1)
+                                <a href="javascript:void(0)" data-title="{{ $user->name }}" data-works="{{ $user->works }}" class="openModal" data-toggle="modal" data-target="#pageModal"><i class="fa fa-file-video-o"></i></a>
+                            @endif
+                        </td>
+                        <td class="text-muted">{{ $user->likeNum }}</td>
+                        <td class="text-muted">{{ $user->viewNum }}</td>
+                        <td class="text-muted">{{ $user->status }}</td>
+                        <td>{{ str_limit($user->created_at, 16,'') }}</td>
+                      </tr>
+                      @endforeach
+                    </tbody>
+                  </table>
+                </div><!-- /.box-body -->
+                <div class="box-footer clearfix">
+                  {!! $pubed->appends(['tab'=>1])->render() !!}
+                </div>
+              </div>
+              <form method="post" action="{{ route('admin.person.index') }}" accept-charset="utf-8" id="hidden-delete-form">
                     <input name="_method" type="hidden" value="delete">
 <!--                    <input type="hidden" name="_token" value="{{ csrf_token() }}">-->
                 </form>
+          </div>
+      </div>
 
-              </div>
     <div class="modal fade" id="pageModal" tabindex="-1" role="dialog" aria-labelledby="chatHistoryModalLabel" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">

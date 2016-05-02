@@ -129,22 +129,26 @@ class OperaRepository extends BaseRepository
         if (!ctype_digit($size)) {
             $size = '50';
         }
-        // var_dump($data);die();
+         //var_dump($data);//die();
         $query = $this->model->with(array(
                                     'contact' => function ($query) {
-                                        $query->get(['uid','isPubed', 'name','fakeMobile','mobile','company','position','otherName','otherMobile','otherCompany','remark']);
+                                        $query->get(['uid','isPubed', 'name','mobile','fakeName','fakeMobile','company','position','otherName','otherMobile','otherCompany','remark']);
                                     }
-                                ));
+                                ))/*->with(array(
+                                    'jobs' => function ($query) {
+                                        $query->get(['id','nameC', 'salaryC','salaryUnitC','descrip','role','roleDescrip']);
+                                    }
+                                ))*/;
         if ($onlySelf) {
             $query->where('created_uid', user('id'));
         }
-        $searchFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline');
+        $searchFields = array('name','invest','categoryC','topicC1','siteC','startTimeC','periodC','runTime','outline');
         foreach ($searchFields as $k => $val) {
             if (!is_numeric($data[$val])&&trim($data[$val])!=''|| is_numeric($data[$val])&&$data[$val]>0) {
                 $query->where($val, 'like', '%'.e($data[$val]).'%');
             }
         }
-        return $query->where('pubStatus', e($data['pubStatus']))->orderBy('id', 'desc')->get()->toArray();
+        return $query->where('pubStatus', e($data['pubStatus']))/*->where('operas.id',e($data['id']))*/->orderBy('id', 'desc')->get()->toArray();
     }
     public function tags($data = []){
         $ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
@@ -202,7 +206,7 @@ class OperaRepository extends BaseRepository
     public function update($id, $inputs, $type = 'article')
     {
         $content = $this->model->findOrFail($id);//查表
-        if($content->name != $inputs['name']){
+        if(isset($inputs['name']) &&$content->name != $inputs['name']){
             $ret = $this->checkOpera($inputs['name'],$id);
             if(!is_null($ret)){
                 $inputs['name'] = $content->name;//如果查重了，还是修改，但是用原来值

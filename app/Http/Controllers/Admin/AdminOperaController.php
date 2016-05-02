@@ -93,7 +93,7 @@ class AdminOperaController extends BackController
     public function indexData(Request $request,$pubStatus)
     {
         $data = [];
-        $searchFields = array('name','invest','categoryC','topicC1','site','startTimeC','periodC','runTime','outline');
+        $searchFields = array(/*'id',*/'name','invest','categoryC','topicC1','siteC','startTimeC','periodC','runTime','outline');
         foreach ($searchFields as $k => $val) {
             $data[$val] = $request->input($val);
         }
@@ -127,7 +127,8 @@ class AdminOperaController extends BackController
     public function store(OperaRequest $request)
     {
         $data = $request->all();  //获取请求过来的数据
-         //var_dump($data);die();
+        // var_dump($data);
+        //var_dump('store');die();
         $content = $this->content->store($data, user('id'));  //使用仓库方法存储
         if ($content->id) {  //添加成功
             echo json_encode($content,JSON_NUMERIC_CHECK);
@@ -162,6 +163,7 @@ class AdminOperaController extends BackController
     {
         //
         $data = $request->all();
+        //var_dump('update');die;
         return $this->content->update($id, $data, 'article');
         // return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }
