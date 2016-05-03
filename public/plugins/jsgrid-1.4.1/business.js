@@ -155,6 +155,19 @@ $(function() {
             ],
             onDataLoaded: function(args) {
                 setIcheck();
+
+                var jobFormHtml = '';
+                var fieldArr = ['name','salary','descrip','role','roleDescrip'];
+                var labelArr = ['职位名','薪资','说明','角色名','角色说明'];
+                for (var i = 0; i < fieldArr.length; i++) {
+                    jobFormHtml += '<div class="form-group">'+
+                        '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
+                        '<div class="col-md-5">'+
+                            '<input type="text" class="form-control" name="'+fieldArr[i]+'">'+
+                        '</div>'+
+                    '</div>';
+                }
+                $('#jobForm #elements').html(jobFormHtml)
             },
             onRefreshed: function(args) {
                 setIcheck();

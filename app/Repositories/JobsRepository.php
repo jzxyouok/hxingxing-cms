@@ -198,7 +198,13 @@ class JobsRepository extends BaseRepository
             $user = $this->updateManager($user, $inputs);
         }
     }
-    #********
-    #* 资源 REST 相关的接口函数 END
-    #********
+    public function destroy($ids, $type = 'article') {
+        // $in = [];
+        // if ($ids!='') {
+        //     $in = explode(',', $ids);
+        // }
+        // var_dump($in);die();
+        $content = $this->model->findOrFail($ids);
+        $content->delete();
+    }
 }
