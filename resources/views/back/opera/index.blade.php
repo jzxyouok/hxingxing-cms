@@ -262,7 +262,7 @@
   var activeBtn;
 
     $('body').on('click','.openModal',function () {
-        //console.log($(this).closest('tr').attr('class'));
+        console.log($(this).closest('tr').attr('class'));
         if($(this).closest('tr').hasClass('jsgrid-edit-row')){
             activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
         }else{
@@ -307,11 +307,17 @@
     })
 
     $('body').on('click','.openOtherModal',function () {
-      var closestTr = $(this).closest('tr');
-        if(closestTr.hasClass('jsgrid-edit-row')){
-            activeBtn = closestTr.find('.openOtherModal');
+//      var closestTr = $(this).closest('tr');
+//        if(closestTr.hasClass('jsgrid-edit-row')){
+//            activeBtn = closestTr.next().find('.openOtherModal');
+//        }else{
+//            activeBtn = $(this);
+//        }
+        //console.log($(this).closest('tr').attr('class'));
+        if($(this).closest('tr').hasClass('jsgrid-edit-row')){
+            activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openOtherModal');
         }else{
-            activeBtn = closestTr.next().find('.openOtherModal');
+            activeBtn = $(this);
         }
 
         //清空原有数据,编辑初始化
@@ -319,13 +325,25 @@
         $('#otherModal').find('.alert').hide();
         $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
 
-            var jobData = JSON.parse(activeBtn.attr('data-comment'));
-            console.log(jobData)
+        //console.log(jobData);
+        $('#otherModal').find('.modal-body .list-group').html('');
+        //console.log(activeBtn.closest('tr').attr('class'));
+        //console.log(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
         try{
+            var jobData = JSON.parse(activeBtn.attr('data-comment'));
+            console.log(jobData);
             var commentHtml = '';
             for (var i = 0; i < jobData.length; i++) {
-              commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData[i].name+'</h4>'+jobData[i].salary+' - '+jobData[i].descrip+' - '+jobData[i].role+'<p class="list-group-item-text">'+jobData[i].age+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="'+jobData[i].id+'"></i></a></li>';
+                //console.log(i);
+                commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData[i].name+'</h4>'+jobData[i].salary+' - '+jobData[i].descrip+' - '+jobData[i].role+'<p class="list-group-item-text">'+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="'+jobData[i].id+'"></i></a></li>';
             }
+            var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
+            //console.log(commentData);
+            $('#otherModal').find('#uid').val(commentData.uid);
+
+
+
+            //console.log(commentHtml);
             /*$('#otherModal').find('#uid').val(jobData.uid);
             $('#job_id').val(jobData.id);
             $('#job').val(jobData.name);//job_id
@@ -337,17 +355,8 @@
 
         }
         $('#otherModal').find('.modal-body .list-group').html(commentHtml!=''?commentHtml:'没有职位');
+        //$('#otherModal').modal('show');
     })
-
-//    $('body').on('click','#add',function () {
-//        var html = $('OtherModal').find('.modal-body div.panel-group').html();
-//        $()
-//
-//
-//    })
-
-
-
 
 
     $('body').on('click','.jsgrid-pager-page a',function () {
@@ -462,13 +471,13 @@
             var self = $('#commitOtherModal');
 
             var item = modalOtherForm.serialize();
-            console.log(item);
+            //console.log(item);
             var oldContact= modalOtherForm.serializeObject();
 
             item._token=_token;
 
             var personId = $("#modalOtherForm #job_id").val();
-            console.log(personId);
+            //console.log(personId);
             if (personId>0) {
                 var method = 'PUT';
                 var url = jobController+'/'+personId;
@@ -476,7 +485,7 @@
                 var method = 'post';
                 var url = jobController;
             }
-            console.log(url);
+            //console.log(url);
             $.ajax({
                 type: method,
                 url: url,
@@ -492,12 +501,25 @@
                 },
             }).done(function(result) {//联系人操作
 
-                if(!personId)  oldContact.id = result;
-                console.log(JSON.stringify(oldContact));
-                //console.log(activeBtn.closest('tr').attr('class'));
-                activeBtn.attr('data-job',JSON.stringify(oldContact));
+                if(!personId) {
+                    oldContact.id = result;
+                    var dataComment = JSON.parse(activeBtn.attr('data-comment'));
 
-                self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
+                    dataComment.push(oldContact);
+                    activeBtn.attr('data-comment',JSON.stringify(dataComment));
+                    console.log(activeBtn.attr('data-comment'));
+                    console.log($('#modalOtherForm ul.list-group').html());
+                    $('#modalOtherForm ul.list-group').append(
+'<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+oldContact.name+'</h4>'+oldContact.salary+' - '+oldContact.descrip+' - '+oldContact.role+'<p class="list-group-item-text">'+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="' + oldContact.id + '"></i></a></li>'
+);
+                }else{
+
+                }
+                //console.log(JSON.stringify(oldContact));
+                //console.log(activeBtn.closest('tr').attr('class'));
+                //activeBtn.attr('data-comment',JSON.stringify(oldContact));
+
+                //self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
             });
         }
     });

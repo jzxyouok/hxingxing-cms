@@ -78,6 +78,7 @@ class OperaRepository extends BaseRepository
      */
     private function saveContent($content, $inputs, $user_id = '0')
     {
+        //var_dump('kk');
         // var_dump($content->attributes);die();
         // $content->name   = e($inputs['name']);
         // $content->content = e($inputs['content']);
@@ -106,7 +107,7 @@ class OperaRepository extends BaseRepository
         /*if ($user_id) {
             $content->uid = $user_id;
         }*/
-        // var_dump($content);die();
+         //var_dump($content);die();
         $content->save();
         $content = $this->model->with('contact')->findOrFail($content->id);
         return $content;
