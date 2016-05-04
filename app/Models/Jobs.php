@@ -35,7 +35,7 @@ class Jobs extends Eloquent
     public function opera()
     {
         //模型名 外键 本键
-        return $this->belongsTo('Douyasi\Models\Opera', 'id', 'operaId');
+        return $this->belongsTo('Douyasi\Models\Opera', 'operaId', 'id');
     }
 
 }

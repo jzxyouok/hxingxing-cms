@@ -136,4 +136,13 @@ class AdminJobsController extends BackController
 //        return redirect()->route('admin.user.index')->with('message', '修改管理员成功！');
 
     }
+    public function destroy($ids) {
+        // 客服权限
+        if (! user('object')->can('customer_service')) {
+            die('权限不足！');
+        }
+        $this->jobs->destroy($ids, 'article');
+        echo 1;
+        // return redirect()->route('admin.opera.index')->with('message', '删除剧目成功！');
+    }
 }

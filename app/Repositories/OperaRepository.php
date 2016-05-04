@@ -150,7 +150,7 @@ class OperaRepository extends BaseRepository
     }
     public function tags($data = []){
         $ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
-        ->groupBy('category')->whereIn('category', ['jobCategory','jobTopic','jumuStart','jumuRunTime'])
+        ->groupBy('category')->whereIn('category', ['jobCategory','jobTopic','jumuStart','jumuRunTime','jobSalary','jobSalaryUnit','jobType','jobStyle'])
         ->orWhere(function($query){
             $query->whereIn('category', ['city'])
                 ->where('parentId', '<>', '0')->where('code', '<>', '0');

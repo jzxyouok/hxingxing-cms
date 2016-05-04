@@ -1,7 +1,9 @@
 @extends('layout._back')
 
 @section('content-header')
-<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid-theme.min.css" />
+<!-- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid-theme.min.css" /> -->
+<link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid.min.css"/>
+<link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid-theme.min.css" />
 <style>
   input,select{border: 1px solid #cccccc;border-radius: 4px;}
   .jsgrid-table{width: 100%!important}
@@ -92,7 +94,7 @@
                           <!--<label for="" class="col-md-2 control-label">姓名</label>-->
                           <div class="col-md-10" id="hidden">
                               <input type="hidden" name="uid" id="uid">
-
+                              <input type="hidden" id="activeJobIndex">
                               <input type="hidden" name="operaId" id="operaId">
                               <!--<input type="text" class="form-control" name="name" id="contactName">-->
                           </div>
@@ -193,36 +195,13 @@
                       </div>
                       
                       <div id="jobForm" class="panel-collapse collapse">
+                        <input type="hidden" name="uid" id="uid">
+                        <input type="hidden" name="operaId" id="operaId">
+                        <input type="hidden" name="id" id="job_id">
                         <div class="panel-body">
-                            <input type="hidden" name="uid" id="uid">
-                            <input type="hidden" name="operaId" id="operaId">
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">职位名 <small class="text-red">*</small></label>
-                                <div class="col-md-5">
-                                    <input type="text" class="form-control" name="name" id="job" autocomplete="off" value="" placeholder="职位名">
-                                    <input type="hidden" name="id" value="" id="job_id">
-                                </div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">薪资 <small class="text-red">*</small></label>
-                                <div class="col-md-5"><input type="text" class="form-control" name="salary" id="salary" autocomplete="off" value="" placeholder=""></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">说明 <small class="text-red">*</small></label>
-                                <div class="col-md-5"><input type="text" class="form-control" name="descrip" id="descrip" autocomplete="off" value="" placeholder=""></div>
-                            </div>
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">角色名 <small class="text-red">*</small></label>
-                                <div class="col-md-5"><input type="text" class="form-control" name="role" id="role" autocomplete="off" value="" placeholder=""></div>
-                            </div>
-
-                            <div class="form-group">
-                                <label class="col-md-3 control-label">角色说明 <small class="text-red">*</small></label>
-                                <div class="col-md-5"><input type="text" class="form-control" name="roleDescrip" id="roleDescrip" autocomplete="off" value="" placeholder=""></div>
-                            </div>
+                            <div id="elements"></div>
                             <div class="row text-center">
-                              <input type="submit" class="btn btn-primary" id="commitOtherModal" value="提交更改">
+                              <input type="submit" class="btn btn-primary" id="commitOtherModal" value="保存">
                             </div>
                         </div>
                       </div>
@@ -241,9 +220,10 @@
 <script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
 
 <!-- jsgrid -->
-<link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.css" />
+<!-- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.css" /> -->
+<script src="{{ asset('plugins/jsgrid-1.4.1/jsgrid.min.js') }}" type="text/javascript"></script>
 
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.js"></script>
+<!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.js"></script> -->
 <script type="text/javascript" src="{{ asset('plugins/jsgrid-1.4.1/zh.js') }}"></script>
 
 <script>
@@ -306,14 +286,33 @@
         $('#myModal').modal('show');
     })
 
+    // 编辑职位
+    $('body').on('click','.editJob',function () {
+      var jobIndex = $('#otherModal .list-group li').index($(this).closest('li'))
+      var jobObj = JSON.parse(activeBtn.attr('data-comment'))
+      $('#jobForm input[type="text"]').each(function(index, el) {
+        var field = $(this).attr('name')
+        $(this).val(jobObj[jobIndex][field])
+      });
+      $('#job_id').val(jobObj[jobIndex].id)
+      $('#activeJobIndex').val(jobIndex)
+      $('#jobForm').collapse('show');
+    })
+    // 删除职位
+    $('body').on('click','.deleteJob',function () {
+      if (confirm('确定删除？')) {
+        var self = $(this);
+        var jobIndex = $(this).attr('jobid')
+        $.post(jobController+'/'+jobIndex, {_method:'delete',_token:_token}, function(data, textStatus, xhr) {
+            self.closest('li').remove();
+        });
+      }
+    })
+
+    function jobHtml(jobData,jobIndex) {
+        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+'</h4>'+jobData.salary+' - '+jobData.descrip+' - '+jobData.role+'<p class="list-group-item-text">'+'</p></div><div class="col-md-1"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a><a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
+    }
     $('body').on('click','.openOtherModal',function () {
-//      var closestTr = $(this).closest('tr');
-//        if(closestTr.hasClass('jsgrid-edit-row')){
-//            activeBtn = closestTr.next().find('.openOtherModal');
-//        }else{
-//            activeBtn = $(this);
-//        }
-        //console.log($(this).closest('tr').attr('class'));
         if($(this).closest('tr').hasClass('jsgrid-edit-row')){
             activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openOtherModal');
         }else{
@@ -335,7 +334,7 @@
             var commentHtml = '';
             for (var i = 0; i < jobData.length; i++) {
                 //console.log(i);
-                commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData[i].name+'</h4>'+jobData[i].salary+' - '+jobData[i].descrip+' - '+jobData[i].role+'<p class="list-group-item-text">'+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="'+jobData[i].id+'"></i></a></li>';
+                commentHtml += jobHtml(jobData[i],i);
             }
             var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
             //console.log(commentData);
@@ -357,7 +356,6 @@
         $('#otherModal').find('.modal-body .list-group').html(commentHtml!=''?commentHtml:'没有职位');
         //$('#otherModal').modal('show');
     })
-
 
     $('body').on('click','.jsgrid-pager-page a',function () {
         setIcheck();
@@ -501,6 +499,7 @@
                 },
             }).done(function(result) {//联系人操作
 
+                var jobBox = $('#modalOtherForm ul.list-group')
                 if(!personId) {
                     oldContact.id = result;
                     var dataComment = JSON.parse(activeBtn.attr('data-comment'));
@@ -508,12 +507,16 @@
                     dataComment.push(oldContact);
                     activeBtn.attr('data-comment',JSON.stringify(dataComment));
                     console.log(activeBtn.attr('data-comment'));
-                    console.log($('#modalOtherForm ul.list-group').html());
-                    $('#modalOtherForm ul.list-group').append(
-'<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+oldContact.name+'</h4>'+oldContact.salary+' - '+oldContact.descrip+' - '+oldContact.role+'<p class="list-group-item-text">'+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="' + oldContact.id + '"></i></a></li>'
-);
+                    console.log(jobBox.html());
+                    jobBox.append(jobHtml(oldContact,jobBox.find('li').length));
                 }else{
+                    <!-- 编辑，更新职位按钮弹窗职位数据 -->
+                    var jobObj = JSON.parse(activeBtn.attr('data-comment'))
+                    var activeJobIndex = $('#activeJobIndex').val()
+                    jobObj[activeJobIndex] = oldContact
 
+                    console.log(jobHtml(oldContact,activeJobIndex))
+                    jobBox.eq(activeJobIndex).html(jobHtml(oldContact,activeJobIndex))
                 }
                 //console.log(JSON.stringify(oldContact));
                 //console.log(activeBtn.closest('tr').attr('class'));
