@@ -14,6 +14,10 @@ $(function() {
         tagsData.jumuStart.unshift({id:0,name:""});
         tagsData.jumuRunTime.unshift({id:0,name:""});
         tagsData.city.unshift({id:0,name:""});
+        tagsData.jobType.unshift({id:0,name:""});
+        tagsData.jobSalary.unshift({id:0,name:""});
+        tagsData.jobSalaryUnit.unshift({id:0,name:""});
+        tagsData.jobStyle.unshift({id:0,name:""});
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -157,15 +161,30 @@ $(function() {
                 setIcheck();
 
                 var jobFormHtml = '';
-                var fieldArr = ['name','salary','descrip','role','roleDescrip'];
-                var labelArr = ['职位名','薪资','说明','角色名','角色说明'];
+                var fieldArr = ['nameC','salaryC','salaryUnitC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','roleDescrip'];
+                var labelArr = ['职位名','薪资','薪资单位','岗位说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','角色说明'];
+                var tagsArr = ['jobType','jobSalary','jobSalaryUnit','','','jobStyle','jobStyle','jobStyle','','','',''];
                 for (var i = 0; i < fieldArr.length; i++) {
-                    jobFormHtml += '<div class="form-group">'+
+                    if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3'])){
+                        jobFormHtml += '<div class="form-group">'+
+                        '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
+                        '<div class="col-md-5">'+
+                            '<select name="'+fieldArr[i]+'">';
+                            var optionArray = tagsData.tagsArr[i];
+                            $
+
+                        //'</select></div>'+
+                    //'</div>';
+
+                    }else{
+                        jobFormHtml += '<div class="form-group">'+
                         '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
                         '<div class="col-md-5">'+
                             '<input type="text" class="form-control" name="'+fieldArr[i]+'">'+
                         '</div>'+
-                    '</div>';
+                    '</div>';    
+                    }
+                    
                 }
                 $('#jobForm #elements').html(jobFormHtml)
             },
