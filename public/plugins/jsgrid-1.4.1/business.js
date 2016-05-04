@@ -170,11 +170,14 @@ $(function() {
                         '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
                         '<div class="col-md-5">'+
                             '<select name="'+fieldArr[i]+'">';
-                            var optionArray = tagsData.tagsArr[i];
-                            $
+                            var optionArray = tagsData[tagsArr[i]];
+                            for(var _i= 0;i < optionArray.length;_i++){
+                                console.log(optionArray[_i]);
+                                jobFormHtml += '<option value="'+optionArray[_i][id]+'">'+optionArray[_i][name]+'</option>';
+                            }
 
-                        //'</select></div>'+
-                    //'</div>';
+                        jobFormHtml +='</select></div>'+
+                    '</div>';
 
                     }else{
                         jobFormHtml += '<div class="form-group">'+
