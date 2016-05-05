@@ -43,13 +43,11 @@ class JobsRepository extends BaseRepository
      */
     private function saveManager($manager, $inputs)
     {
-        $manager->uid = e($inputs['uid']);
-        $manager->operaId = e($inputs['operaId']);
-        $manager->name = e($inputs['name']);
-        $manager->salary = e($inputs['salary']);
-        $manager->descrip = e($inputs['descrip']);  //管理型用户
-        $manager->role = e($inputs['role']);
-        $manager->roleDescrip = e($inputs['roleDescrip']); //确定用户已被验证激活
+        unset($inputs['_url']);
+        foreach ($inputs as $key => $value) {
+            $manager->$key = e($value);
+            # code...
+        }
 
         $manager->save();
 

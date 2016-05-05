@@ -193,10 +193,11 @@
                           <div class="clearfix"></div>
                       </div>
                       
-                      <input type="hidden" name="uid" id="uid">
-                      <input type="hidden" name="operaId" id="operaId">
+
                       <form action="" class="form-horizontal panel-collapse collapse" id="jobForm">
-                        <input type="hidden" name="id" id="job_id">
+                          <input type="hidden" name="uid" id="uid">
+                          <input type="hidden" name="operaId" id="operaId">
+                          <input type="hidden" name="id" id="job_id">
                         <div class="panel-body">
                             <div id="elements"></div>
                             <div class="row text-center">
@@ -274,7 +275,7 @@
             $('#otherMobile').val(commentData.otherMobile);
             $('#otherCompany').val(commentData.otherCompany);
             $('#remark').val(commentData.remark);
-            if (commentData.isPubed==0) {
+            if (commentData.isPubed==0 || commentData.isPubed == undefined) {
                 $('.pubMan').val('发布').prop('disabled', false);
             }else{
                 $('.pubMan').val('已发布').prop('disabled', true);
@@ -293,6 +294,9 @@
     $('#addJob').click(function(e) {
         var jobForm = $('#jobForm');
         jobForm[0].reset();
+        $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+        var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
+        $('#otherModal').find('#uid').val(commentData.uid);
         jobForm.collapse('show');
     });
     // 编辑职位
@@ -322,8 +326,12 @@
         var self = $(this);
         var jobIndex = $(this).attr('jobid')
         $.post(jobController+'/'+jobIndex, {_method:'delete',_token:_token}, function(data, textStatus, xhr) {
-            self.closest('li').remove();
-        });
+              self.closest('li').remove();
+            document.getElementById('jobForm').reset();
+            $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+            var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
+            $('#otherModal').find('#uid').val(commentData.uid);
+          });
       }
     })
 
@@ -344,6 +352,8 @@
 
         //console.log(jobData);
         $('#otherModal').find('.modal-body .list-group').html('');
+        $('#jobForm input[type="text"],select').val('');
+        $('#jobForm').collapse('hide');
         //console.log(activeBtn.closest('tr').attr('class'));
         //console.log(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
         try{
@@ -541,11 +551,12 @@
                     oldContact.id = result;
                     var dataComment = JSON.parse(activeBtn.attr('data-comment'));
 
-                    dataComment.push(oldContact);
+                    //dataComment.push(oldContact);
+                    dataComment.splice(0, 0, oldContact);
                     activeBtn.attr('data-comment',JSON.stringify(dataComment));
                     console.log(activeBtn.attr('data-comment'));
                     console.log(jobBox.html());
-                    jobBox.append(jobHtml(oldContact,jobBox.find('li').length));
+                    jobBox.prepend(jobHtml(oldContact,jobBox.find('li').length));
                 }else{
                     <!-- 编辑，更新职位按钮弹窗职位数据 -->
                     var jobObj = JSON.parse(activeBtn.attr('data-comment'));
