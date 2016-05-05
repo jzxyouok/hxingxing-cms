@@ -185,7 +185,6 @@
                 </h4>
             </div>
             <div class="modal-body">
-                <form action="" class="form-horizontal" id="modalOtherForm">
                     <div class="panel panel-default">
                       <div class="panel-heading">
                           <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 职位</h3>
@@ -196,18 +195,19 @@
                       
                       <input type="hidden" name="uid" id="uid">
                       <input type="hidden" name="operaId" id="operaId">
-                      <div id="jobForm" class="panel-collapse collapse">
+                      <form action="" class="form-horizontal panel-collapse collapse" id="jobForm">
                         <input type="hidden" name="id" id="job_id">
                         <div class="panel-body">
                             <div id="elements"></div>
                             <div class="row text-center">
+                              <button type="button" class="btn btn-default" id="cancelAddJob">取消</button>
                               <input type="submit" class="btn btn-primary" id="commitOtherModal" value="保存">
                             </div>
                         </div>
-                      </div>
+                      </form>
                       <ul class="list-group"></ul>
                     </div>
-                </form>
+                
 
             </div>
         </div><!-- /.modal-content -->
@@ -286,6 +286,9 @@
         $('#myModal').modal('show');
     })
 
+    $('#cancelAddJob').click(function(e) {
+        $('#jobForm').collapse('hide');
+    });
     // 新增职位
     $('#addJob').click(function(e) {
         var jobForm = $('#jobForm');
@@ -480,18 +483,18 @@
         }
     });
 
-    var modalOtherForm = $('#modalOtherForm');
-    var validator= modalOtherForm.validate({
+    var jobForm = $('#jobForm');
+    var validator= jobForm.validate({
         onkeyup:false,
         focusInvalid:false,
         submitHandler: function(form) {
             var self = $('#commitOtherModal');
             
-            var item = modalOtherForm.serialize();            
-            var oldContact= modalOtherForm.serializeObject();
+            var item = jobForm.serialize();            
+            var oldContact= jobForm.serializeObject();
 
             <!-- 提交数据带上下拉选中项的文本 -->
-            modalOtherForm.find('select').each(function(index, el) {
+            jobForm.find('select').each(function(index, el) {
               var self = $(this);
               var originFields = ['height','age','weight'];
               var thisName = self.attr('name');
@@ -509,7 +512,7 @@
 
             item._token=_token;
 
-            var personId = $("#modalOtherForm #job_id").val();
+            var personId = $("#jobForm #job_id").val();
             if (personId>0) {
                 var method = 'PUT';
                 var url = jobController+'/'+personId;
@@ -533,7 +536,7 @@
                 },
             }).done(function(result) {//联系人操作
 
-                var jobBox = $('#modalOtherForm ul.list-group')
+                var jobBox = $('#otherModal ul.list-group')
                 if(!personId) {
                     oldContact.id = result;
                     var dataComment = JSON.parse(activeBtn.attr('data-comment'));
