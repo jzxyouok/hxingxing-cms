@@ -53,7 +53,7 @@ $(function() {
                     item.pubStatus=0;
                     console.log(item);
                     $.post(operaController,item,function(result){
-                        return item;
+                        return result;
                     });
                 },
                 updateItem: function(item) {
