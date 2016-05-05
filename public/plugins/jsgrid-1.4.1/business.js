@@ -40,30 +40,22 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
-//                    if(activeBtn){
-//                        var data = JSON.parse(activeBtn.attr('data-comment'));
-//                        console.log(data);
-//                    }
-//                    item._token=_token;
-//                    item.uid= data ? data.uid:0;
-//                    console.log(item);
-//                    var name = data? data.name:'';
-//                    var cotact = {name:name};
-//                    item.contact = cotact ;///*****跑错
                     item.pubStatus=0;
-                    console.log(item);
-                    $.post(operaController,item,function(result){
-                        return result;
+                    $.ajax({
+                        type: "POST",
+                        url: operaController,
+                        data: item,
+                        async:false,
+                        success : function(result){
+                            result = JSON.parse(result);
+                            item.id = result.id;
+                            return item;
+                        }
                     });
                 },
                 updateItem: function(item) {
-//                    if(activeBtn){
-//                        var data = JSON.parse(activeBtn.attr('data-comment'));
-//                        console.log(data);
-//                    }
+
                     item._token=_token;
-//                    item.uid= data ? data.uid:0;
-//                    item.pubStatus=0;
                     $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
@@ -101,6 +93,8 @@ $(function() {
                     },
                     itemTemplate: function(_, item) {
                         return $("<input>").attr({"type":"checkbox","class":"table-operation hide tabOperaId","data-id":item.id});
+                        //return '<input type="checkbox" class="table-operation hide tabOperaId" data-id="'+item.id+'"/>';
+
                     },
                     align: "center",width: 30,sorting: false
                 },
