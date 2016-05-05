@@ -104,13 +104,13 @@
                              <div class="col-md-10"><input type="text" class="form-control" name="search" id="search"></div>
                          </div>
                         <div class="form-group">
-                            <label for="" class="col-md-2 control-label">发布真实姓名</label>
-                            <div class="col-md-2">
+                            <label for="" class="col-md-2 control-label">真实姓名</label>
+                            <div class="col-md-3">
                                 <input type="text" class="form-control" name="name" id="contactName">
                             </div>
-                            <label for="" class="col-md-2 control-label">真实手机</label>
-                            <div class="col-md-3">
-                                 <input type="text" class="form-control" name="mobile" id="realMobile">
+                            <label for="" class="control-label pull-left">真实手机</label>
+                            <div class="col-md-4">
+                                 <input type="text" class="form-control" name="mobile" id="realMobile" maxlength="11">
                             </div>
 
 <!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
@@ -118,13 +118,13 @@
                             <label for="realMobile" id="realMobile-error" class="row col-md-5 error"></label>
                         </div>
                         <div class="form-group">
-                            <label for="" class="col-md-2 control-label">发布虚拟姓名</label>
-                            <div class="col-md-2">
+                            <label for="" class="col-md-2 control-label">虚拟姓名</label>
+                            <div class="col-md-3">
                                 <input type="text" class="form-control" name="fakeName" id="fakeName">
                             </div>
-                          <label for="" class="col-md-2 control-label">虚拟手机</label>
-                          <div class="col-md-3">
-                              <input type="text" class="form-control" name="fakeMobile" id="fakeMobile">
+                          <label for="" class="control-label pull-left">虚拟手机</label>
+                          <div class="col-md-4">
+                              <input type="text" class="form-control" name="fakeMobile" id="fakeMobile" maxlength="11">
                           </div>
 <!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
                             <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="2"/>
@@ -140,7 +140,11 @@
                         </div>
                         <div class="row">
                              <label for="" class="col-md-2 control-label">备注</label>
-                             <div class="col-md-10"><input type="text" class="form-control" name="remark" id="remark"></div>
+                             <!--<div class="col-md-10"><input type="text" class="form-control" name="remark" id="remark"></div>-->
+                            <div class="col-md-10">
+                                <textarea class="form-control" rows="3" name="remark" id="remark"></textarea>
+                            </div>
+
                         </div>
                      </div>
                      <div class="tab-pane fade" id="other">
@@ -336,7 +340,7 @@
     })
 
     function jobHtml(jobData,jobIndex) {
-        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+'</h4>'+jobData.role+' - '+jobData.roleDescrip+' - '+jobData.styleC1+' - '+jobData.styleC2+' - '+jobData.styleC3+' - '+jobData.height+' - '+jobData.age+' - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="col-md-1"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a><a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
+        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+'</h4>'+jobData.role+' - '+jobData.roleDescrip+' - '+jobData.styleC+' - '+jobData.styleC+' - '+jobData.styleC+' - '+jobData.height+' - '+jobData.age+' - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="col-md-1"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a><a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
     }
     $('body').on('click','.openOtherModal',function () {
         if($(this).closest('tr').hasClass('jsgrid-edit-row')){
@@ -410,6 +414,8 @@
 
 <script src="{{ asset('static/js/jquery.form.js') }}" type="text/javascript"></script>
 <script src="{{ asset('static/js/jquery.validate.js') }}" type="text/javascript"></script>
+<!--引入Chosen组件-->
+<script src="{{ asset('static/js/hongka.js') }}" type="text/javascript"></script>
 @stop
 
 @section('filledScript')
