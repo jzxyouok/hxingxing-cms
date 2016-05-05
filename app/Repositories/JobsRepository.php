@@ -43,10 +43,9 @@ class JobsRepository extends BaseRepository
      */
     private function saveManager($manager, $inputs)
     {
-        unset($inputs['_url']);
+        unset($inputs['_url'],$inputs['id']);
         foreach ($inputs as $key => $value) {
             $manager->$key = e($value);
-            # code...
         }
 
         $manager->save();
