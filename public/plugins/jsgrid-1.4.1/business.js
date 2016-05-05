@@ -165,15 +165,19 @@ $(function() {
                 var labelArr = ['职位名','薪资','薪资单位','岗位说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','角色说明'];
                 var tagsArr = ['jobType','jobSalary','jobSalaryUnit','','','jobStyle','jobStyle','jobStyle','','','',''];
                 for (var i = 0; i < fieldArr.length; i++) {
-                    if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3'])){
+                    console.log(fieldArr[i]);
+                    if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3'])>=0){
                         jobFormHtml += '<div class="form-group">'+
                         '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
                         '<div class="col-md-5">'+
                             '<select name="'+fieldArr[i]+'">';
+
+                        //console.log(tagsArr[i]);
                             var optionArray = tagsData[tagsArr[i]];
-                            for(var _i= 0;i < optionArray.length;_i++){
-                                console.log(optionArray[_i]);
-                                jobFormHtml += '<option value="'+optionArray[_i][id]+'">'+optionArray[_i][name]+'</option>';
+                        //console.log(optionArray);
+                            for(var j= 0;j < optionArray.length;j++){
+                                console.log(optionArray[j]);
+                                jobFormHtml += '<option value="'+optionArray[j].id+'">'+optionArray[j].name+'</option>';
                             }
 
                         jobFormHtml +='</select></div>'+
