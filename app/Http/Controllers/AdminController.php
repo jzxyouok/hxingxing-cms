@@ -20,7 +20,7 @@ class AdminController extends CommonController
 {
 
     protected $validatorMessages = array(
-        'picture.image'   => '文件类型不允许,请上传常规的图片(bmp|gif|jpg|png)文件',
+        'picture.image'   => '文件类型不允许,请上传常规的图片(bmp|gif|jpg|png|bpg)文件',
         'picture.max'    => '文件过大,文件大小不得超出2MB',
     );
 
@@ -83,7 +83,7 @@ class AdminController extends CommonController
                     // 这里根据客户端上传文件扩展名来验证，存在一定的安全隐患，请将上传目录执行权限去掉
                     //----------
 
-                    $check_ext = in_array($ext, array('jpg', 'png', 'gif', 'bmp','webp'), true);
+                    $check_ext = in_array($ext, array('jpg', 'png', 'gif', 'bmp','webp','bpg'), true);
 
                     if ($check_ext) {
                         $uniqid = uniqid().'_'.date('s');
@@ -110,7 +110,7 @@ class AdminController extends CommonController
                             $json = array_replace($json, ['status' => 0, 'info' => '失败原因为：<span class="text_error">文件校验失败</span>']);
                         }
                     } else {
-                        $json = array_replace($json, ['status' => 0, 'info' => '失败原因为：<span class="text_error">文件类型不允许,请上传常规的图片（bmp|gif|jpg|png）文件</span>']);
+                        $json = array_replace($json, ['status' => 0, 'info' => '失败原因为：<span class="text_error">文件类型不允许,请上传常规的图片（bmp|gif|jpg|png|bpg）文件</span>']);
                     }
                 } else {
                     $json = format_json_message($validator->messages(), $json);
