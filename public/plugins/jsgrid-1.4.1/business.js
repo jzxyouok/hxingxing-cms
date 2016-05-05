@@ -100,7 +100,7 @@ $(function() {
                         // return $("<button>").attr({"type":"button","class":"btn btn-default btn-sm checkbox-toggle"}).html("<i class='fa fa-square-o' title='全选/反全选'></i>");
                     },
                     itemTemplate: function(_, item) {
-                        return $("<input>").attr({"type":"checkbox","class":"table-operation hide","data-id":item.id});
+                        return $("<input>").attr({"type":"checkbox","class":"table-operation hide tabOperaId","data-id":item.id});
                     },
                     align: "center",width: 30,sorting: false
                 },
@@ -240,7 +240,7 @@ $(function() {
             fields: [
                 {headerTemplate: function() {return '联系人';},
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal">'+(item.contact?item.contact.name:'')+'</a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal">'+(item.contact?item.contact.name:'')+'</a><input type="hidden" class="tabOperaId" data-id="'+item.id+'">';
                     },
                     align: "center",width: 40,sorting: false
                 },

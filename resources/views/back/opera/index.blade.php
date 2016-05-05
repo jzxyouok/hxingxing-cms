@@ -255,7 +255,7 @@
         $('#modalForm').find('input[type="text"]','input[type="hidden"]').val('');
         $('#myModal').find('.alert').hide();
         //console.log(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
-        $('#myModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+        $('#myModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
         try{
             console.log(activeBtn.attr('data-comment'));
             var commentData = JSON.parse(activeBtn.attr('data-comment'));
@@ -294,7 +294,7 @@
     $('#addJob').click(function(e) {
         var jobForm = $('#jobForm');
         jobForm[0].reset();
-        $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+        $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
         var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
         $('#otherModal').find('#uid').val(commentData.uid);
         jobForm.collapse('show');
@@ -328,7 +328,7 @@
         $.post(jobController+'/'+jobIndex, {_method:'delete',_token:_token}, function(data, textStatus, xhr) {
               self.closest('li').remove();
             document.getElementById('jobForm').reset();
-            $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+            $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
             var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
             $('#otherModal').find('#uid').val(commentData.uid);
           });
@@ -348,7 +348,7 @@
         //清空原有数据,编辑初始化
         $('#otherModal').find('input[type="text"]','input[type="hidden"]').val('');
         $('#otherModal').find('.alert').hide();
-        $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
+        $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
 
         //console.log(jobData);
         $('#otherModal').find('.modal-body .list-group').html('');
