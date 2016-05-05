@@ -548,11 +548,11 @@
                     jobBox.append(jobHtml(oldContact,jobBox.find('li').length));
                 }else{
                     <!-- 编辑，更新职位按钮弹窗职位数据 -->
-                    var jobObj = JSON.parse(activeBtn.attr('data-comment'))
-                    var activeJobIndex = $('#activeJobIndex').val()
-                    jobObj[activeJobIndex] = oldContact
-
-                    console.log(oldContact,jobHtml(oldContact,activeJobIndex),activeJobIndex)
+                    var jobObj = JSON.parse(activeBtn.attr('data-comment'));
+                    var activeJobIndex = $('#activeJobIndex').val();
+                    jobObj[activeJobIndex] = oldContact;
+                    activeBtn.attr('data-comment',JSON.stringify(jobObj));
+                    console.log(oldContact,/*jobHtml(oldContact,activeJobIndex),*/activeJobIndex)
                     jobBox.find('li').eq(activeJobIndex).outerHTML(jobHtml(oldContact,activeJobIndex))
                     $('#jobForm').collapse('hide');
                 }
