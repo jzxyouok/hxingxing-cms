@@ -296,9 +296,18 @@
     $('body').on('click','.editJob',function () {
       var jobIndex = $('#otherModal .list-group li').index($(this).closest('li'))
       var jobObj = JSON.parse(activeBtn.attr('data-comment'))
+      var noCarray = ['height','age','weight'];//不带C的字段
       $('#jobForm input[type="text"],select').each(function(index, el) {
-        var field = $(this).attr('name')
-        $(this).val(jobObj[jobIndex][field])
+        var field = $(this).attr('name');
+        $(this).val(jobObj[jobIndex][field]);
+          if($.inArray(field,noCarray)>=0){
+              var optionArray = $(this).find('option');
+              for(var i=0;i<optionArray.length;i++){
+                  if(optionArray[i].text == jobObj[jobIndex][field]) {
+                      optionArray[i].selected = 'selected';
+                  }
+              }
+         }
       });
       $('#job_id').val(jobObj[jobIndex].id)
       $('#activeJobIndex').val(jobIndex)
@@ -316,7 +325,7 @@
     })
 
     function jobHtml(jobData,jobIndex) {
-        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+'</h4>'+jobData.salary+' - '+jobData.descrip+' - '+jobData.role+'<p class="list-group-item-text">'+'</p></div><div class="col-md-1"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a><a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
+        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+'</h4>'+jobData.role+' - '+jobData.roleDescrip+' - '+jobData.styleC1+' - '+jobData.styleC2+' - '+jobData.styleC3+' - '+jobData.height+' - '+jobData.age+' - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="col-md-1"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a><a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
     }
     $('body').on('click','.openOtherModal',function () {
         if($(this).closest('tr').hasClass('jsgrid-edit-row')){
