@@ -483,7 +483,10 @@
               },
           }).done(function(result) {//联系人操作
 
-              if(!personId)  oldContact.uid = result;
+              if(!personId){
+                oldContact.uid = result;
+                $('#myModal #uid').val(result);
+              }
               console.log(JSON.stringify(oldContact));
               //console.log(activeBtn.closest('tr').attr('class'));
               activeBtn.attr('data-comment',JSON.stringify(oldContact));
