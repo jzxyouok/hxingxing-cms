@@ -189,14 +189,14 @@
                     <div class="panel panel-default">
                       <div class="panel-heading">
                           <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 职位</h3>
-                          <a class="btn btn-default pull-right" data-toggle="collapse" href="#jobForm"><i class="icon fa fa-chevron-down"></i> 新增</a>
+                          <a class="btn btn-default pull-right" id="addJob"><i class="icon fa fa-plus"></i> 新增</a>
                           <div class="pull-right alert alert-success">操作成功！</div>
                           <div class="clearfix"></div>
                       </div>
                       
+                      <input type="hidden" name="uid" id="uid">
+                      <input type="hidden" name="operaId" id="operaId">
                       <div id="jobForm" class="panel-collapse collapse">
-                        <input type="hidden" name="uid" id="uid">
-                        <input type="hidden" name="operaId" id="operaId">
                         <input type="hidden" name="id" id="job_id">
                         <div class="panel-body">
                             <div id="elements"></div>
@@ -286,11 +286,17 @@
         $('#myModal').modal('show');
     })
 
+    // 新增职位
+    $('#addJob').click(function(e) {
+        var jobForm = $('#jobForm');
+        jobForm[0].reset();
+        jobForm.collapse('show');
+    });
     // 编辑职位
     $('body').on('click','.editJob',function () {
       var jobIndex = $('#otherModal .list-group li').index($(this).closest('li'))
       var jobObj = JSON.parse(activeBtn.attr('data-comment'))
-      $('#jobForm input[type="text"]').each(function(index, el) {
+      $('#jobForm input[type="text"],select').each(function(index, el) {
         var field = $(this).attr('name')
         $(this).val(jobObj[jobIndex][field])
       });
@@ -400,6 +406,11 @@
         });
         return o;
     };
+    jQuery.fn.outerHTML = function(s) {
+        return s
+            ? this.before(s).remove()
+            : jQuery("<p>").append(this.eq(0).clone()).html();
+    };
 
     var modalForm = $('#modalForm');
     var validator= modalForm.validate({
@@ -465,17 +476,31 @@
         onkeyup:false,
         focusInvalid:false,
         submitHandler: function(form) {
-            console.log('123');
             var self = $('#commitOtherModal');
-
-            var item = modalOtherForm.serialize();
-            //console.log(item);
+            
+            var item = modalOtherForm.serialize();            
             var oldContact= modalOtherForm.serializeObject();
+
+            <!-- 提交数据带上下拉选中项的文本 -->
+            modalOtherForm.find('select').each(function(index, el) {
+              var self = $(this);
+              var originFields = ['height','age','weight'];
+              var thisName = self.attr('name');
+              var thisTxt = self.find("option:selected").text();
+              if($.inArray(thisName,originFields)>=0){
+                oldContact[thisName] = thisTxt
+                item += '&'+thisName+'='+thisTxt
+              }else {
+                <!-- 下拉文本字段 -->
+                var txtField = thisName.replace(/C/g, '');
+                oldContact[txtField] = thisTxt
+                item += '&'+txtField+'='+thisTxt
+              }
+            });
 
             item._token=_token;
 
             var personId = $("#modalOtherForm #job_id").val();
-            //console.log(personId);
             if (personId>0) {
                 var method = 'PUT';
                 var url = jobController+'/'+personId;
@@ -515,8 +540,9 @@
                     var activeJobIndex = $('#activeJobIndex').val()
                     jobObj[activeJobIndex] = oldContact
 
-                    console.log(jobHtml(oldContact,activeJobIndex))
-                    jobBox.eq(activeJobIndex).html(jobHtml(oldContact,activeJobIndex))
+                    console.log(oldContact,jobHtml(oldContact,activeJobIndex),activeJobIndex)
+                    jobBox.find('li').eq(activeJobIndex).outerHTML(jobHtml(oldContact,activeJobIndex))
+                    $('#jobForm').collapse('hide');
                 }
                 //console.log(JSON.stringify(oldContact));
                 //console.log(activeBtn.closest('tr').attr('class'));

@@ -135,7 +135,7 @@ class OperaRepository extends BaseRepository
                                     'contact' => function ($query) {
                                         $query->get(['uid','isPubed', 'name','mobile','fakeName','fakeMobile','company','position','otherName','otherMobile','otherCompany','remark']);
                                     },'jobs'=> function ($query) {
-                                        $query->get(['id','operaId', 'name','salary','descrip','role','age']);
+                                        $query->get(['id','operaId', 'name','salary','descrip','role','age','nameC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','roleDescrip']);
                                     }));
         if ($onlySelf) {
             $query->where('created_uid', user('id'));
@@ -150,11 +150,8 @@ class OperaRepository extends BaseRepository
     }
     public function tags($data = []){
         $ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
-        ->groupBy('category')->whereIn('category', ['jobCategory','jobTopic','jumuStart','jumuRunTime','jobSalary','jobSalaryUnit','jobType','jobStyle'])
-        ->orWhere(function($query){
-            $query->whereIn('category', ['city'])
-                ->where('parentId', '<>', '0')->where('code', '<>', '0');
-        })->get()->toArray();
+        ->groupBy('category')
+        ->get()->toArray();
         // $ret = Tags::groupBy('category')->get();
         // var_dump($ret);die();
         return $ret;

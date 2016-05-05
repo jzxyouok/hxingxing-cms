@@ -18,6 +18,9 @@ $(function() {
         tagsData.jobSalary.unshift({id:0,name:""});
         tagsData.jobSalaryUnit.unshift({id:0,name:""});
         tagsData.jobStyle.unshift({id:0,name:""});
+        tagsData.jobHeight.unshift({id:0,name:""});
+        tagsData.jobAge.unshift({id:0,name:""});
+        tagsData.jobWeight.unshift({id:0,name:""});
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -157,28 +160,29 @@ $(function() {
                 },
                 { type: "control", editButton: false,deleteButton:manageRole }
             ],
+
             onDataLoaded: function(args) {
                 setIcheck();
 
                 var jobFormHtml = '';
-                var fieldArr = ['nameC','salaryC','salaryUnitC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','roleDescrip'];
-                var labelArr = ['职位名','薪资','薪资单位','岗位说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','角色说明'];
-                var tagsArr = ['jobType','jobSalary','jobSalaryUnit','','','jobStyle','jobStyle','jobStyle','','','',''];
+                var fieldArr = ['nameC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','roleDescrip'];
+                var labelArr = ['职位名','角色说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','薪资','薪资单位','岗位说明'];
+                var tagsArr = ['jobType','','','jobStyle','jobStyle','jobStyle','jobHeight','jobAge','jobWeight','jobSalary','jobSalaryUnit',''];
                 for (var i = 0; i < fieldArr.length; i++) {
-                    console.log(fieldArr[i]);
-                    if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3'])>=0){
+                    if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3','height','age','weight'])>=0){
                         jobFormHtml += '<div class="form-group">'+
                         '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
                         '<div class="col-md-5">'+
-                            '<select name="'+fieldArr[i]+'">';
+                            '<select name="'+fieldArr[i]+'" class="form-control">';
 
-                        //console.log(tagsArr[i]);
                             var optionArray = tagsData[tagsArr[i]];
                         //console.log(optionArray);
+                        if (optionArray!=undefined) {
                             for(var j= 0;j < optionArray.length;j++){
-                                console.log(optionArray[j]);
                                 jobFormHtml += '<option value="'+optionArray[j].id+'">'+optionArray[j].name+'</option>';
                             }
+                        }
+                            
 
                         jobFormHtml +='</select></div>'+
                     '</div>';
