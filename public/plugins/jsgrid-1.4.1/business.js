@@ -112,7 +112,7 @@ $(function() {
                 { name: "name", title: "剧名", type: "text", width: 50, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
                         console.log(value,item,item.id);
                         var result;
-                        if (item.id==undefined) {return true;}
+                        // if (item.id==undefined) {return true;}
                         if (value=='') {
                             result = false;
                         }else{
