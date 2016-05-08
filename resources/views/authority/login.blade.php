@@ -3,7 +3,7 @@
 @section('hacker_header')
 @stop
 
-@section('title') 登录 - 红咖 @stop
+@section('title') 登录 - 红猩猩 @stop
 
 @section('meta')
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
@@ -40,7 +40,7 @@
 
     <div class="login-box">
       <div class="login-logo">
-        <a href="#"><b>红咖</b></a>
+        <a href="#"><b>红猩猩</b></a>
       </div><!-- /.login-logo -->
       <div class="login-box-body">
         <p class="login-box-msg">登录开始您的会话</p>
@@ -82,7 +82,7 @@
           <a href="#" class="btn btn-block btn-social btn-facebook btn-flat"><i class="fa fa-facebook"></i>使用Facebook帐号登录</a>
           <a href="#" class="btn btn-block btn-social btn-google-plus btn-flat"><i class="fa fa-google-plus"></i>使用Google+帐号登录</a>
         </div>/.social-auth-links
-        
+
         <a href="#">忘记密码</a><br>
         <a href="#" class="text-center">注册</a> -->
 

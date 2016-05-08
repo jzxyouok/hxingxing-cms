@@ -38,7 +38,7 @@
       @endif
 
       <div class="nav-tabs-custom">
-          
+
           <ul id="mainTab" class="nav nav-tabs">
             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">未发布</a></li>
             <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>
@@ -49,7 +49,7 @@
               <div id="unpub"></div>
               <div id="unpubPager"></div>
               </div>
-          
+
               <div class="tab-pane" id="tab_2">
               <div id="pubed"></div>
               <div id="pubedPager"></div>
@@ -57,12 +57,12 @@
           </div>
       </div>
           <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
    aria-labelledby="myModalLabel" aria-hidden="true">
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <button type="button" class="close" 
+            <button type="button" class="close"
                data-dismiss="modal" aria-hidden="true">
                   &times;
             </button>
@@ -196,7 +196,7 @@
                           <div class="pull-right alert alert-success">操作成功！</div>
                           <div class="clearfix"></div>
                       </div>
-                      
+
 
                       <form action="" class="form-horizontal panel-collapse collapse" id="jobForm">
                           <input type="hidden" name="uid" id="uid">
@@ -212,7 +212,7 @@
                       </form>
                       <ul class="list-group"></ul>
                     </div>
-                
+
 
             </div>
         </div><!-- /.modal-content -->
@@ -247,7 +247,6 @@
   var activeBtn;
 
     $('body').on('click','.openModal',function () {
-        console.log($(this).closest('tr').attr('class'));
         if($(this).closest('tr').hasClass('jsgrid-edit-row')){
             activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
         }else{
@@ -340,7 +339,7 @@
     })
 
     function jobHtml(jobData,jobIndex) {
-        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+'</h4>'+jobData.role+' - '+jobData.roleDescrip+' - '+jobData.styleC+' - '+jobData.styleC+' - '+jobData.styleC+' - '+jobData.height+' - '+jobData.age+' - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="col-md-1"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a><a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
+        return '<li class="list-group-item container-fluid"><div class="pull-left"><h4 class="list-group-item-heading">'+jobData.name+' - '+jobData.role+'</h4> - '+jobData.roleDescrip+' - '+jobData.style1+' - '+jobData.style2+' - '+jobData.style3+' - '+jobData.height+'cm - '+jobData.age+'岁 - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="pull-right"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a><a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
     }
     $('body').on('click','.openOtherModal',function () {
         if($(this).closest('tr').hasClass('jsgrid-edit-row')){
@@ -362,7 +361,7 @@
         //console.log(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
         try{
             var jobData = JSON.parse(activeBtn.attr('data-comment'));
-            console.log(jobData);
+            // console.log(jobData);
             var commentHtml = '';
             for (var i = 0; i < jobData.length; i++) {
                 //console.log(i);
@@ -371,17 +370,6 @@
             var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
             //console.log(commentData);
             $('#otherModal').find('#uid').val(commentData.uid);
-
-
-
-            //console.log(commentHtml);
-            /*$('#otherModal').find('#uid').val(jobData.uid);
-            $('#job_id').val(jobData.id);
-            $('#job').val(jobData.name);//job_id
-            $('#salary').val(jobData.salary);
-            $('#descrip').val(jobData.descrip);
-            $('#role').val(jobData.role);
-            $('#roleDescrip').val(jobData.roleDescrip);*/
         }catch(e) {
 
         }
@@ -392,11 +380,11 @@
     $('body').on('click','.jsgrid-pager-page a',function () {
         setIcheck();
     });
-    
+
     var deleteSelectedItems = function() {
         if(!selectedItems.length || !confirm("确定删除吗?"))
             return;
- 
+
         $.ajax({
             type: "POST",
             url: operaController+'/'+selectedItems,
@@ -508,8 +496,8 @@
         focusInvalid:false,
         submitHandler: function(form) {
             var self = $('#commitOtherModal');
-            
-            var item = jobForm.serialize();            
+
+            var item = jobForm.serialize();
             var oldContact= jobForm.serializeObject();
 
             <!-- 提交数据带上下拉选中项的文本 -->

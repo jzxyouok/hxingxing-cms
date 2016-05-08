@@ -3,7 +3,7 @@
 @section('hacker_header')
 @stop
 
-@section('title') 后台 - 红咖 @stop
+@section('title') 后台 - 红猩猩 @stop
 
 @section('meta')
 <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
@@ -117,11 +117,11 @@ html {overflow-x:hidden;overflow-y:hidden;}/*禁止出现滚动条*/
 
     <!-- Slimscroll -->
     <script src="{{ asset('plugins/slimScroll/jquery.slimscroll.min.js') }}" type="text/javascript"></script>
-    
+
     @section('extraPlugin')
     @show{{-- 引入额外依赖JS插件 --}}
 
-    
+
     <script type="text/javascript">
       $(document).ready(function(){
           <!--highlight main-sidebar-->

@@ -109,9 +109,10 @@ $(function() {
                     },
                     align: "center",width: 40,sorting: false
                 },
-                { name: "name", title: "剧名", type: "text", width: 50/*, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
-                        console.log(value,item);
+                { name: "name", title: "剧名", type: "text", width: 50, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
+                        console.log(value,item,item.id);
                         var result;
+                        if (item.id==undefined) {return true;}
                         if (value=='') {
                             result = false;
                         }else{
@@ -126,7 +127,7 @@ $(function() {
                             });
                         }
                         return result;
-                    }}*/},
+                    }}},
                 { name: "invest", title: "总投资", type: "number", width: 30 },
                 { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "id", textField: "name" },
                 { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},

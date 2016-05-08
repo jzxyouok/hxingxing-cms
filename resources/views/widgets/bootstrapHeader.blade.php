@@ -1,9 +1,9 @@
-    
+
     <!-- 前台bootstrap头部导航 -->
     <div class="navbar navbar-default navbar-fixed-top">
         <div class="container">
             <div class="navbar-header">
-                <a href="/" class="navbar-brand">红咖</a>
+                <a href="/" class="navbar-brand">红猩猩</a>
                 <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main" aria-expanded="true">
                     <span class="icon-bar"></span>
                     <span class="icon-bar"></span>
@@ -21,7 +21,7 @@
                     </li>
                     @endforeach -->
                     <!-- <li><a href="{{ route('archive') }}">归档</a>
-                    
+
                     <li class="dropdown">
                         <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="download" aria-expanded="false">下载 <span class="caret"></span></a>
                         <ul class="dropdown-menu" aria-labelledby="download">
