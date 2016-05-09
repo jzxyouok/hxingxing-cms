@@ -299,7 +299,7 @@
       var jobIndex = $('#jobsModal .list-group li').index($(this).closest('li'))
       var jobObj = JSON.parse(activeBtn.attr('data-comment'))
       var noCarray = ['height','age','weight'];//不带C的字段
-      $('#jobForm input[type="text"],select').each(function(index, el) {
+      $('#jobForm input[type="text"],select,textarea').each(function(index, el) {
         var field = $(this).attr('name');
         $(this).val(jobObj[jobIndex][field]);
           if($.inArray(field,noCarray)>=0){
@@ -371,14 +371,7 @@
             var commentData = JSON.parse(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
             jobsModal.find('#uid').val(commentData.uid);
 
-            var jobData = JSON.parse(activeBtn.attr('data-comment').replace(/\\n/g, "\\n")
-               .replace(/\\'/g, "\\'")
-               .replace(/\\"/g, '\\"')
-               .replace(/\\&/g, "\\&")
-               .replace(/\\r/g, "\\r")
-               .replace(/\\t/g, "\\t")
-               .replace(/\\b/g, "\\b")
-               .replace(/\\f/g, "\\f"));
+            var jobData = JSON.parse(activeBtn.attr('data-comment'));
             if(!commentData.uid>0 && !jobData.length){
               alert('请添加联系人后操作');
               return false;
