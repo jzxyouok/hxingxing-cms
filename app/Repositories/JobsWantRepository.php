@@ -96,10 +96,10 @@ class JobsWantRepository extends BaseRepository {
 				$content->$val = e($inputs[$val]);
 			}
 		}
-		//$content->created_uid = user('id');
+		$content->created_uid = user('id');
 		/*if ($user_id) {
-	            $content->uid = $user_id;
-*/
+			            $content->uid = $user_id;
+		*/
 		//var_dump($content);die();
 		$content->updTime = round(microtime(true) * 1000);
 		$content->save();
@@ -125,7 +125,7 @@ class JobsWantRepository extends BaseRepository {
 		// var_dump($data);die();
 		$query = $this->model->with(array(
 			'contact' => function ($query) {
-				$query->get(['uid', 'name', 'fakeMobile', 'mobile', 'company', 'position', 'otherName', 'otherMobile', 'otherCompany', 'remark']);
+				$query->get(['uid', 'name', 'fakeName', 'fakeMobile', 'mobile', 'company', 'position', 'otherName', 'otherMobile', 'otherCompany', 'remark']);
 			},
 		));
 		if ($onlySelf) {

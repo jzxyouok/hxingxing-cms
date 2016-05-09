@@ -20,7 +20,6 @@ $(function() {
         tagsData.jobSalaryUnit.unshift({id:0,name:""});
         tagsData.city.unshift({id:0,name:""});
 
-
         $("#unpub").jsGrid({
             height: "650px",
             width: "100%",

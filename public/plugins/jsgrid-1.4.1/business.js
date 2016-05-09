@@ -33,9 +33,9 @@ function renderJobForm(tagsData) {
             jobFormHtml +='</select>';
 
         }else if($.inArray(fieldArr[i],['descrip','role'])>=0){
-            jobFormHtml += '<input type="text" class="form-control" name="'+fieldArr[i]+'">';    
+            jobFormHtml += '<input type="text" class="form-control" name="'+fieldArr[i]+'">';
         }else{
-            jobFormHtml += '<textarea class="form-control" rows="2" name="'+fieldArr[i]+'"></textarea>';    
+            jobFormHtml += '<textarea class="form-control" rows="2" name="'+fieldArr[i]+'"></textarea>';
         }
         jobFormHtml +='</div></div>';
     }
@@ -247,17 +247,20 @@ $(function() {
                     align: "center",width: 40,sorting: false
                 },
                 { name: "name", title: "剧名", type: "text", width: 50 },
+
                 { name: "invest", title: "总投资", type: "number", width: 30 },
-                { name:"categoryC",title:"类型",type:"select",items: tagsData.jobCategory,valueField:"id",textField:"name", width: 30},
-                { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
-                { name: "site", title: "地点", type: "text", width: 30 },
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 30},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 30},
+                { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "id", textField: "name" },
+                { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
+                { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
+                { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
+                { name: "siteC", title: "地点", type:"select",class:"chosen-select",items: tagsData.city,valueField:"id",textField:"name", width: 50},
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 50},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 50},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
-                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,row:3 },
-                { name: "producer", title: "制片方", type: "text", width: 30 },
-                { name: "creator", title: "主创", type: "text", width: 30 },
-                { name: "platform", title: "播放平台", type: "text", width: 30 },
+                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,height:1 },
+                { name: "producer", title: "制片方", type: "text", width: 40 },
+                { name: "creator", title: "主创", type: "text", width: 40 },
+                { name: "platform", title: "播放平台", type: "text", width: 40 },
                 /*{headerTemplate: function() {return '封面';},
                     itemTemplate: function(_, item) {
                         return item.cover?'<img src="'+item.cover+'" style="height: 35px;width: 35px">':'';
@@ -295,7 +298,7 @@ $(function() {
         }
         if(!confirm("确定发布这些项目吗?"))
             return;
- 
+
         $.ajax({
             type: "POST",
             url: operaController+'/pubOpera/'+selectedItems,
@@ -309,10 +312,10 @@ $(function() {
     $('.pubMan').click(function(event) {
         var self = $(this);
         var mobile = self.prev().find('input');
-        if(!mobileReg.test(mobile.val())) { 
-            alert('请输入有效的手机号码！'); 
+        if(!mobileReg.test(mobile.val())) {
+            alert('请输入有效的手机号码！');
             mobile.select();
-            return false; 
+            return false;
         }
 
         if(confirm('确定以这个号码发布招聘信息？')){
@@ -322,7 +325,7 @@ $(function() {
             $('#contactForm').find('#hidden').append('<input type="hidden" name="isPubed" value="'+isPubed+'"/>');
             $('.pubMan').val('已发布').prop('disabled', true);
         }
-        
+
 //        var uid = $('#uid').val();
 //        if (uid>0) {
 //            if (confirm('确定创建这个人吗？')) {

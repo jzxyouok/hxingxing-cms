@@ -197,6 +197,7 @@ aria-labelledby="contactModalLabel" aria-hidden="true">
             $('#uid').val(commentData.uid);
             $('#isPubed').val(commentData.isPubed);
             $('#contactName').val(commentData.name);
+            $('#fakeName').val(commentData.fakeName);
             $('#fakeMobile').val(commentData.fakeMobile);
             $('#realMobile').val(commentData.mobile);
             $('#contactCompany').val(commentData.company);

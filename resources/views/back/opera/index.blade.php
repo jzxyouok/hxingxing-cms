@@ -161,7 +161,7 @@
   <!-- jobs（Modal） -->
   <div class="modal fade" id="jobsModal" tabindex="-1" role="dialog"
        aria-labelledby="jobsModalLabel" aria-hidden="true">
-      <div class="modal-dialog">
+      <div class="modal-dialog" style="width: 800px;">
           <div class="modal-content">
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
@@ -322,7 +322,7 @@
         var jobIndex = $(this).attr('jobid')
         $.post(jobController+'/'+jobIndex, {_method:'delete',_token:_token}, function(data, textStatus, xhr) {
             data = JSON.parse(data)
-            console.log(data)
+            // console.log(data)
             if (data.status=='ok') {
                 self.closest('li').remove();
                 document.getElementById('jobForm').reset();
@@ -519,10 +519,10 @@
 
             item._token=_token;
 
-            var personId = $("#jobForm #job_id").val();
-            if (personId>0) {
+            var activeJobId = $("#jobForm #job_id").val();
+            if (activeJobId>0) {
                 var method = 'PUT';
-                var url = jobController+'/'+personId;
+                var url = jobController+'/'+activeJobId;
             }else{
                 var method = 'post';
                 var url = jobController;
@@ -544,22 +544,7 @@
             }).done(function(result) {//联系人操作
 
                 var jobBox = $('#jobsBox')
-                if(!personId) {
-                    oldContact.id = result;
-                    var dataComment = JSON.parse(activeBtn.attr('data-comment'));
-
-                    //dataComment.push(oldContact);
-                    dataComment.splice(0, 0, oldContact);
-                    activeBtn.attr('data-comment',JSON.stringify(dataComment));
-                    console.log(activeBtn.attr('data-comment'));
-                    <!-- console.log(jobBox.html()); -->
-                    jobBox.prepend(jobHtml(oldContact,jobBox.find('li').length));
-
-                    var oldTxt = activeBtn.text();
-                    var newJobsNum = parseInt($.isNumeric(oldTxt)?oldTxt:0) +1;
-                    $('.jsgrid-edit-row').find('.openJobs').text(newJobsNum);
-                    activeBtn.text(newJobsNum);
-                }else{
+                if(activeJobId>0) {
                     <!-- 编辑，更新职位按钮弹窗职位数据 -->
                     var jobObj = JSON.parse(activeBtn.attr('data-comment'));
                     var activeJobIndex = $('#activeJobIndex').val();
@@ -567,6 +552,21 @@
                     activeBtn.attr('data-comment',JSON.stringify(jobObj));
                     <!-- console.log(oldContact,/*jobHtml(oldContact,activeJobIndex),*/activeJobIndex) -->
                     jobBox.find('li').eq(activeJobIndex).outerHTML(jobHtml(oldContact,activeJobIndex))
+                }else{
+                    oldContact.id = result;
+                    var dataComment = JSON.parse(activeBtn.attr('data-comment'));
+
+                    //dataComment.push(oldContact);
+                    dataComment.splice(0, 0, oldContact);
+                    activeBtn.attr('data-comment',JSON.stringify(dataComment));
+                    <!-- console.log(activeBtn.attr('data-comment')); -->
+                    <!-- console.log(jobBox.html()); -->
+                    jobBox.prepend(jobHtml(oldContact,jobBox.find('li').length));
+
+                    var oldTxt = activeBtn.text();
+                    var newJobsNum = parseInt($.isNumeric(oldTxt)?oldTxt:0) +1;
+                    $('.jsgrid-edit-row').find('.openJobs').text(newJobsNum);
+                    activeBtn.text(newJobsNum);
                 }
                 $('#jobForm').collapse('hide');
                 //console.log(JSON.stringify(oldContact));
