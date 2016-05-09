@@ -200,4 +200,7 @@ class PersonRepository extends BaseRepository {
 	#********
 	#* 资源 REST 相关的接口函数 END
 	#********
+	public function destroy($id, $type = 'article') {
+		$this->model->where('uid', $id)->delete();
+	}
 }

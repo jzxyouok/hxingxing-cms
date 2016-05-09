@@ -52,7 +52,11 @@ class AdminPersonController extends BackController {
 		$pubed = $this->person->index($data, 1, Cache::get('page_size', '10'));
 		// var_dump($persons);die;
 		$serverUrl = 'http://112.74.86.237:8080/img/';
-		return view('back.person.index', compact('unpub', 'pubed', 'serverUrl', 'tab'));
+		$canDel = true;
+		if (!user('object')->can('manage_users') || !user('object')->can('manage_system')) {
+			$canDel = false;
+		}
+		return view('back.person.index', compact('unpub', 'pubed', 'serverUrl', 'canDel', 'tab'));
 	}
 
 	/**
@@ -156,6 +160,15 @@ class AdminPersonController extends BackController {
 		// var_dump($data);die();
 		$return = $this->person->update($data['uid'], $data, 'article');
 		//var_dump($return);die();
+		echo 1;
+	}
+	public function destroy($id) {
+		if (!user('object')->can('manage_users') || !user('object')->can('manage_system')) {
+			die('权限不足！');
+		}
+		//
+		$this->person->destroy($id, 'article');
+		// return redirect()->route('admin.article.index')->with('message', '删除文章成功！');
 		echo 1;
 	}
 }
