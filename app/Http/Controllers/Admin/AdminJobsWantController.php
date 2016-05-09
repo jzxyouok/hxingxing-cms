@@ -164,9 +164,9 @@ class AdminJobsWantController extends BackController {
 		$this->content->update($id, $data, 'article');
 		// return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
 	}
-	public function pubOpera(Request $request, $ids) {
+	public function pubWant(OperaRequest $request, $ids) {
 		$ids = explode(',', $ids);
-		$this->content->pubOpera($ids);
+		$this->content->pubWant($ids);
 		echo 1;
 	}
 

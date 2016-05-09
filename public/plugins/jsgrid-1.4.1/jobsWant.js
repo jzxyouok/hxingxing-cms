@@ -84,10 +84,10 @@ $(function() {
             },
             fields: [
                 {headerTemplate: function() {
-//                    return $("<button>").attr({"type":"button","class":"btn btn-primary btn-sm"}).text('发布')
-//                        .on("click", function () {
-//                            //pubOpera();
-//                        });
+                   return $("<button>").attr({"type":"button","class":"btn btn-primary btn-sm"}).text('发布')
+                       .on("click", function () {
+                           pubWant();
+                       });
                     },
                     filterTemplate: function() {
                         // return $("<button>").attr({"type":"button","class":"btn btn-default btn-sm checkbox-toggle"}).html("<i class='fa fa-square-o' title='全选/反全选'></i>");
@@ -154,7 +154,7 @@ $(function() {
             radioClass: 'iradio_flat-blue'
         });
     }
-    var pubOpera = function() {
+    var pubWant = function() {
         var selectedItems = [];
         $('.table-operation').each(function(index, el) {
             if ($(this).parent('[class*="icheckbox"]').hasClass("checked")) {
@@ -163,19 +163,18 @@ $(function() {
         });
         console.log(selectedItems)
         if(!selectedItems.length){
-            alert('请选择剧目！');
+            alert('请选择名片！');
             return;
         }
-        if(!confirm("确定发布这些项目吗?"))
+        if(!confirm("确定发布这些名片吗?"))
             return;
 
         $.ajax({
             type: "POST",
-            url: operaController+'/pubOpera/'+selectedItems,
+            url: operaController+'/pubWant/'+selectedItems,
             data: {_token:_token}
         }).done(function() {
             $("#unpub").jsGrid("search");
-            $("#pubed").jsGrid("search");
         });
     };
 

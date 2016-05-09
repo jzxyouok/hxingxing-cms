@@ -138,7 +138,7 @@ class JobsWantRepository extends BaseRepository {
 			}
 		}
 		//return $query->orderBy('id', 'desc')->get()->toArray();
-		return $query/*->where('id','>','300')*/->orderBy('id', 'desc')->get()->toArray();
+		return $query->where('pubStatus', 0)->orderBy('id', 'desc')->get()->toArray();
 	}
 	public function tags($data = []) {
 		$ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
@@ -212,8 +212,8 @@ class JobsWantRepository extends BaseRepository {
 		$content = $this->model->findOrFail($ids);
 		$content->delete();
 	}
-	public function pubOpera($ids) {
-		$this->model->pubOpera($ids);
+	public function pubWant($ids) {
+		$this->model->pubWant($ids);
 	}
 	public function checkOpera($name, $id) {
 		$query = $this->model->where('name', $name)->where('created_uid', '>', 0);
