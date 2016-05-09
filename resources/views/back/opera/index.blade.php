@@ -362,6 +362,8 @@
         $('#jobForm').collapse('hide');
         //console.log(activeBtn.closest('tr').attr('class'));
         //console.log(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
+
+        var commentHtml = '';
         try{
             var artTitle = self.data('title');//s
             jobsModal.find('.modalTitle').text(artTitle);
@@ -369,7 +371,14 @@
             var commentData = JSON.parse(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
             jobsModal.find('#uid').val(commentData.uid);
 
-            var jobData = JSON.parse(activeBtn.attr('data-comment'));
+            var jobData = JSON.parse(activeBtn.attr('data-comment').replace(/\\n/g, "\\n")
+               .replace(/\\'/g, "\\'")
+               .replace(/\\"/g, '\\"')
+               .replace(/\\&/g, "\\&")
+               .replace(/\\r/g, "\\r")
+               .replace(/\\t/g, "\\t")
+               .replace(/\\b/g, "\\b")
+               .replace(/\\f/g, "\\f"));
             if(!commentData.uid>0 && !jobData.length){
               alert('请添加联系人后操作');
               return false;
@@ -378,7 +387,6 @@
               $('#jobForm').collapse('show');
             }
             // console.log(jobData);
-            var commentHtml = '';
             for (var i = 0; i < jobData.length; i++) {
                 //console.log(i);
                 commentHtml += jobHtml(jobData[i],i);
