@@ -34,7 +34,7 @@
           <!-- Sidebar Menu -->
           <ul class="sidebar-menu">
             <!-- <li class="header">主导航栏</li> -->
-            
+
             <!--含子节点 且当前状态为active 的一级导航节点-->
             <!--控制台 active treeview-->
             <!-- <li class="treeview">
@@ -62,7 +62,6 @@
               <ul class="treeview-menu">
                 <li><a href="{{ route('admin.person.index') }}"><i class="fa fa-user"></i>用户管理</a></li>
                 <li><a href="{{ route('admin.opera.index') }}"><i class="fa fa-th-list"></i> 剧目</a></li>
-                <li><a href="{{ route('admin.jobs.index') }}"><i class="fa fa-th-large"></i> 招聘职位</a></li>
                 <li><a href="{{ route('admin.jobsWant.index') }}"><i class="fa fa-newspaper-o"></i> 应聘名片</a></li>
                 <li><a href="{{ route('admin.article.index') }}"><i class="fa fa-newspaper-o"></i> 文章</a></li>
                 <!-- <li><a href="{{ route('admin.page.index') }}"><i class="fa fa-file-o"></i> 单页</a></li> -->
