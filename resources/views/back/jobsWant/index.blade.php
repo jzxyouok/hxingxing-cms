@@ -36,7 +36,7 @@
       @endif
 
       <div class="nav-tabs-custom">
-          
+
           <ul id="mainTab" class="nav nav-tabs">
             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">未发布</a></li>
 <!--            <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>-->
@@ -47,7 +47,7 @@
               <div id="unpub"></div>
               <div id="unpubPager"></div>
               </div>
-          
+
               <!--<div class="tab-pane" id="tab_2">
                 <div id="pubed"></div>
                 <div id="pubedPager"></div>
@@ -55,8 +55,8 @@
           </div>
       </div>
 <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="contactModal" tabindex="-1" role="dialog"
+aria-labelledby="contactModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -64,7 +64,7 @@ aria-labelledby="myModalLabel" aria-hidden="true">
                         data-dismiss="modal" aria-hidden="true">
                     &times;
                 </button>
-                <h4 class="modal-title text-center row" id="myModalLabel">
+                <h4 class="modal-title text-center row" id="contactModalLabel">
                     <span id="modalTitle"></span>
                 </h4>
             </div>
@@ -89,19 +89,26 @@ aria-labelledby="myModalLabel" aria-hidden="true">
                             <div id="myTabContent" class="tab-content">
                                 <div class="tab-pane fade in active" id="main">
                                     <div class="form-group">
-                                        <label for="" class="col-md-2 control-label">姓名</label>
-                                        <div class="col-md-10"><input type="hidden" name="uid" id="uid"><input type="text" class="form-control" name="name" id="contactName"></div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="" class="col-md-2 control-label">真实手机</label>
-                                        <div class="col-md-6">
-                                            <input type="text" class="form-control" name="mobile" id="realMobile">
+                                        <label for="" class="col-md-2 control-label">真实姓名</label>
+                                        <div class="col-md-3">
+                                            <input type="hidden" name="uid" id="uid">
+                                            <input type="hidden" name="jobWantId" id="jobWantId">
+                                            <input type="text" class="form-control" name="name" id="contactName">
                                         </div>
-                                        <label for="realMobile" id="realMobile-error" class="row col-md-4 error"></label>
+                                        <label for="" class="control-label pull-left"><i class="icon fa fa-phone"></i></label>
+                                        <div class="col-md-3">
+                                             <input type="text" class="form-control" name="mobile" id="realMobile" maxlength="11">
+                                        </div>
                                     </div>
                                     <div class="form-group">
-                                        <label for="" class="col-md-2 control-label">虚拟手机</label>
-                                        <div class="col-md-10"><input type="text" class="form-control" name="fakeMobile" id="fakeMobile"></div>
+                                        <label for="" class="col-md-2 control-label">虚拟姓名</label>
+                                        <div class="col-md-3">
+                                            <input type="text" class="form-control" name="fakeName" id="fakeName">
+                                        </div>
+                                          <label for="" class="control-label pull-left"><i class="icon fa fa-phone"></i></label>
+                                          <div class="col-md-3">
+                                              <input type="text" class="form-control" name="fakeMobile" id="fakeMobile" maxlength="11">
+                                          </div>
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="col-md-2 control-label">公司</label>
@@ -137,62 +144,6 @@ aria-labelledby="myModalLabel" aria-hidden="true">
                         </div>
                     </div>
                 </form>
-
-                @if($manageRole)
-                <div class="panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="pull-left panel-title">推送</h3>
-                        <label class="checkbox-inline">
-                            <input type="radio" name="pushType" value="sms" checked> 短信
-                        </label>
-                        <label class="checkbox-inline">
-                            <input type="radio" name="pushType" value="hx">App消息
-                        </label>
-                        <button type="button" class="pull-right btn btn-info" id="pushBtn">
-                            <i class="icon fa fa-send"></i> 发送
-                        </button>
-                        <div class="pull-right alert alert-success">已发送！</div>
-                        <div class="clearfix"></div>
-                    </div>
-                    <div class="panel-body">
-                        <ul class="nav nav-tabs">
-                            <li class="active"><a href="#send" data-toggle="tab" aria-expanded="true">发送</a></li>
-                            <li><a href="#history" data-toggle="tab" aria-expanded="false">历史</a></li>
-                        </ul>
-
-                        <div class="tab-content">
-                            <div class="tab-pane active" id="send">
-                                <form action="" class="form-horizontal" id="pushForm">
-                                    <div class="form-group">
-                                        <label for="" class="col-md-2 control-label">选择手机</label>
-                                        <label class="checkbox-inline">
-                                            <input type="radio" name="mobileFinal" value="real" checked> 真实手机
-                                        </label>
-                                        <label class="checkbox-inline">
-                                            <input type="radio" name="mobileFinal" value="fake">虚拟手机
-                                        </label>
-                                    </div>
-                                    <!-- <div class="form-group col-md-6">
-                                        <select class="form-control" id="msgTpl">
-                                           <option value="哈喽">哈喽</option>
-                                           <option value="喂">喂</option>
-                                        </select>
-                                    </div> -->
-                                    <div class="row">
-                                        <label for="" class="col-md-2 control-label">内容</label>
-                                        <div class="col-md-10">
-                                            <textarea class="form-control" rows="2" placeholder="嗨" id="msgInput">【红色咖啡】大人，周星驰发布了女主（求职意向岗位）微简历，他（她）是你的艺中人吗？</textarea>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                            <div class="tab-pane" id="history">
-                                发送历史
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                @endif
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal -->
@@ -225,6 +176,7 @@ aria-labelledby="myModalLabel" aria-hidden="true">
 
     $('body').on('click','.openModal',function () {
         //console.log($(this).closest('tr').attr('class'));
+        var contactModal = $('#contactModal');
         if($(this).closest('tr').hasClass('jsgrid-edit-row')){
             activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
             //console.log($(this).closest('tr.jsgrid-edit-row').next().attr('style'));
@@ -235,7 +187,8 @@ aria-labelledby="myModalLabel" aria-hidden="true">
         console.log(activeBtn.attr('data-comment'));
         //清空原有数据,编辑初始化
         $('#modalForm').find('input[type="text"]','input[type="hidden"]').val('');
-        $('#myModal').find('.alert').hide();
+        contactModal.find('.alert').hide();
+        contactModal.find('#jobWantId').val(activeBtn.attr('jobWantId'));
         try{
             var commentData = JSON.parse(activeBtn.attr('data-comment'));
             //console.log(commentData);
@@ -261,18 +214,18 @@ aria-labelledby="myModalLabel" aria-hidden="true">
 
         }
 
-        $('#myModal').modal('show');
+        contactModal.modal('show');
         //console.log($(this).closest('tr').attr('class'));
     })
 
     $('body').on('click','.jsgrid-pager-page a',function () {
         setIcheck();
     });
-    
+
     var deleteSelectedItems = function() {
         if(!selectedItems.length || !confirm("确定删除吗?"))
             return;
- 
+
         $.ajax({
             type: "POST",
             url: operaController+'/'+selectedItems,

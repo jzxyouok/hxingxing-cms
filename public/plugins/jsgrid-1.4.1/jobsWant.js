@@ -1,11 +1,15 @@
-function writeObj(obj){
-    var description = "";
-    for(var i in obj){
-        var property=obj[i];
-        description+=i+" = "+property+"\n";
-    }
-    console.log(description);
+// <!-- 提交数据带上下拉选中项的文本 -->
+function takeSelectedTxt(selector,data) {
+    var selects = ['name','category', 'topic1', 'topic2', 'topic3','salary','salary', 'salaryUnit', 'site']
+    $(selector).find('select').each(function(index, el) {
+        var self = $(this);
+        var thisName = selects[index];
+        var thisTxt = self.find("option:selected").text();
+        data[thisName] = thisTxt;
+    });
+    return data;
 }
+
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
@@ -35,6 +39,7 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
+                    item = takeSelectedTxt('.jsgrid-insert-row',item);
                     if(activeBtn){
                         var data = JSON.parse(activeBtn.attr('data-comment'));
                         console.log(data);
@@ -53,6 +58,7 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
+                    item = takeSelectedTxt('.jsgrid-edit-row',item);
                     if(activeBtn){
                         var data = JSON.parse(activeBtn.attr('data-comment'));
                         console.log(data);
@@ -96,7 +102,7 @@ $(function() {
                         return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
                     },
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
+                        return '<a href="#" status-table="unpub" jobWantId="'+item.id+'" data-title="'+item.name+'" data-comment='+(item.contact?JSON.stringify((item.contact)):"[]")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },
                     align: "center",width: 40,sorting: false
                 },

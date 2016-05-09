@@ -80,7 +80,7 @@ $(function() {
                 insertItem: function(item) {
                     item.pubStatus=0;
                     item = takeSelectedTxt('.jsgrid-insert-row',item);
-                    console.log(item)
+                    // console.log(item)
                     $.ajax({
                         type: "POST",
                         url: operaController,
