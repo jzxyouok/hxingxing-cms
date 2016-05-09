@@ -10,10 +10,7 @@
   .jsgrid-pager-container .jsgrid-pager-current-page {background: #c4e2ff;color: #fff;
   }
   .jsgrid-table td,.jsgrid-table th{padding:0!important}
-  td a.btn-sm:not(.checkbox-toggle){text-overflow: ellipsis;
-    overflow: hidden;
-    width: 50px;
-    padding: 5px;}
+  td a.btn-sm:not(.checkbox-toggle){text-overflow: ellipsis;overflow: hidden;width: 50px;padding: 5px;}
     .panel-heading h3 {padding-top: 8px;}
     .panel-heading{padding: 5px 15px}
     .modal .alert{padding: 6px 15px;margin-bottom: 0;display: none}
@@ -56,168 +53,144 @@
               </div>
           </div>
       </div>
-          <!-- 模态框（Modal） -->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
-   aria-labelledby="myModalLabel" aria-hidden="true">
-   <div class="modal-dialog">
-      <div class="modal-content">
-         <div class="modal-header">
-            <button type="button" class="close"
-               data-dismiss="modal" aria-hidden="true">
-                  &times;
-            </button>
-            <h4 class="modal-title text-center row" id="myModalLabel">
-               <span id="modalTitle"></span>
-            </h4>
-         </div>
-         <div class="modal-body">
-            <form action="" class="form-horizontal" id="modalForm" onkeydown="if(event.keyCode==13)return false;">
-              <div class="panel panel-default">
-                 <div class="panel-heading">
-                    <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 联系人资料</h3>
-                    <button type="submit" class="pull-right btn btn-primary" id="commitModal">
-                       提交更改
-                    </button>
-                    <div class="pull-right alert alert-success">操作成功！</div>
-                    <div class="clearfix"></div>
-                 </div>
-                 <div class="panel-body">
-                    <ul id="myTab" class="nav nav-tabs">
-                       <li class="active">
-                          <a href="#main" data-toggle="tab">主要</a>
-                       </li>
-                       <li><a href="#other" data-toggle="tab">备注</a></li>
-                    </ul>
-                    <div id="myTabContent" class="tab-content">
-                     <div class="tab-pane fade in active" id="main">
-                        <div class="form-group">
-                          <!--<label for="" class="col-md-2 control-label">姓名</label>-->
-                          <div class="col-md-10" id="hidden">
-                              <input type="hidden" name="uid" id="uid">
-                              <input type="hidden" id="activeJobIndex">
-                              <input type="hidden" name="operaId" id="operaId">
-                              <!--<input type="text" class="form-control" name="name" id="contactName">-->
-                          </div>
-                        </div>
-                         <div class="form-group">
-                             <label for="" class="col-md-2 control-label">搜索电话</label>
-                             <div class="col-md-10"><input type="text" class="form-control" name="search" id="search"></div>
-                         </div>
-                        <div class="form-group">
-                            <label for="" class="col-md-2 control-label">真实姓名</label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" name="name" id="contactName">
-                            </div>
-                            <label for="" class="control-label pull-left">真实手机</label>
-                            <div class="col-md-4">
-                                 <input type="text" class="form-control" name="mobile" id="realMobile" maxlength="11">
-                            </div>
 
-<!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
-                            <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="1"/>
-                            <label for="realMobile" id="realMobile-error" class="row col-md-5 error"></label>
-                        </div>
-                        <div class="form-group">
-                            <label for="" class="col-md-2 control-label">虚拟姓名</label>
-                            <div class="col-md-3">
-                                <input type="text" class="form-control" name="fakeName" id="fakeName">
-                            </div>
-                          <label for="" class="control-label pull-left">虚拟手机</label>
-                          <div class="col-md-4">
-                              <input type="text" class="form-control" name="fakeMobile" id="fakeMobile" maxlength="11">
-                          </div>
-<!--                          <button class="pull-left btn btn-primary pubMan">发布</button>-->
-                            <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="2"/>
-
-                        </div>
-                        <div class="form-group">
-                          <label for="" class="col-md-2 control-label">公司</label>
-                          <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany"></div>
-                        </div>
-                        <div class="form-group">
-                          <label for="" class="col-md-2 control-label">职务</label>
-                          <div class="col-md-10"><input type="text" class="form-control" name="position" id="contactPosition"></div>
-                        </div>
-                        <div class="row">
-                             <label for="" class="col-md-2 control-label">备注</label>
-                             <!--<div class="col-md-10"><input type="text" class="form-control" name="remark" id="remark"></div>-->
-                            <div class="col-md-10">
-                                <textarea class="form-control" rows="3" name="remark" id="remark"></textarea>
-                            </div>
-
-                        </div>
-                     </div>
-                     <div class="tab-pane fade" id="other">
-                        <div class="form-group">
-                          <label for="" class="col-md-2 control-label">姓名</label>
-                          <div class="col-md-10"><input type="text" class="form-control" name="otherName" id="otherName"></div>
-                        </div>
-                        <div class="form-group">
-                          <label for="" class="col-md-2 control-label">手机号</label>
-                          <div class="col-md-6">
-                              <input type="text" class="form-control" name="otherMobile" id="otherMobile">
-                          </div>
-                          <label for="mobile" id="mobile-error" class="row col-md-4 control-label error"></label>
-                        </div>
-                        <div class="row">
-                          <label for="" class="col-md-2 control-label">公司</label>
-                          <div class="col-md-10"><input type="text" class="form-control" name="otherCompany" id="otherCompany"></div>
-                        </div>
-                     </div>
-                  </div>
-                 </div>
-              </div>
-            </form>
-         </div>
-      </div><!-- /.modal-content -->
-</div><!-- /.modal -->
-</div><!-- /.modal -->
-
-
-<!-- 另一个弹框 模态框（Modal） -->
-<div class="modal fade" id="otherModal" tabindex="-1" role="dialog"
-     aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
+  <!-- contact（Modal） -->
+  <div class="modal fade" id="contactModal" tabindex="-1" role="dialog"
+     aria-labelledby="contactModalLabel" aria-hidden="true">
+     <div class="modal-dialog">
         <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close"
-                        data-dismiss="modal" aria-hidden="true">
+           <div class="modal-header">
+              <button type="button" class="close"
+                 data-dismiss="modal" aria-hidden="true">
                     &times;
-                </button>
-                <h4 class="modal-title text-center row" id="myModalLabel">
-                    <span id="modalTitle"></span>
-                </h4>
-            </div>
+              </button>
+              <h4 class="modal-title text-center row" id="contactModalLabel">
+                <span class="pull-left"><i class="icon fa fa-user"></i> 联系人</span>
+                <span class="modalTitle"></span>
+              </h4>
+           </div>
+          <form action="" class="form-horizontal" id="contactForm" onkeydown="if(event.keyCode==13)return false;">
             <div class="modal-body">
-                    <div class="panel panel-default">
-                      <div class="panel-heading">
-                          <h3 class="pull-left panel-title"><i class="icon fa fa-user"></i> 职位</h3>
-                          <a class="btn btn-default pull-right" id="addJob"><i class="icon fa fa-plus"></i> 新增</a>
-                          <div class="pull-right alert alert-success">操作成功！</div>
-                          <div class="clearfix"></div>
-                      </div>
-
-
-                      <form action="" class="form-horizontal panel-collapse collapse" id="jobForm">
+                <ul id="myTab" class="nav nav-tabs">
+                   <li class="active">
+                      <a href="#main" data-toggle="tab">主要</a>
+                   </li>
+                   <li><a href="#other" data-toggle="tab">备注</a></li>
+                </ul>
+                <div id="myTabContent" class="tab-content">
+                 <div class="tab-pane fade in active" id="main">
+                    <div class="form-group">
+                      <!--<label for="" class="col-md-2 control-label">姓名</label>-->
+                      <div class="col-md-10" id="hidden">
                           <input type="hidden" name="uid" id="uid">
+                          <input type="hidden" id="activeJobIndex">
                           <input type="hidden" name="operaId" id="operaId">
-                          <input type="hidden" name="id" id="job_id">
-                        <div class="panel-body">
-                            <div id="elements"></div>
-                            <div class="row text-center">
-                              <button type="button" class="btn btn-default" id="cancelAddJob">取消</button>
-                              <input type="submit" class="btn btn-primary" id="commitOtherModal" value="保存">
-                            </div>
-                        </div>
-                      </form>
-                      <ul class="list-group"></ul>
+                          <!--<input type="text" class="form-control" name="name" id="contactName">-->
+                      </div>
                     </div>
+                     <div class="form-group">
+                         <label for="" class="col-md-2 control-label">搜索电话</label>
+                         <div class="col-md-10"><input type="text" class="form-control" name="search" id="search"></div>
+                     </div>
+                    <div class="form-group">
+                        <label for="" class="col-md-2 control-label">真实姓名</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="name" id="contactName">
+                        </div>
+                        <label for="" class="control-label pull-left"><i class="icon fa fa-phone"></i></label>
+                        <div class="col-md-3">
+                             <input type="text" class="form-control" name="mobile" id="realMobile" maxlength="11">
+                        </div>
+                        <label for="realMobile" id="realMobile-error" class="pull-left error"></label>
+                        <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="1"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="" class="col-md-2 control-label">虚拟姓名</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="fakeName" id="fakeName">
+                        </div>
+                      <label for="" class="control-label pull-left"><i class="icon fa fa-phone"></i></label>
+                      <div class="col-md-3">
+                          <input type="text" class="form-control" name="fakeMobile" id="fakeMobile" maxlength="11">
+                      </div>
+                        <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="2"/>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="col-md-2 control-label">公司</label>
+                      <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany"></div>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="col-md-2 control-label">职务</label>
+                      <div class="col-md-10"><input type="text" class="form-control" name="position" id="contactPosition"></div>
+                    </div>
+                    <div class="row">
+                         <label for="" class="col-md-2 control-label">备注</label>
+                         <!--<div class="col-md-10"><input type="text" class="form-control" name="remark" id="remark"></div>-->
+                        <div class="col-md-10">
+                            <textarea class="form-control" rows="3" name="remark" id="remark"></textarea>
+                        </div>
 
-
+                    </div>
+                 </div>
+                 <div class="tab-pane fade" id="other">
+                    <div class="form-group">
+                      <label for="" class="col-md-2 control-label">姓名</label>
+                      <div class="col-md-10"><input type="text" class="form-control" name="otherName" id="otherName"></div>
+                    </div>
+                    <div class="form-group">
+                      <label for="" class="col-md-2 control-label">手机号</label>
+                      <div class="col-md-6">
+                          <input type="text" class="form-control" name="otherMobile" id="otherMobile">
+                      </div>
+                      <label for="mobile" id="mobile-error" class="row col-md-4 control-label error"></label>
+                    </div>
+                    <div class="row">
+                      <label for="" class="col-md-2 control-label">公司</label>
+                      <div class="col-md-10"><input type="text" class="form-control" name="otherCompany" id="otherCompany"></div>
+                    </div>
+                 </div>
+                </div>
             </div>
+            <div class="modal-footer">
+              <div class="pull-right alert alert-success">操作成功！</div>
+              <button type="submit" class="btn btn-primary" id="commitContact">提交更改</button>
+            </div>
+          </form>
         </div><!-- /.modal-content -->
-    </div><!-- /.modal -->
-</div><!-- /.modal -->
+  </div><!-- /.modal -->
+  </div><!-- /.modal -->
+
+  <!-- jobs（Modal） -->
+  <div class="modal fade" id="jobsModal" tabindex="-1" role="dialog"
+       aria-labelledby="jobsModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                  <h4 class="modal-title text-center row" id="jobsModalLabel">
+                      <span class="pull-left"><i class="icon fa fa-th-large"></i> 职位</span>&nbsp;
+                      <a class="btn btn-info btn-sm pull-left" id="addJob"><i class="icon fa fa-plus"></i> 新增</a>
+                      <span class="modalTitle"></span>
+                  </h4>
+              </div>
+
+              <div class="modal-body">
+                  <form action="" class="form-horizontal panel-collapse collapse" id="jobForm">
+                  <input type="hidden" name="uid" id="uid">
+                  <input type="hidden" name="operaId" id="operaId">
+                  <input type="hidden" name="id" id="job_id">
+                  <div id="elements"></div>
+                  <div class="row text-center">
+                    <button type="button" class="btn btn-default" id="cancelAddJob">取消</button>
+                    <input type="submit" class="btn btn-primary" id="commitjob" value="保存">
+                  </div>
+                  </form>
+
+                  <ul class="list-group" id="jobsBox" style="max-height: 300px;overflow-y: scroll;"></ul>
+              </div>
+          </div><!-- /.modal-content -->
+      </div><!-- /.modal -->
+  </div><!-- /.modal -->
 @stop
 
 @section('extraPlugin')
@@ -232,41 +205,62 @@
 <script type="text/javascript" src="{{ asset('plugins/jsgrid-1.4.1/zh.js') }}"></script>
 
 <script>
+    $.fn.serializeObject = function(){
+        var o = {};
+        var a = this.serializeArray();
+        $.each(a, function() {
+            if (o[this.name] !== undefined) {
+                if (!o[this.name].push) {
+                    o[this.name] = [o[this.name]];
+                }
+                o[this.name].push(this.value || '');
+            } else {
+                o[this.name] = this.value || '';
+            }
+        });
+        return o;
+    };
+    $.fn.outerHTML = function(s) {
+        return s
+            ? this.before(s).remove()
+            : jQuery("<p>").append(this.eq(0).clone()).html();
+    };
+
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-  var operaController = '{{ route("admin.opera.index") }}';
-  var personController = '{{ route("admin.person.index") }}';
-  var checkMobileController = '{{ route("admin.person.index") }}/checkMobile';
-  var searchMobileController = '{{ route("admin.person.index") }}/searchMobile';
-  var jobController = '{{ route("admin.jobs.index") }}';
-  var manageRole = '{{$manageRole}}';
-  var _token = '{{ csrf_token() }}';
-  var activeBtn;
+    var operaController = '{{ route("admin.opera.index") }}';
+    var personController = '{{ route("admin.person.index") }}';
+    var checkMobileController = '{{ route("admin.person.index") }}/checkMobile';
+    var searchMobileController = '{{ route("admin.person.index") }}/searchMobile';
+    var jobController = '{{ route("admin.jobs.index") }}';
+    var manageRole = '{{$manageRole}}';
+    var _token = '{{ csrf_token() }}';
+    var activeBtn;
 
-    $('body').on('click','.openModal',function () {
-        if($(this).closest('tr').hasClass('jsgrid-edit-row')){
-            activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openModal');
+    $('body').on('click','.openContact',function () {
+        var self = $(this);
+        var contactModal = $('#contactModal');
+        if(self.closest('tr').hasClass('jsgrid-edit-row')){
+            activeBtn = self.closest('tr.jsgrid-edit-row').next().find('.openContact');
         }else{
-            activeBtn = $(this);
+            activeBtn = self;
         }
 
-        //console.log(activeBtn.attr('data-comment'));
         //清空原有数据,编辑初始化
-        $('#modalForm').find('input[type="text"]','input[type="hidden"]').val('');
-        $('#myModal').find('.alert').hide();
+        $('#contactForm').find('input[type="text"]','input[type="hidden"]').val('');
+        contactModal.find('.alert').hide();
         //console.log(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
-        $('#myModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
+        contactModal.find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
         try{
-            console.log(activeBtn.attr('data-comment'));
+            // console.log(activeBtn.attr('data-comment'));
             var commentData = JSON.parse(activeBtn.attr('data-comment'));
-            console.log(commentData);
-            var artTitle = $(this).data('title');//s
-            $('#modalTitle').text(artTitle);
-            $('#myModal #uid').val(commentData.uid);
-            console.log($('#uid'));
+            // console.log(commentData);
+            var artTitle = self.data('title');//s
+            contactModal.find('.modalTitle').text(artTitle);
+            $('#contactModal #uid').val(commentData.uid);
             $('#isPubed').val(commentData.isPubed);
             $('#contactName').val(commentData.name);
             $('#realMobile').val(commentData.mobile);
@@ -286,8 +280,7 @@
         }catch(e) {
 
         }
-
-        $('#myModal').modal('show');
+        contactModal.modal('show');
     })
 
     $('#cancelAddJob').click(function(e) {
@@ -297,14 +290,14 @@
     $('#addJob').click(function(e) {
         var jobForm = $('#jobForm');
         jobForm[0].reset();
-        $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
-        var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
-        $('#otherModal').find('#uid').val(commentData.uid);
+        $('#jobsModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
+        var commentData = JSON.parse(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
+        $('#jobsModal').find('#uid').val(commentData.uid);
         jobForm.collapse('show');
     });
     // 编辑职位
     $('body').on('click','.editJob',function () {
-      var jobIndex = $('#otherModal .list-group li').index($(this).closest('li'))
+      var jobIndex = $('#jobsModal .list-group li').index($(this).closest('li'))
       var jobObj = JSON.parse(activeBtn.attr('data-comment'))
       var noCarray = ['height','age','weight'];//不带C的字段
       $('#jobForm input[type="text"],select').each(function(index, el) {
@@ -329,37 +322,51 @@
         var self = $(this);
         var jobIndex = $(this).attr('jobid')
         $.post(jobController+'/'+jobIndex, {_method:'delete',_token:_token}, function(data, textStatus, xhr) {
-              self.closest('li').remove();
-            document.getElementById('jobForm').reset();
-            $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
-            var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
-            $('#otherModal').find('#uid').val(commentData.uid);
+            data = JSON.parse(data)
+            console.log(data)
+            if (data.status=='ok') {
+                self.closest('li').remove();
+                document.getElementById('jobForm').reset();
+                $('#jobsModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
+                var commentData = JSON.parse(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
+                $('#jobsModal').find('#uid').val(commentData.uid);
+                var newJobsNum = parseInt(activeBtn.text()) -1;
+                $('.jsgrid-edit-row').find('.openJobs').text(newJobsNum);
+                activeBtn.text(newJobsNum);
+            }else {
+                alert(data.msg)
+            }
           });
       }
     })
 
     function jobHtml(jobData,jobIndex) {
-        return '<li class="list-group-item container-fluid"><div class="pull-left"><h4 class="list-group-item-heading">'+jobData.name+' - '+jobData.role+'</h4> - '+jobData.roleDescrip+' - '+jobData.style1+' - '+jobData.style2+' - '+jobData.style3+' - '+jobData.height+'cm - '+jobData.age+'岁 - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="pull-right"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a><a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
+        return '<li class="list-group-item container-fluid"><div class="pull-left"><h4 class="list-group-item-heading">'+jobData.name+' - '+jobData.role+'</h4> - '+jobData.roleDescrip+' - '+jobData.style1+' - '+jobData.style2+' - '+jobData.style3+' - '+jobData.height+'cm - '+jobData.age+'岁 - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="pull-right"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a>&nbsp;<a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
     }
-    $('body').on('click','.openOtherModal',function () {
-        if($(this).closest('tr').hasClass('jsgrid-edit-row')){
-            activeBtn = $(this).closest('tr.jsgrid-edit-row').next().find('.openOtherModal');
+    $('body').on('click','.openJobs',function () {
+        var self = $(this);
+        var jobsModal = $('#jobsModal');
+        if(self.closest('tr').hasClass('jsgrid-edit-row')){
+            activeBtn = self.closest('tr.jsgrid-edit-row').next().find('.openJobs');
         }else{
-            activeBtn = $(this);
+            activeBtn = self;
         }
 
         //清空原有数据,编辑初始化
-        $('#otherModal').find('input[type="text"]','input[type="hidden"]').val('');
-        $('#otherModal').find('.alert').hide();
-        $('#otherModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
+        jobsModal.find('input[type="text"]','input[type="hidden"]').val('');
+        jobsModal.find('.alert').hide();
+        jobsModal.find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
 
         //console.log(jobData);
-        $('#otherModal').find('.modal-body .list-group').html('');
+        jobsModal.find('#jobsBox').html('');
         $('#jobForm input[type="text"],select').val('');
         $('#jobForm').collapse('hide');
         //console.log(activeBtn.closest('tr').attr('class'));
-        //console.log(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
+        //console.log(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
         try{
+            var artTitle = self.data('title');//s
+            jobsModal.find('.modalTitle').text(artTitle);
+
             var jobData = JSON.parse(activeBtn.attr('data-comment'));
             // console.log(jobData);
             var commentHtml = '';
@@ -367,14 +374,13 @@
                 //console.log(i);
                 commentHtml += jobHtml(jobData[i],i);
             }
-            var commentData = JSON.parse(activeBtn.closest('tr').find('.openModal').attr('data-comment'));
+            var commentData = JSON.parse(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
             //console.log(commentData);
-            $('#otherModal').find('#uid').val(commentData.uid);
+            jobsModal.find('#uid').val(commentData.uid);
         }catch(e) {
 
         }
-        $('#otherModal').find('.modal-body .list-group').html(commentHtml!=''?commentHtml:'没有职位');
-        //$('#otherModal').modal('show');
+        jobsModal.find('#jobsBox').html(commentHtml!=''?commentHtml:'没有职位');
     })
 
     $('body').on('click','.jsgrid-pager-page a',function () {
@@ -398,45 +404,21 @@
     };
 </script>
 <script src="{{ asset('plugins/jsgrid-1.4.1/business.js') }}" type="text/javascript"></script>
-<script src="{{ asset('static/js/bootstrap-hover-dropdown.js') }}" type="text/javascript"></script>
 
 <script src="{{ asset('static/js/jquery.form.js') }}" type="text/javascript"></script>
 <script src="{{ asset('static/js/jquery.validate.js') }}" type="text/javascript"></script>
-<!--引入Chosen组件-->
-<script src="{{ asset('static/js/hongka.js') }}" type="text/javascript"></script>
 @stop
 
 @section('filledScript')
-    $.fn.serializeObject = function(){
-        var o = {};
-        var a = this.serializeArray();
-        $.each(a, function() {
-            if (o[this.name] !== undefined) {
-                if (!o[this.name].push) {
-                    o[this.name] = [o[this.name]];
-                }
-                o[this.name].push(this.value || '');
-            } else {
-                o[this.name] = this.value || '';
-            }
-        });
-        return o;
-    };
-    jQuery.fn.outerHTML = function(s) {
-        return s
-            ? this.before(s).remove()
-            : jQuery("<p>").append(this.eq(0).clone()).html();
-    };
-
-    var modalForm = $('#modalForm');
-    var validator= modalForm.validate({
+    var contactForm = $('#contactForm');
+    var validator= contactForm.validate({
       onkeyup:false,
         focusInvalid:false,
         rules:{
           contactName:{required:true},
           mobile: {required:true,
             remote:{url: checkMobileController, type:"post",dataType:"json",
-              data: {uid: function(){return $("#modalForm #uid").val();},mobile: function(){return $("#modalForm #realMobile").val();}}
+              data: {uid: function(){return $("#contactForm #uid").val();},mobile: function(){return $("#contactForm #realMobile").val();}}
             }
           },
         },
@@ -445,14 +427,14 @@
           mobile:{required:'请输入手机号',remote:'已经存在'},
         },
         submitHandler: function(form) {
-          var self = $('#commitModal');
+          var self = $('#commitContact');
 
-          var item = modalForm.serialize();
-          var oldContact= modalForm.serializeObject();
+          var item = contactForm.serialize();
+          var oldContact= contactForm.serializeObject();
 
           item._token=_token;
 
-        var personId = $("#modalForm #uid").val();
+        var personId = $("#contactForm #uid").val();
             console.log(personId);
           if (personId>0) {
               var method = 'PUT';
@@ -479,7 +461,7 @@
 
               if(!personId){
                 oldContact.uid = result;
-                $('#myModal #uid').val(result);
+                $('#contactModal #uid').val(result);
               }
               console.log(JSON.stringify(oldContact));
               //console.log(activeBtn.closest('tr').attr('class'));
@@ -495,7 +477,7 @@
         onkeyup:false,
         focusInvalid:false,
         submitHandler: function(form) {
-            var self = $('#commitOtherModal');
+            var self = $('#jobsModal');
 
             var item = jobForm.serialize();
             var oldContact= jobForm.serializeObject();
@@ -543,7 +525,7 @@
                 },
             }).done(function(result) {//联系人操作
 
-                var jobBox = $('#otherModal ul.list-group')
+                var jobBox = $('#jobsBox')
                 if(!personId) {
                     oldContact.id = result;
                     var dataComment = JSON.parse(activeBtn.attr('data-comment'));
@@ -552,15 +534,19 @@
                     dataComment.splice(0, 0, oldContact);
                     activeBtn.attr('data-comment',JSON.stringify(dataComment));
                     console.log(activeBtn.attr('data-comment'));
-                    console.log(jobBox.html());
+                    <!-- console.log(jobBox.html()); -->
                     jobBox.prepend(jobHtml(oldContact,jobBox.find('li').length));
+
+                    var newJobsNum = parseInt(activeBtn.text()) +1;
+                    $('.jsgrid-edit-row').find('.openJobs').text(newJobsNum);
+                    activeBtn.text(newJobsNum);
                 }else{
                     <!-- 编辑，更新职位按钮弹窗职位数据 -->
                     var jobObj = JSON.parse(activeBtn.attr('data-comment'));
                     var activeJobIndex = $('#activeJobIndex').val();
                     jobObj[activeJobIndex] = oldContact;
                     activeBtn.attr('data-comment',JSON.stringify(jobObj));
-                    console.log(oldContact,/*jobHtml(oldContact,activeJobIndex),*/activeJobIndex)
+                    <!-- console.log(oldContact,/*jobHtml(oldContact,activeJobIndex),*/activeJobIndex) -->
                     jobBox.find('li').eq(activeJobIndex).outerHTML(jobHtml(oldContact,activeJobIndex))
                     $('#jobForm').collapse('hide');
                 }

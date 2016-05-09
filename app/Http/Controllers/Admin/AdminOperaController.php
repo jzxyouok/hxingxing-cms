@@ -87,7 +87,7 @@ class AdminOperaController extends BackController {
 
 	public function indexData(Request $request, $pubStatus) {
 		$data = [];
-		$searchFields = array( /*'id',*/'name', 'invest', 'categoryC', 'topicC1', 'siteC', 'startTimeC', 'periodC', 'runTime', 'outline');
+		$searchFields = array( /*'id',*/'name', 'invest', 'categoryC', 'topicC1', 'topicC2', 'topicC3', 'siteC', 'startTimeC', 'periodC', 'runTime', 'outline');
 		foreach ($searchFields as $k => $val) {
 			$data[$val] = $request->input($val);
 		}

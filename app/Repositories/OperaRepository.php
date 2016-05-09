@@ -92,7 +92,7 @@ class OperaRepository extends BaseRepository {
 			$content->flag = $tmp_flag;
 		}
 
-		$allFields = array('name', 'invest', 'categoryC', 'topicC1', 'siteC', 'startTimeC', 'periodC', 'runTime', 'outline', 'producer', 'creator', 'platform', 'pubStatus', 'uid');
+		$allFields = array('name', 'invest', 'categoryC', 'category', 'topicC1', 'topic1', 'topicC2', 'topic2', 'topicC3', 'topic3', 'siteC', 'site', 'startTimeC', 'startTime', 'periodC', 'period', 'runTime', 'outline', 'producer', 'creator', 'platform', 'pubStatus', 'uid');
 		foreach ($allFields as $k => $val) {
 			if (array_key_exists($val, $inputs)) {
 				$content->$val = e($inputs[$val]);
@@ -133,7 +133,7 @@ class OperaRepository extends BaseRepository {
 		if ($onlySelf) {
 			$query->where('created_uid', user('id'));
 		}
-		$searchFields = array('name', 'invest', 'categoryC', 'topicC1', 'siteC', 'startTimeC', 'periodC', 'runTime', 'outline');
+		$searchFields = array('name', 'invest', 'categoryC', 'topicC1', 'topicC2', 'topicC3', 'siteC', 'startTimeC', 'periodC', 'runTime', 'outline');
 		foreach ($searchFields as $k => $val) {
 			if (!is_numeric($data[$val]) && trim($data[$val]) != '' || is_numeric($data[$val]) && $data[$val] > 0) {
 				$query->where($val, 'like', '%' . e($data[$val]) . '%');
