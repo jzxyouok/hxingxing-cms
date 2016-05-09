@@ -12,6 +12,36 @@ function takeSelectedTxt(selector,data) {
     return data;
 }
 
+function renderJobForm(tagsData) {
+    var jobFormHtml = '';
+    var fieldArr = ['nameC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','roleDescrip'];
+    var labelArr = ['职位名','角色说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','薪资','薪资单位','岗位说明'];
+    var tagsArr = ['jobType','','','jobStyle','jobStyle','jobStyle','jobHeight','jobAge','jobWeight','jobSalary','jobSalaryUnit',''];
+    for (var i = 0; i < fieldArr.length; i++) {
+        jobFormHtml += '<div class="form-group">'+
+            '<label class="col-md-3 control-label">'+labelArr[i]+'</label><div class="col-md-8">';
+
+        if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3','height','age','weight'])>=0){
+            jobFormHtml += '<select name="'+fieldArr[i]+'" class="form-control">';
+            var optionArray = tagsData[tagsArr[i]];
+            //console.log(optionArray);
+            if (optionArray!=undefined) {
+                for(var j= 0;j < optionArray.length;j++){
+                    jobFormHtml += '<option value="'+optionArray[j].id+'">'+optionArray[j].name+'</option>';
+                }
+            }
+            jobFormHtml +='</select>';
+
+        }else if($.inArray(fieldArr[i],['descrip','role'])>=0){
+            jobFormHtml += '<input type="text" class="form-control" name="'+fieldArr[i]+'">';    
+        }else{
+            jobFormHtml += '<textarea class="form-control" rows="2" name="'+fieldArr[i]+'"></textarea>';    
+        }
+        jobFormHtml +='</div></div>';
+    }
+    $('#jobForm #elements').html(jobFormHtml);
+}
+
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
@@ -27,6 +57,8 @@ $(function() {
         tagsData.jobHeight.unshift({id:0,name:""});
         tagsData.jobAge.unshift({id:0,name:""});
         tagsData.jobWeight.unshift({id:0,name:""});
+
+        renderJobForm(tagsData);
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -159,7 +191,7 @@ $(function() {
                         //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openJobs" >新增<i class="icon fa fa-edit"></i></a>';
                     },
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"[]")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"[]")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs&&item.jobs.length>0?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },
                     align: "center",width: 40,sorting: false
                 },
@@ -168,39 +200,6 @@ $(function() {
 
             onDataLoaded: function(args) {
                 setIcheck();
-
-                var jobFormHtml = '';
-                var fieldArr = ['nameC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','roleDescrip'];
-                var labelArr = ['职位名','角色说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','薪资','薪资单位','岗位说明'];
-                var tagsArr = ['jobType','','','jobStyle','jobStyle','jobStyle','jobHeight','jobAge','jobWeight','jobSalary','jobSalaryUnit',''];
-                for (var i = 0; i < fieldArr.length; i++) {
-                    if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3','height','age','weight'])>=0){
-                        jobFormHtml += '<div class="form-group">'+
-                        '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
-                        '<div class="col-md-5">'+
-                            '<select name="'+fieldArr[i]+'" class="form-control">';
-
-                        var optionArray = tagsData[tagsArr[i]];
-                        //console.log(optionArray);
-                        if (optionArray!=undefined) {
-                            for(var j= 0;j < optionArray.length;j++){
-                                jobFormHtml += '<option value="'+optionArray[j].id+'">'+optionArray[j].name+'</option>';
-                            }
-                        }
-                            
-
-                        jobFormHtml +='</select></div></div>';
-
-                    }else{
-                        jobFormHtml += '<div class="form-group">'+
-                        '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
-                        '<div class="col-md-5">'+
-                            '<input type="text" class="form-control" name="'+fieldArr[i]+'">'+
-                        '</div></div>';    
-                    }
-                    
-                }
-                $('#jobForm #elements').html(jobFormHtml)
             },
             onRefreshed: function(args) {
                 setIcheck();
@@ -266,7 +265,7 @@ $(function() {
                 },*/
                 {headerTemplate: function() {return '职位发布';},
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs&&item.jobs.length>0?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },
                     align: "center",width: 40,sorting: false
                 },

@@ -11,8 +11,6 @@
   }
   .jsgrid-table td,.jsgrid-table th{padding:0!important}
   td a.btn-sm:not(.checkbox-toggle){text-overflow: ellipsis;overflow: hidden;width: 50px;padding: 5px;}
-    .panel-heading h3 {padding-top: 8px;}
-    .panel-heading{padding: 5px 15px}
     .modal .alert{padding: 6px 15px;margin-bottom: 0;display: none}
     .error{color: red;border-color: red;}
 </style>
@@ -180,7 +178,7 @@
                   <input type="hidden" name="operaId" id="operaId">
                   <input type="hidden" name="id" id="job_id">
                   <div id="elements"></div>
-                  <div class="row text-center">
+                  <div class="form-group text-center">
                     <button type="button" class="btn btn-default" id="cancelAddJob">取消</button>
                     <input type="submit" class="btn btn-primary" id="commitjob" value="保存">
                   </div>
@@ -290,9 +288,10 @@
     $('#addJob').click(function(e) {
         var jobForm = $('#jobForm');
         jobForm[0].reset();
-        $('#jobsModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
+        jobForm.find('#job_id').val(0)
+        /*$('#jobsModal').find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
         var commentData = JSON.parse(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
-        $('#jobsModal').find('#uid').val(commentData.uid);
+        $('#jobsModal').find('#uid').val(commentData.uid);*/
         jobForm.collapse('show');
     });
     // 编辑职位
@@ -341,7 +340,7 @@
     })
 
     function jobHtml(jobData,jobIndex) {
-        return '<li class="list-group-item container-fluid"><div class="pull-left"><h4 class="list-group-item-heading">'+jobData.name+' - '+jobData.role+'</h4> - '+jobData.roleDescrip+' - '+jobData.style1+' - '+jobData.style2+' - '+jobData.style3+' - '+jobData.height+'cm - '+jobData.age+'岁 - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="pull-right"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a>&nbsp;<a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
+        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+' - '+jobData.role+'</h4> - '+jobData.roleDescrip+' - '+jobData.style1+' - '+jobData.style2+' - '+jobData.style3+' - '+jobData.height+'cm - '+jobData.age+'岁 - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="pull-right"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a>&nbsp;<a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
     }
     $('body').on('click','.openJobs',function () {
         var self = $(this);
@@ -367,20 +366,27 @@
             var artTitle = self.data('title');//s
             jobsModal.find('.modalTitle').text(artTitle);
 
+            var commentData = JSON.parse(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
+            jobsModal.find('#uid').val(commentData.uid);
+
             var jobData = JSON.parse(activeBtn.attr('data-comment'));
+            if(!commentData.uid>0 && !jobData.length){
+              alert('请添加联系人后操作');
+              return false;
+            }
+            if(!jobData.length){
+              $('#jobForm').collapse('show');
+            }
             // console.log(jobData);
             var commentHtml = '';
             for (var i = 0; i < jobData.length; i++) {
                 //console.log(i);
                 commentHtml += jobHtml(jobData[i],i);
             }
-            var commentData = JSON.parse(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
-            //console.log(commentData);
-            jobsModal.find('#uid').val(commentData.uid);
         }catch(e) {
 
         }
-        jobsModal.find('#jobsBox').html(commentHtml!=''?commentHtml:'没有职位');
+        jobsModal.find('#jobsBox').html(commentHtml);
     })
 
     $('body').on('click','.jsgrid-pager-page a',function () {
@@ -452,7 +458,7 @@
                   self.prop('disabled', true);
               },
               error: function( xhr ) {
-                  self.next().text('操作失败').removeClass('alert-success').addClass('alert-warning').show();
+                  self.prev().text('操作失败').removeClass('alert-success').addClass('alert-warning').show();
               },
               complete: function( xhr ) {
                   self.prop('disabled', false);
@@ -467,7 +473,7 @@
               //console.log(activeBtn.closest('tr').attr('class'));
               activeBtn.attr('data-comment',JSON.stringify(oldContact));
 
-              self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
+              self.prev().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();
           });
         }
     });
@@ -476,6 +482,17 @@
     var validator= jobForm.validate({
         onkeyup:false,
         focusInvalid:false,
+        rules:{
+          nameC:{required:true},
+          mobile: {required:true,
+            remote:{url: checkMobileController, type:"post",dataType:"json",
+              data: {uid: function(){return $("#contactForm #uid").val();},mobile: function(){return $("#contactForm #realMobile").val();}}
+            }
+          },
+        },
+        messages:{
+          nameC:{required:'必选项'},
+        },
         submitHandler: function(form) {
             var self = $('#jobsModal');
 
@@ -537,7 +554,8 @@
                     <!-- console.log(jobBox.html()); -->
                     jobBox.prepend(jobHtml(oldContact,jobBox.find('li').length));
 
-                    var newJobsNum = parseInt(activeBtn.text()) +1;
+                    var oldTxt = activeBtn.text();
+                    var newJobsNum = parseInt($.isNumeric(oldTxt)?oldTxt:0) +1;
                     $('.jsgrid-edit-row').find('.openJobs').text(newJobsNum);
                     activeBtn.text(newJobsNum);
                 }else{
@@ -548,8 +566,8 @@
                     activeBtn.attr('data-comment',JSON.stringify(jobObj));
                     <!-- console.log(oldContact,/*jobHtml(oldContact,activeJobIndex),*/activeJobIndex) -->
                     jobBox.find('li').eq(activeJobIndex).outerHTML(jobHtml(oldContact,activeJobIndex))
-                    $('#jobForm').collapse('hide');
                 }
+                $('#jobForm').collapse('hide');
                 //console.log(JSON.stringify(oldContact));
                 //console.log(activeBtn.closest('tr').attr('class'));
                 //activeBtn.attr('data-comment',JSON.stringify(oldContact));
