@@ -66,7 +66,8 @@ class AdminOperaController extends BackController {
 		if (user('object')->can('customer_service')) {
 			$manageRole = true;
 		}
-		return view('back.opera.index', compact('typeRole', 'manageRole'));
+		$serverUrl = 'http://112.74.86.237:8080/img/';
+		return view('back.opera.index', compact('typeRole', 'manageRole', 'serverUrl'));
 	}
 
 	public function tagsData(Request $request) {

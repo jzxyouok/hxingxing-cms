@@ -261,11 +261,11 @@ $(function() {
                 { name: "producer", title: "制片方", type: "text", width: 40 },
                 { name: "creator", title: "主创", type: "text", width: 40 },
                 { name: "platform", title: "播放平台", type: "text", width: 40 },
-                /*{headerTemplate: function() {return '封面';},
+                {headerTemplate: function() {return '封面';},
                     itemTemplate: function(_, item) {
-                        return item.cover?'<img src="'+item.cover+'" style="height: 35px;width: 35px">':'';
+                        return item.cover?'<img src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px">':'';
                     },width: 40,sorting: false,
-                },*/
+                },
                 {headerTemplate: function() {return '职位发布';},
                     itemTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs&&item.jobs.length>0?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';

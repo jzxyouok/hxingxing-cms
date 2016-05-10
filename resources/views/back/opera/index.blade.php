@@ -4,6 +4,7 @@
 <!-- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid-theme.min.css" /> -->
 <link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid.min.css"/>
 <link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid-theme.min.css" />
+<link type="text/css" rel="stylesheet" href="{{ asset('static/css/fileinput.min.css') }}" />
 <style>
   input,select{border: 1px solid #cccccc;border-radius: 4px;}
   .jsgrid-table{width: 100%!important}
@@ -230,12 +231,14 @@
         }
     });
     var operaController = '{{ route("admin.opera.index") }}';
+    var uploadController = '{{ route("admin.upload") }}';
     var personController = '{{ route("admin.person.index") }}';
     var checkMobileController = '{{ route("admin.person.index") }}/checkMobile';
     var searchMobileController = '{{ route("admin.person.index") }}/searchMobile';
     var jobController = '{{ route("admin.jobs.index") }}';
     var manageRole = '{{$manageRole}}';
     var _token = '{{ csrf_token() }}';
+    var serverUrl = '{{ $serverUrl }}';
     var activeBtn;
 
     $('body').on('click','.openContact',function () {
@@ -395,6 +398,12 @@
         setIcheck();
     });
 
+    $('.operaCoverFile').on('fileuploaded', function(event, data, previewId, index) {
+        console.log(data)
+        response = data.response
+        $(this).next().val(response.data.shortUrl);
+    });
+
     var deleteSelectedItems = function() {
         if(!selectedItems.length || !confirm("确定删除吗?"))
             return;
@@ -411,6 +420,7 @@
         });
     };
 </script>
+<script src="{{ asset('static/js/fileinput.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('plugins/jsgrid-1.4.1/business.js') }}" type="text/javascript"></script>
 
 <script src="{{ asset('static/js/jquery.form.js') }}" type="text/javascript"></script>
