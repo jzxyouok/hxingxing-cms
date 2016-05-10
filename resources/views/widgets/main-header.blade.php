@@ -6,9 +6,9 @@
         <!-- Logo -->
         <a href="{{ route('admin.console.index') }}" class="logo">
           <!-- mini logo for sidebar mini 50x50 pixels -->
-          <span class="logo-mini"><b>红咖</b></span>
+          <span class="logo-mini"><b>红猩猩</b></span>
           <!-- logo for regular state and mobile devices -->
-          <span class="logo-lg"><b>红咖</b></span>
+          <span class="logo-lg"><b>红猩猩</b></span>
         </a>
 
         <!-- Header Navbar -->
@@ -60,7 +60,7 @@
                   <li class="footer"><a href="#">查看所有消息</a></li>
                 </ul>
               </li>/.messages-menu
-              
+
               Notifications Menu
               <li class="dropdown notifications-menu">
                 Menu toggle button

@@ -1,11 +1,47 @@
-function writeObj(obj){ 
- var description = ""; 
- for(var i in obj){ 
-  var property=obj[i]; 
-  description+=i+" = "+property+"\n"; 
- } 
- console.log(description); 
-} 
+var mobileReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
+
+// <!-- 提交数据带上下拉选中项的文本 -->
+function takeSelectedTxt(selector,data) {
+    var selects = ['category', 'topic1', 'topic2', 'topic3', 'site', 'startTime', 'period']
+    $(selector).find('select').each(function(index, el) {
+        var self = $(this);
+        var thisName = selects[index];
+        var thisTxt = self.find("option:selected").text();
+        data[thisName] = thisTxt;
+    });
+    return data;
+}
+
+function renderJobForm(tagsData) {
+    var jobFormHtml = '';
+    var fieldArr = ['nameC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','roleDescrip'];
+    var labelArr = ['职位名','角色说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','薪资','薪资单位','岗位说明'];
+    var tagsArr = ['jobType','','','jobStyle','jobStyle','jobStyle','jobHeight','jobAge','jobWeight','jobSalary','jobSalaryUnit',''];
+    for (var i = 0; i < fieldArr.length; i++) {
+        jobFormHtml += '<div class="form-group">'+
+            '<label class="col-md-3 control-label">'+labelArr[i]+'</label><div class="col-md-8">';
+
+        if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3','height','age','weight'])>=0){
+            jobFormHtml += '<select name="'+fieldArr[i]+'" class="form-control">';
+            var optionArray = tagsData[tagsArr[i]];
+            //console.log(optionArray);
+            if (optionArray!=undefined) {
+                for(var j= 0;j < optionArray.length;j++){
+                    jobFormHtml += '<option value="'+optionArray[j].id+'">'+optionArray[j].name+'</option>';
+                }
+            }
+            jobFormHtml +='</select>';
+
+        }else if($.inArray(fieldArr[i],['descrip','role'])>=0){
+            jobFormHtml += '<input type="text" class="form-control" name="'+fieldArr[i]+'">';
+        }else{
+            jobFormHtml += '<textarea class="form-control" rows="2" name="'+fieldArr[i]+'"></textarea>';
+        }
+        jobFormHtml +='</div></div>';
+    }
+    $('#jobForm #elements').html(jobFormHtml);
+}
+
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
@@ -21,6 +57,8 @@ $(function() {
         tagsData.jobHeight.unshift({id:0,name:""});
         tagsData.jobAge.unshift({id:0,name:""});
         tagsData.jobWeight.unshift({id:0,name:""});
+
+        renderJobForm(tagsData);
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -41,6 +79,8 @@ $(function() {
                 },
                 insertItem: function(item) {
                     item.pubStatus=0;
+                    item = takeSelectedTxt('.jsgrid-insert-row',item);
+                    // console.log(item)
                     $.ajax({
                         type: "POST",
                         url: operaController,
@@ -54,15 +94,16 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
-
                     item._token=_token;
+                    item = takeSelectedTxt('.jsgrid-edit-row',item);
+                    console.log(item)
                     $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
                         data: item,
                         async:false,
                         success : function(data1){
-                            console.log(data1);
+                            // console.log(data1);
                             if(data1.name != item.name){
                                 alert('剧名已存在！');
                             }
@@ -100,12 +141,12 @@ $(function() {
                 },
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function(_, item) {
-                       //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
-                        //return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
+                       //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openContact" ><i class="icon fa fa-edit"></i></a>';
+                        //return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openContact" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
 
                     },
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"[]")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"[]")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openContact" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },
                     align: "center",width: 40,sorting: false
                 },
@@ -147,10 +188,10 @@ $(function() {
                 // },
                 {headerTemplate: function() {return '职位发布';},
                     insertTemplate: function() {
-                        //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openOtherModal" >新增<i class="icon fa fa-edit"></i></a>';
+                        //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openJobs" >新增<i class="icon fa fa-edit"></i></a>';
                     },
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"[]")+' data-toggle="modal" data-target="#otherModal" class="btn btn-default btn-sm openOtherModal" >'+('<i class="icon fa fa-edit"></i>')+'</a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"[]")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs&&item.jobs.length>0?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },
                     align: "center",width: 40,sorting: false
                 },
@@ -159,41 +200,6 @@ $(function() {
 
             onDataLoaded: function(args) {
                 setIcheck();
-
-                var jobFormHtml = '';
-                var fieldArr = ['nameC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','roleDescrip'];
-                var labelArr = ['职位名','角色说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','薪资','薪资单位','岗位说明'];
-                var tagsArr = ['jobType','','','jobStyle','jobStyle','jobStyle','jobHeight','jobAge','jobWeight','jobSalary','jobSalaryUnit',''];
-                for (var i = 0; i < fieldArr.length; i++) {
-                    if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3','height','age','weight'])>=0){
-                        jobFormHtml += '<div class="form-group">'+
-                        '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
-                        '<div class="col-md-5">'+
-                            '<select name="'+fieldArr[i]+'" class="form-control">';
-
-                            var optionArray = tagsData[tagsArr[i]];
-                        //console.log(optionArray);
-                        if (optionArray!=undefined) {
-                            for(var j= 0;j < optionArray.length;j++){
-                                jobFormHtml += '<option value="'+optionArray[j].id+'">'+optionArray[j].name+'</option>';
-                            }
-                        }
-                            
-
-                        jobFormHtml +='</select></div>'+
-                    '</div>';
-
-                    }else{
-                        jobFormHtml += '<div class="form-group">'+
-                        '<label class="col-md-3 control-label">'+labelArr[i]+' <small class="text-red">*</small></label>'+
-                        '<div class="col-md-5">'+
-                            '<input type="text" class="form-control" name="'+fieldArr[i]+'">'+
-                        '</div>'+
-                    '</div>';    
-                    }
-                    
-                }
-                $('#jobForm #elements').html(jobFormHtml)
             },
             onRefreshed: function(args) {
                 setIcheck();
@@ -236,22 +242,25 @@ $(function() {
             fields: [
                 {headerTemplate: function() {return '联系人';},
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal">'+(item.contact?item.contact.name:'')+'</a><input type="hidden" class="tabOperaId" data-id="'+item.id+'">';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openContact">'+(item.contact?item.contact.name:'')+'</a><input type="hidden" class="tabOperaId" data-id="'+item.id+'">';
                     },
                     align: "center",width: 40,sorting: false
                 },
                 { name: "name", title: "剧名", type: "text", width: 50 },
+
                 { name: "invest", title: "总投资", type: "number", width: 30 },
-                { name:"categoryC",title:"类型",type:"select",items: tagsData.jobCategory,valueField:"id",textField:"name", width: 30},
-                { name:"topicC1",title:"题材",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 30},
-                { name: "site", title: "地点", type: "text", width: 30 },
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 30},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 30},
+                { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "id", textField: "name" },
+                { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
+                { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
+                { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
+                { name: "siteC", title: "地点", type:"select",class:"chosen-select",items: tagsData.city,valueField:"id",textField:"name", width: 50},
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 50},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 50},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
-                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,row:3 },
-                { name: "producer", title: "制片方", type: "text", width: 30 },
-                { name: "creator", title: "主创", type: "text", width: 30 },
-                { name: "platform", title: "播放平台", type: "text", width: 30 },
+                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,height:1 },
+                { name: "producer", title: "制片方", type: "text", width: 40 },
+                { name: "creator", title: "主创", type: "text", width: 40 },
+                { name: "platform", title: "播放平台", type: "text", width: 40 },
                 /*{headerTemplate: function() {return '封面';},
                     itemTemplate: function(_, item) {
                         return item.cover?'<img src="'+item.cover+'" style="height: 35px;width: 35px">':'';
@@ -259,14 +268,13 @@ $(function() {
                 },*/
                 {headerTemplate: function() {return '职位发布';},
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#otherModal" class="btn btn-default btn-sm openOtherModal" >'+('<i class="icon fa fa-edit"></i>')+'</a>';
+                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs&&item.jobs.length>0?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },
                     align: "center",width: 40,sorting: false
                 },
                 { type: "control", editButton: false,deleteButton:manageRole,modeSwitchButton: false}
             ],
             onDataLoaded: function(args) {
-                $('.dropdown-toggle').dropdownHover().dropdown();
             }
         });
     });
@@ -290,7 +298,7 @@ $(function() {
         }
         if(!confirm("确定发布这些项目吗?"))
             return;
- 
+
         $.ajax({
             type: "POST",
             url: operaController+'/pubOpera/'+selectedItems,
@@ -302,25 +310,22 @@ $(function() {
     };
 
     $('.pubMan').click(function(event) {
-        //console.log('123');
         var self = $(this);
-        var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
-        var mobile = $(this).prev().find('input');
-        //console.log(mobile.val());
-        if(!myreg.test(mobile.val())) { 
-            alert('请输入有效的手机号码！'); 
+        var mobile = self.prev().find('input');
+        if(!mobileReg.test(mobile.val())) {
+            alert('请输入有效的手机号码！');
             mobile.select();
-            return false; 
+            return false;
         }
 
         if(confirm('确定以这个号码发布招聘信息？')){
             alert('发布成功\n初始密码为123456，请尽快修改。');
-            var isPubed = $(this).attr('isPubed');
+            var isPubed = self.attr('isPubed');
             console.log('isPubed:'+isPubed);
-            $('#modalForm').find('#hidden').append('<input type="hidden" name="isPubed" value="'+isPubed+'"/>');
+            $('#contactForm').find('#hidden').append('<input type="hidden" name="isPubed" value="'+isPubed+'"/>');
             $('.pubMan').val('已发布').prop('disabled', true);
         }
-        
+
 //        var uid = $('#uid').val();
 //        if (uid>0) {
 //            if (confirm('确定创建这个人吗？')) {
@@ -352,9 +357,8 @@ $(function() {
         //console.log(e.keyCode);
         var mobile = $(this).val();
         if(e.keyCode == 13 && mobile.length == 11 ){
-            var myreg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
             //console.log(mobile.val());
-            if(!myreg.test(mobile)) {
+            if(!mobileReg.test(mobile)) {
                 alert('请输入有效的手机号码！');
                 return false;
             }

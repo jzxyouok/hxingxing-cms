@@ -7,7 +7,7 @@
     .modal .label{padding: 10px;display: none}
 </style>
 @parent
-  
+
 @stop
 
 @section('content')
@@ -21,7 +21,7 @@
               @endif
 
               <!-- <a href="{{ route('admin.person.create') }}" class="btn btn-primary margin-bottom">新增管理员</a> -->
-          
+
           <div class="nav-tabs-custom">
             <nav class="navbar" style="margin-bottom: 0">
               <ul id="mainTab" class="nav nav-tabs navbar-nav">
@@ -39,7 +39,7 @@
               </form>
             </nav>
           <div class="tab-content">
-                  
+
               <div @if($tab == 0)class="tab-pane active"@else class="tab-pane"@endif id="tab_1">
                 <div class="box-body table-responsive">
                   <table class="table table-hover table-bordered">
@@ -62,6 +62,7 @@
                         <th><i class="fa fa-eye"></i> 查看</th>
                         <th>状态</th>
                         <th>注册时间</th>
+                        <th>操作</th>
                       </tr>
                       <!--tr-th end-->
                       @foreach ($unpub as $user)
@@ -92,6 +93,11 @@
                         <td class="text-muted">{{ $user->viewNum }}</td>
                         <td class="text-muted">{{ $user->status }}</td>
                         <td>{{ str_limit($user->created_at, 16,'') }}</td>
+                        <td>
+                            @if($canDel)
+                            <a href="javascript:void(0);" class="delete_item" title="删除" data-id="{{ $user->uid }}"><i class="fa fa-fw fa-minus-circle" data-action=''></i></a>
+                            @endif
+                        </td>
                       </tr>
                       @endforeach
                     </tbody>
@@ -101,7 +107,7 @@
                   {!! $unpub->appends(['tab'=>0])->render() !!}
                 </div>
               </div>
-          
+
               <div @if($tab == 1)class="tab-pane active"@else class="tab-pane"@endif id="tab_2">
                 <div class="box-body table-responsive">
                   <table class="table table-hover table-bordered">
@@ -124,12 +130,13 @@
                         <th><i class="fa fa-eye"></i> 查看</th>
                         <th>状态</th>
                         <th>注册时间</th>
+                        <th>操作</th>
                       </tr>
                       <!--tr-th end-->
                       @foreach ($pubed as $user)
                       <tr>
                         <td>
-                          <button class="btn btn-default btn-sm openPush" data-uid="{{ $user->uid }}" data-mobile="{{ $user->mobile }}" data-fakeMobile="{{ $user->fakeMobile }}" data-title="{{ $user->name }}" data-toggle="modal" data-target="#pushModal"><i class="fa fa-fw fa-send"></i></button>  
+                          <button class="btn btn-default btn-sm openPush" data-uid="{{ $user->uid }}" data-mobile="{{ $user->mobile }}" data-fakeMobile="{{ $user->fakeMobile }}" data-title="{{ $user->name }}" data-toggle="modal" data-target="#pushModal"><i class="fa fa-fw fa-send"></i></button>
                         </td>
                         <td>{{ $user->mobile }}</td>
                         <td class="text-muted">{{ $user->name }}</td>
@@ -154,6 +161,11 @@
                         <td class="text-muted">{{ $user->viewNum }}</td>
                         <td class="text-muted">{{ $user->status }}</td>
                         <td>{{ str_limit($user->created_at, 16,'') }}</td>
+                        <td>
+                            @if($canDel)
+                            <a href="javascript:void(0);" class="delete_item" title="删除" data-id="{{ $user->uid }}"><i class="fa fa-fw fa-minus-circle" data-action=''></i></a>
+                            @endif
+                        </td>
                       </tr>
                       @endforeach
                     </tbody>
@@ -174,7 +186,7 @@
      <div class="modal-dialog">
         <div class="modal-content">
            <div class="modal-header">
-              <button type="button" class="close" 
+              <button type="button" class="close"
                  data-dismiss="modal" aria-hidden="true">
                     &times;
               </button>
@@ -227,8 +239,8 @@
                                <option value="欢迎使用【红猩猩】APP，这是个影视人才资源平台。您的账号是：XXX（读取的虚拟手机号），密码是：123456,。请尽快登录，绑定为您自己的手机号，并修改密码。">欢迎使用【红猩猩】APP，这是个影视人才资源平台。您的账号是：XXX（读取的虚拟手机号），密码是：123456,。请尽快登录，绑定为您自己的手机号，并修改密码。</option>
                                <option value="嘿！你知道吗？又有一批新的剧组和演职人员在红猩猩里面沟通了，去看看嘛。">嘿！你知道吗？又有一批新的剧组和演职人员在红猩猩里面沟通了，去看看嘛。</option>
                                <option value="达令，你好久没来看人家了。">达令，你好久没来看人家了。</option>
-                               <option value="你真的真的，不要人家了吗？T-T 
-">你真的真的，不要人家了吗？T-T 
+                               <option value="你真的真的，不要人家了吗？T-T
+">你真的真的，不要人家了吗？T-T
 </option>
                             </select>
                             <textarea class="form-control" rows="2" placeholder="嗨" id="msgInput">【红色咖啡】大人，周星驰发布了女主（求职意向岗位）微简历，他（她）是你的艺中人吗？</textarea>
@@ -253,7 +265,7 @@
    <div class="modal-dialog">
       <div class="modal-content">
          <div class="modal-header">
-            <button type="button" class="close" 
+            <button type="button" class="close"
                data-dismiss="modal" aria-hidden="true">
                   &times;
             </button>
@@ -278,7 +290,7 @@
     });
     var token = '{{ csrf_token() }}';
     var rowIndex;
-    
+
     $('#msgTpl').change(function () {
       $('#msgInput').val('')
     })
@@ -298,10 +310,10 @@
         mobile = $('#'+mobileFinal+'Mobile');
         pushType = $('input[name="pushType"]:checked').val();
         if(!myreg.test(mobile.text()) && pushType=='sms') {
-            alert('手机号码无效！'); 
-            return false; 
+            alert('手机号码无效！');
+            return false;
         }
-        
+
         var self = $(this);
         var msgBox = self.next();
         if (confirm('确定发送吗？')) {
@@ -364,21 +376,10 @@
         var commentIndex = $('#commentBox li').index(self.closest('li'));
         if (confirm('确定删除吗？')) {
             var id = $(this).data('id');
-            var action = 'delWork/';
 
-            $.post("{{ route('admin.person.index') }}/"+action + id, function(data) {
-                self.closest('.list-group-item').remove();
-                var trs = $('table tr');
-                var modalBtn = trs.eq(rowIndex).find('.openWorks');
-
-                //trs.eq(rowIndex).find('.numBox').text($('#commentBox li').length);
-                var commentData = modalBtn.data('works');
-                <!-- console.log(commentData) -->
-                commentData.splice(commentIndex, 1);
-                <!-- console.log(commentIndex,commentData) -->
-                modalBtn.data('works',commentData);
+            $.post("{{ route('admin.person.index') }}/" + id,{_method:'delete',_token:token}, function(data) {
+              self.closest('tr').remove();
             })
-
         }
     });
 @stop

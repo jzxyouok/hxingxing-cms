@@ -1,11 +1,15 @@
-function writeObj(obj){
-    var description = "";
-    for(var i in obj){
-        var property=obj[i];
-        description+=i+" = "+property+"\n";
-    }
-    console.log(description);
+// <!-- 提交数据带上下拉选中项的文本 -->
+function takeSelectedTxt(selector,data) {
+    var selects = ['name','category', 'topic1', 'topic2', 'topic3','salary','salary', 'salaryUnit', 'site']
+    $(selector).find('select').each(function(index, el) {
+        var self = $(this);
+        var thisName = selects[index];
+        var thisTxt = self.find("option:selected").text();
+        data[thisName] = thisTxt;
+    });
+    return data;
 }
+
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
@@ -15,7 +19,6 @@ $(function() {
         tagsData.jobSalary.unshift({id:0,name:""});
         tagsData.jobSalaryUnit.unshift({id:0,name:""});
         tagsData.city.unshift({id:0,name:""});
-
 
         $("#unpub").jsGrid({
             height: "650px",
@@ -35,6 +38,7 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/0',filter);
                 },
                 insertItem: function(item) {
+                    item = takeSelectedTxt('.jsgrid-insert-row',item);
                     if(activeBtn){
                         var data = JSON.parse(activeBtn.attr('data-comment'));
                         console.log(data);
@@ -48,11 +52,13 @@ $(function() {
                     item.pubStatus=0;
                     //console.log(item);
                     $.post(operaController,item,function(result){
+                        $("#unpub").jsGrid("search");
                         //console.log(result);
                         return result;
                     });
                 },
                 updateItem: function(item) {
+                    item = takeSelectedTxt('.jsgrid-edit-row',item);
                     if(activeBtn){
                         var data = JSON.parse(activeBtn.attr('data-comment'));
                         console.log(data);
@@ -78,10 +84,10 @@ $(function() {
             },
             fields: [
                 {headerTemplate: function() {
-//                    return $("<button>").attr({"type":"button","class":"btn btn-primary btn-sm"}).text('发布')
-//                        .on("click", function () {
-//                            //pubOpera();
-//                        });
+                   return $("<button>").attr({"type":"button","class":"btn btn-primary btn-sm"}).text('发布')
+                       .on("click", function () {
+                           pubWant();
+                       });
                     },
                     filterTemplate: function() {
                         // return $("<button>").attr({"type":"button","class":"btn btn-default btn-sm checkbox-toggle"}).html("<i class='fa fa-square-o' title='全选/反全选'></i>");
@@ -93,10 +99,10 @@ $(function() {
                 },
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function() {
-                        return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
+                        /*return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';*/
                     },
                     itemTemplate: function(_, item) {
-                        return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
+                        return '<a href="#" status-table="unpub" jobWantId="'+item.id+'" data-title="'+item.name+'" data-comment='+(item.contact?JSON.stringify((item.contact)):"[]")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },
                     align: "center",width: 40,sorting: false
                 },
@@ -148,7 +154,7 @@ $(function() {
             radioClass: 'iradio_flat-blue'
         });
     }
-    var pubOpera = function() {
+    var pubWant = function() {
         var selectedItems = [];
         $('.table-operation').each(function(index, el) {
             if ($(this).parent('[class*="icheckbox"]').hasClass("checked")) {
@@ -157,19 +163,18 @@ $(function() {
         });
         console.log(selectedItems)
         if(!selectedItems.length){
-            alert('请选择剧目！');
+            alert('请选择名片！');
             return;
         }
-        if(!confirm("确定发布这些项目吗?"))
+        if(!confirm("确定发布这些名片吗?"))
             return;
 
         $.ajax({
             type: "POST",
-            url: operaController+'/pubOpera/'+selectedItems,
+            url: operaController+'/pubWant/'+selectedItems,
             data: {_token:_token}
         }).done(function() {
             $("#unpub").jsGrid("search");
-            $("#pubed").jsGrid("search");
         });
     };
 

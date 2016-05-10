@@ -4,7 +4,7 @@
 
 @stop
 
-@section('title') {{ isset($title) ? $title : '前台' }} - 红咖 @stop
+@section('title') {{ isset($title) ? $title : '前台' }} - 红猩猩 @stop
 
 @section('meta')
 <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -17,8 +17,8 @@
 
 @section('head_js')
 	<script src="http://cdn.bootcss.com/highlight.js/8.0/highlight.min.js"></script>
-	<link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet"> 
-	<script >hljs.initHighlightingOnLoad();</script>  
+	<link href="http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css" rel="stylesheet">
+	<script >hljs.initHighlightingOnLoad();</script>
 	<!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!--[if lt IE 9]>
 		<script src="{{ asset('static/js/html5shiv/dist/html5shiv.js') }}"></script>
