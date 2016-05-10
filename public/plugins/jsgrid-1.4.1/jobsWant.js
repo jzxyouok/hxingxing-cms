@@ -43,18 +43,31 @@ $(function() {
                         var data = JSON.parse(activeBtn.attr('data-comment'));
                         console.log(data);
                     }
-                    item._token=_token;
-                    item.uid= data ? data.uid:0;
-                    console.log(item);
-                    var name = data? data.name:'';
-                    var cotact = {name:name};
-                    item.contact = cotact ;///*****跑错
-                    item.pubStatus=0;
-                    //console.log(item);
-                    $.post(operaController,item,function(result){
-                        $("#unpub").jsGrid("search");
-                        //console.log(result);
-                        return result;
+                    item.pubStatus = 0;
+//                    item._token=_token;
+//                    item.uid= data ? data.uid:0;
+//                    console.log(item);
+//                    var name = data? data.name:'';
+//                    var cotact = {name:name};
+//                    item.contact = cotact ;///*****跑错
+//                    item.pubStatus=0;
+//                    //console.log(item);
+//                    $.post(operaController,item,function(result){
+//                        $("#unpub").jsGrid("search");
+//                        console.log(result);
+//                        return result;
+//                    });
+                    $.ajax({
+                        type: "POST",
+                        url: operaController,
+                        data: item,
+                        async:false,
+                        success : function(result){
+                            $("#unpub").jsGrid("search");
+                            result = JSON.parse(result);
+                            item.id = result.id;
+                            return item;
+                        }
                     });
                 },
                 updateItem: function(item) {
@@ -99,7 +112,7 @@ $(function() {
                 },
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function() {
-                        /*return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';*/
+                        //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" ><i class="icon fa fa-edit"></i></a>';
                     },
                     itemTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" jobWantId="'+item.id+'" data-title="'+item.name+'" data-comment='+(item.contact?JSON.stringify((item.contact)):"[]")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openModal" >'+(item.contact?item.contact.name:'<i class="icon fa fa-edit"></i>')+'</a>';
