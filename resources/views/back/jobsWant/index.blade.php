@@ -39,7 +39,7 @@
 
           <ul id="mainTab" class="nav nav-tabs">
             <li class="active"><a href="#tab_1" data-toggle="tab" aria-expanded="true">未发布</a></li>
-<!--            <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>-->
+            <li><a href="#tab_2" data-toggle="tab" aria-expanded="false">已发布</a></li>
           </ul>
 
           <div class="tab-content">
@@ -48,10 +48,10 @@
               <div id="unpubPager"></div>
               </div>
 
-              <!--<div class="tab-pane" id="tab_2">
+              <div class="tab-pane" id="tab_2">
                 <div id="pubed"></div>
                 <div id="pubedPager"></div>
-              </div>-->
+              </div>
           </div>
       </div>
 <!-- 模态框（Modal） -->

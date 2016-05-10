@@ -96,7 +96,7 @@ class JobsWantRepository extends BaseRepository {
 				$content->$val = e($inputs[$val]);
 			}
 		}
-		$content->created_uid = user('id');
+		//$content->created_uid = user('id');
 		/*if ($user_id) {
 			            $content->uid = $user_id;
 		*/
@@ -118,7 +118,7 @@ class JobsWantRepository extends BaseRepository {
 	 * @param  string $size 分页大小
 	 * @return Illuminate\Support\Collection
 	 */
-	public function index($data = [], $onlySelf = true, $size = '50') {
+	public function index($data = [], $onlySelf = true, $size = '50',$pubStatus=0) {
 		if (!ctype_digit($size)) {
 			$size = '50';
 		}
@@ -138,15 +138,15 @@ class JobsWantRepository extends BaseRepository {
 			}
 		}
 		//return $query->orderBy('id', 'desc')->get()->toArray();
-		return $query->where('pubStatus', 0)->orderBy('id', 'desc')->get()->toArray();
+		return $query->where('pubStatus', $pubStatus)->orderBy('id', 'desc')->get()->toArray();
 	}
 	public function tags($data = []) {
 		$ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
-			->groupBy('category')->whereIn('category', ['jobType', 'jobCategory', 'jobTopic', 'jobSalary', 'jobSalaryUnit'])
+			->groupBy('category')->/*whereIn('category', ['jobType', 'jobCategory', 'jobTopic', 'jobSalary', 'jobSalaryUnit'])
 			->orWhere(function ($query) {
 				$query->whereIn('category', ['city'])
 					->where('parentId', '<>', '0')->where('code', '<>', '0');
-			})->get()->toArray();
+			})->*/get()->toArray();
 		// $ret = Tags::groupBy('category')->get();
 		//var_dump($ret);die();
 		return $ret;
