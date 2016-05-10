@@ -94,13 +94,13 @@ class AdminJobsWantController extends BackController {
 		foreach ($searchFields as $k => $val) {
 			$data[$val] = $request->input($val);
 		}
-		//$data['pubStatus'] = $pubStatus;
+		$data['pubStatus'] = $pubStatus;
 		$onlySelf = false;
 		if (!user('object')->can('customer_service')) {
 			$onlySelf = true;
 		}
-		$operas = $this->content->index($data, $onlySelf, Cache::get('page_size', '10'));
-		// var_dump($operas);die();
+		$operas = $this->content->index($data, $onlySelf, Cache::get('page_size', '10'),$pubStatus);
+		//var_dump($pubStatus);die();
 		echo json_encode($operas);
 	}
 
