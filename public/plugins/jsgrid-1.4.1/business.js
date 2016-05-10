@@ -181,11 +181,12 @@ $(function() {
                 { name: "producer", title: "制片方", type: "text", width: 40 },
                 { name: "creator", title: "主创", type: "text", width: 40 },
                 { name: "platform", title: "播放平台", type: "text", width: 40 },
-                // {headerTemplate: function() {return '封面';},
-                //     itemTemplate: function(_, item) {
-                //         return '<img src="'+item.cover+'" style="height: 35px;width: 35px">';
-                //     },width: 40,sorting: false,
-                // },
+                {headerTemplate: function() {return '封面';},
+                    itemTemplate: function(_, item) {
+                        var fileInput = '<input type="file" class="form-control file operaCoverFile" name="files"><input type="hidden" name="avatar">';
+                        return item.cover?'<img src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px">':'';
+                    },width: 40,sorting: false,
+                },
                 {headerTemplate: function() {return '职位发布';},
                     insertTemplate: function() {
                         //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openJobs" >新增<i class="icon fa fa-edit"></i></a>';
@@ -200,6 +201,8 @@ $(function() {
 
             onDataLoaded: function(args) {
                 setIcheck();
+
+                // $(".operaCoverFile").fileinput({'showUpload':false, 'previewFileType':'any'});
             },
             onRefreshed: function(args) {
                 setIcheck();
