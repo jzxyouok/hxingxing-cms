@@ -100,6 +100,7 @@ class AdminOperaController extends BackController {
 		foreach ($operas as $k => $val) {
 			foreach ($val['jobs'] as $key => $value) {
 				$operas[$k]['jobs'][$key]['descrip'] = str_replace(" ", "&nbsp;", htmlentities($value['descrip']));
+				$operas[$k]['jobs'][$key]['roleDescrip'] = str_replace(" ", "&nbsp;", htmlentities($value['roleDescrip']));
 			}
 		}
 		// var_dump($operas);die();
