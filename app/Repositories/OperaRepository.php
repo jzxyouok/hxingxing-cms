@@ -141,6 +141,9 @@ class OperaRepository extends BaseRepository {
 		}
 		return $query->where('pubStatus', e($data['pubStatus'])) /*->where('operas.id',e($data['id']))*/->orderBy('id', 'desc')->get()->toArray();
 	}
+	public function allOperaIds() {
+		return $this->model->orderBy('id','desc')->lists('id')->toArray();
+	}
 	public function tags($data = []) {
 		$ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
 			->groupBy('category')
@@ -219,11 +222,13 @@ class OperaRepository extends BaseRepository {
 	public function pubOpera($ids) {
 		$this->model->pubOpera($ids);
 	}
-	public function updateJobsNum($id,$action) {
+	public function updateJobsNum($id,$action,$jobsNum=0) {
 		if ($action=='add') {
 			$this->model->increment('jobsNum', 1, ['id' => $id]);
 		}elseif($action=='delete'){
 			$this->model->decrement('jobsNum', 1, ['id' => $id]);
+		}elseif($action=='update'){
+			$this->model->where('id', $id)->update(['jobsNum' => $jobsNum]);
 		}
 	}
 	public function checkOpera($name, $id) {
