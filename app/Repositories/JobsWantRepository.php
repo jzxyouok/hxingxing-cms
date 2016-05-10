@@ -90,7 +90,7 @@ class JobsWantRepository extends BaseRepository {
 			}
 			$content->flag = $tmp_flag;
 		}
-		$allFields = array('nameC', 'name', 'categoryC', 'category', 'topicC1', 'topic1', 'topicC2', 'topic2', 'topicC3', 'topic3', 'salaryC', 'salary', 'salaryUnitC', 'salaryUnit', 'siteC', 'site', 'uid');
+		$allFields = array('nameC', 'name', 'categoryC', 'category', 'topicC1', 'topic1', 'topicC2', 'topic2', 'topicC3', 'topic3', 'salaryC', 'salary', 'salaryUnitC', 'salaryUnit', 'siteC', 'site', 'pubStatus', 'uid');
 		foreach ($allFields as $k => $val) {
 			if (array_key_exists($val, $inputs)) {
 				$content->$val = e($inputs[$val]);
