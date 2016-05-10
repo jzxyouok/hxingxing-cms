@@ -364,7 +364,7 @@
         //console.log(activeBtn.closest('tr').find('.openContact').attr('data-comment'));
 
         var commentHtml = '';
-        try{
+        // try{
             var artTitle = self.data('title');//s
             jobsModal.find('.modalTitle').text(artTitle);
 
@@ -372,6 +372,7 @@
             jobsModal.find('#uid').val(commentData.uid);
 
             var jobData = JSON.parse(activeBtn.attr('data-comment'));
+            console.log(jobData)
             if(!commentData.uid>0 && !jobData.length){
               alert('请添加联系人后操作');
               return false;
@@ -384,9 +385,9 @@
                 //console.log(i);
                 commentHtml += jobHtml(jobData[i],i);
             }
-        }catch(e) {
+        /*}catch(e) {
 
-        }
+        }*/
         jobsModal.find('#jobsBox').html(commentHtml);
     })
 
