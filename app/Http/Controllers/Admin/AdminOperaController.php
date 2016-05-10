@@ -97,8 +97,13 @@ class AdminOperaController extends BackController {
 			$onlySelf = true;
 		}
 		$operas = $this->content->index($data, $onlySelf, Cache::get('page_size', '10'));
+		foreach ($operas as $k => $val) {
+			foreach ($val['jobs'] as $key => $value) {
+				$operas[$k]['jobs'][$key]['descrip'] = str_replace(" ", "&nbsp;", htmlentities($value['descrip']));
+			}
+		}
 		// var_dump($operas);die();
-		echo json_encode($operas);
+		echo json_encode($operas, JSON_UNESCAPED_UNICODE);
 	}
 
 	/**
