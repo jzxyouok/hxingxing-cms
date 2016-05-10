@@ -94,8 +94,9 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
-                    item._token=_token;
                     item = takeSelectedTxt('.jsgrid-edit-row',item);
+                    item._token=_token;
+                    // item.cover = item.find('.operaCoverBox').val();
                     console.log(item)
                     $.ajax({
                         type: "PUT",
@@ -134,10 +135,7 @@ $(function() {
                     },
                     itemTemplate: function(_, item) {
                         return $("<input>").attr({"type":"checkbox","class":"table-operation hide tabOperaId","data-id":item.id});
-                        //return '<input type="checkbox" class="table-operation hide tabOperaId" data-id="'+item.id+'"/>';
-
-                    },
-                    align: "center",width: 30,sorting: false
+                    },align: "center",width: 30,sorting: false
                 },
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function(_, item) {
@@ -183,11 +181,11 @@ $(function() {
                 { name: "platform", title: "播放平台", type: "text", width: 40 },
                 {headerTemplate: function() {return '封面';},
                     itemTemplate: function(_, item) {
-                        var fileInput = '<input type="file" class="form-control file operaCoverFile" name="files"><input type="hidden" name="avatar">';
-                        return item.cover?'<img src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px">':'';
-                    },width: 40,sorting: false,
+                        return '<form class="operaCoverForm" action="'+uploadController+'" method="post">'+
+    '<img class="operaCoverFile" src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px"><input type="file" name="picture" class="operaCoverInput" style="display:none"><input type="hidden" class="operaCoverBox"><button class="btn btn-sm" type="submit" style="display:none">上传</button></form>';
+                    },width: 80,sorting: false,
                 },
-                {headerTemplate: function() {return '职位发布';},
+                {headerTemplate: function() {return '职位';},
                     insertTemplate: function() {
                         //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openJobs" >新增<i class="icon fa fa-edit"></i></a>';
                     },
@@ -201,11 +199,13 @@ $(function() {
 
             onDataLoaded: function(args) {
                 setIcheck();
-
-                // $(".operaCoverFile").fileinput({'showUpload':false, 'previewFileType':'any'});
+            },
+            onItemUpdating: function(args) {
+                args.row.find('.operaCoverInput,.operaCoverBox').show();
             },
             onRefreshed: function(args) {
                 setIcheck();
+                console.log(123)
             }
         });
         $("#pubed").jsGrid({
@@ -269,7 +269,7 @@ $(function() {
                         return item.cover?'<img src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px">':'';
                     },width: 40,sorting: false,
                 },
-                {headerTemplate: function() {return '职位发布';},
+                {headerTemplate: function() {return '职位';},
                     itemTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs&&item.jobs.length>0?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },

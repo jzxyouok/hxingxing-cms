@@ -202,7 +202,8 @@
 
 <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.js"></script> -->
 <script type="text/javascript" src="{{ asset('plugins/jsgrid-1.4.1/zh.js') }}"></script>
-
+<script src="{{ asset('static/js/jquery.form.js') }}" type="text/javascript"></script>
+<script src="{{ asset('static/js/jquery.validate.js') }}" type="text/javascript"></script>
 <script>
     $.fn.serializeObject = function(){
         var o = {};
@@ -240,6 +241,24 @@
     var _token = '{{ csrf_token() }}';
     var serverUrl = '{{ $serverUrl }}';
     var activeBtn;
+
+    $('body').on('submit','.operaCoverForm',function (e) {
+      e.preventDefault();
+      var self = $(this)
+      var formData = new FormData();
+      formData.append('picture', self.find('.operaCoverInput')[0].files[0]);
+      $.ajax({
+          type: 'POST',
+          url: uploadController,
+          data: formData,
+          contentType: false,
+          processData: false,
+      }).done(function(data) {
+          // console.log(data)
+          self.find('.operaCoverFile').attr('src',serverUrl+data.info)
+          self.find('.operaCoverBox').val(data.info)
+      })
+    })
 
     $('body').on('click','.openContact',function () {
         var self = $(this);
@@ -399,12 +418,6 @@
         setIcheck();
     });
 
-    $('.operaCoverFile').on('fileuploaded', function(event, data, previewId, index) {
-        console.log(data)
-        response = data.response
-        $(this).next().val(response.data.shortUrl);
-    });
-
     var deleteSelectedItems = function() {
         if(!selectedItems.length || !confirm("确定删除吗?"))
             return;
@@ -421,11 +434,7 @@
         });
     };
 </script>
-<script src="{{ asset('static/js/fileinput.min.js') }}" type="text/javascript"></script>
 <script src="{{ asset('plugins/jsgrid-1.4.1/business.js') }}" type="text/javascript"></script>
-
-<script src="{{ asset('static/js/jquery.form.js') }}" type="text/javascript"></script>
-<script src="{{ asset('static/js/jquery.validate.js') }}" type="text/javascript"></script>
 @stop
 
 @section('filledScript')
