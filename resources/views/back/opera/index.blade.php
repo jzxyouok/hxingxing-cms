@@ -4,7 +4,6 @@
 <!-- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid-theme.min.css" /> -->
 <link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid.min.css"/>
 <link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid-theme.min.css" />
-<link type="text/css" rel="stylesheet" href="{{ asset('static/css/fileinput.min.css') }}" />
 <style>
   input,select{border: 1px solid #cccccc;border-radius: 4px;}
   .jsgrid-table{width: 100%!important}
