@@ -1,6 +1,6 @@
 // <!-- 提交数据带上下拉选中项的文本 -->
 function takeSelectedTxt(selector,data) {
-    var selects = ['name','category', 'topic1', 'topic2', 'topic3','salary','salary', 'salaryUnit', 'site']
+    var selects = ['name','category', 'topic1', 'topic2', 'topic3','salary', 'salaryUnit', 'site']
     $(selector).find('select').each(function(index, el) {
         var self = $(this);
         var thisName = selects[index];
