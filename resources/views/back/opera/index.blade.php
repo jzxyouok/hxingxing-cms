@@ -323,7 +323,8 @@
       if (confirm('确定删除？')) {
         var self = $(this);
         var jobIndex = $(this).attr('jobid')
-        $.post(jobController+'/'+jobIndex, {_method:'delete',_token:_token}, function(data, textStatus, xhr) {
+        var operaId = $(this).attr('operaId')
+        $.post(jobController+'/'+jobIndex, {_method:'delete',_token:_token,operaId:operaId}, function(data, textStatus, xhr) {
             data = JSON.parse(data)
             // console.log(data)
             if (data.status=='ok') {
@@ -343,7 +344,7 @@
     })
 
     function jobHtml(jobData,jobIndex) {
-        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+' - '+jobData.role+'</h4> - '+jobData.roleDescrip+' - '+jobData.style1+' - '+jobData.style2+' - '+jobData.style3+' - '+jobData.height+'cm - '+jobData.age+'岁 - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="pull-right"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a>&nbsp;<a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
+        return '<li class="list-group-item container-fluid"><div class="col-md-11"><h4 class="list-group-item-heading">'+jobData.name+' - '+jobData.role+'</h4> - '+jobData.roleDescrip+' - '+jobData.style1+' - '+jobData.style2+' - '+jobData.style3+' - '+jobData.height+'cm - '+jobData.age+'岁 - '+jobData.weight+' - '+jobData.salary+' - '+jobData.descrip+'<p class="list-group-item-text">'+'</p></div><div class="pull-right"><a href="javascript:void(0);" class="editJob" jobIndex="'+jobIndex+'"><i class="fa fa-fw fa-edit"></i></a>&nbsp;<a href="javascript:void(0);" class="deleteJob" jobIndex="'+jobIndex+'" jobId="'+jobData.id+'" operaId="'+jobData.operaId+'"><i class="fa fa-fw fa-minus-circle" title="删除"></i></a></li>';
     }
     $('body').on('click','.openJobs',function () {
         var self = $(this);

@@ -219,6 +219,13 @@ class OperaRepository extends BaseRepository {
 	public function pubOpera($ids) {
 		$this->model->pubOpera($ids);
 	}
+	public function updateJobsNum($id,$action) {
+		if ($action=='add') {
+			$this->model->increment('jobsNum', 1, ['id' => $id]);
+		}elseif($action=='delete'){
+			$this->model->decrement('jobsNum', 1, ['id' => $id]);
+		}
+	}
 	public function checkOpera($name, $id) {
 		$query = $this->model->where('name', $name)->where('created_uid', '>', 0);
 		if ($id > 0) {

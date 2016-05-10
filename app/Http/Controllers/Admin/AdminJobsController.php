@@ -7,7 +7,7 @@ use Cache;
 use Douyasi\Logger\SystemLogger as SystemLogger;
 use Douyasi\Repositories\JobsRepository;
 use Illuminate\Http\Request;
-
+use Douyasi\Repositories\OperaRepository;
 /**
  * （管理型）用户资源控制器
  *
@@ -23,9 +23,11 @@ class AdminJobsController extends BackController {
 	protected $jobs;
 
 	public function __construct(
+		OperaRepository $opera,
 		JobsRepository $jobs) {
 		parent::__construct();
 		$this->jobs = $jobs;
+		$this->opera = $opera;
 
 //        if (! user('object')->can('type_in')) {
 		//            $this->middleware('deny403');
@@ -73,12 +75,15 @@ class AdminJobsController extends BackController {
 		if ($manager->id) {
 			//添加成功
 			//记录系统日志，这里并未使用事件监听来记录日志
-			$log = [
+			/*$log = [
 				'uid' => user('id'),
 				'type' => 'manager',
 				'content' => '管理员：成功新增一名管理用户' . $manager->username . '<' . $manager->email . '>。',
 			];
-			SystemLogger::write($log);
+			SystemLogger::write($log);*/
+
+			$this->opera->updateJobsNum($data['operaId'],'add');
+
 			echo $manager->id;
 			//return redirect()->route('admin.person.index')->with('message', '成功新增管理员！');
 
@@ -122,12 +127,15 @@ class AdminJobsController extends BackController {
 		//        return redirect()->route('admin.user.index')->with('message', '修改管理员成功！');
 
 	}
-	public function destroy($ids) {
+	public function destroy(Request $request,$ids) {
 		// 客服权限
 		if (!user('object')->can('customer_service')) {
 			exit(json_encode(['status' => 'false', 'msg' => '权限不足！删除失败'], JSON_UNESCAPED_UNICODE));
 		}
+		$data = $request->all();
 		$this->jobs->destroy($ids, 'article');
+		
+		$this->opera->updateJobsNum($data['operaId'],'delete');
 		exit(json_encode(['status' => 'ok']));
 		// return redirect()->route('admin.opera.index')->with('message', '删除剧目成功！');
 	}
