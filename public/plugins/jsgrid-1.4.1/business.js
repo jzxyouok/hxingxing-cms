@@ -87,6 +87,7 @@ $(function() {
                         data: item,
                         async:false,
                         success : function(result){
+                            $("#unpub").jsGrid("search");
                             result = JSON.parse(result);
                             item.id = result.id;
                             return item;
@@ -104,7 +105,7 @@ $(function() {
                         data: item,
                         async:false,
                         success : function(data1){
-                            // console.log(data1);
+                            $("#unpub").jsGrid("search");
                             if(data1.name != item.name){
                                 alert('剧名已存在！');
                             }
@@ -321,39 +322,39 @@ $(function() {
             return false;
         }
 
-        if(confirm('确定以这个号码发布招聘信息？')){
+        /*if(confirm('确定以这个号码发布招聘信息？')){
             alert('发布成功\n初始密码为123456，请尽快修改。');
             var isPubed = self.attr('isPubed');
             console.log('isPubed:'+isPubed);
             $('#contactForm').find('#hidden').append('<input type="hidden" name="isPubed" value="'+isPubed+'"/>');
             $('.pubMan').val('已发布').prop('disabled', true);
-        }
+        }*/
 
-//        var uid = $('#uid').val();
-//        if (uid>0) {
-//            if (confirm('确定创建这个人吗？')) {
-//
-//                $.ajax({
-//                    type: "post",
-//                    url: personController+'/pubMan',
-//                    data: {mobile:mobile.val(),uid:uid},
-//                    error: function( xhr ) {
-//                        alert('出错了');
-//                    },
-//                    /*complete: function( xhr ) {
-//                        alert('发布成功\n初始密码为123456，请尽快修改。');
-//                        self.prop('disabled', false);
-//                    }*/
-//                }).done(function(data) {
-//                    if (data) {
-//                        alert('发布成功\n初始密码为123456，请尽快修改。');
-//                        $('.pubMan').text('已发布').prop('disabled', true);
-//                    }else{
-//                        alert('出错了');
-//                    }
-//                });
-//            }
-//        }
+       var uid = $('#uid').val();
+       if (uid>0) {
+           if (confirm('确定创建这个人吗？')) {
+
+               $.ajax({
+                   type: "post",
+                   url: personController+'/pubMan',
+                   data: {mobile:mobile.val(),uid:uid},
+                   error: function( xhr ) {
+                       alert('出错了');
+                   },
+                   /*complete: function( xhr ) {
+                       alert('发布成功\n初始密码为123456，请尽快修改。');
+                       self.prop('disabled', false);
+                   }*/
+               }).done(function(data) {
+                   if (data) {
+                       alert('发布成功\n初始密码为123456，请尽快修改。');
+                       $('.pubMan').text('已发布').prop('disabled', true);
+                   }else{
+                       alert('出错了');
+                   }
+               });
+           }
+       }
     })
 
     $('#search').on('keyup',function(e){
