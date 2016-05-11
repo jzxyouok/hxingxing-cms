@@ -85,6 +85,7 @@
               <ul class="treeview-menu">
                 <li><a href="{{ route('admin.report.index') }}"><i class="fa fa-exclamation-triangle"></i>举报</a></li>
                 <li><a href="{{ route('admin.feedback.index') }}"><i class="fa fa-comment"></i>反馈</a></li>
+                <li><a href="{{ route('admin.hotWords.index') }}"><i class="fa fa-fire"></i>热词</a></li>
               </ul>
             </li>
             <!--//讨论 treeview-->
