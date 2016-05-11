@@ -49,14 +49,14 @@ $(function() {
         //tagsData.jobTopic.unshift({id:0,name:""});
         tagsData.jumuStart.unshift({id:0,name:""});
         tagsData.jumuRunTime.unshift({id:0,name:""});
-        tagsData.city.unshift({id:0,name:""});
-        //tagsData.jobType.unshift({id:0,name:""});
-        tagsData.jobSalary.unshift({id:0,name:""});
-        tagsData.jobSalaryUnit.unshift({id:0,name:""});
-        tagsData.jobStyle.unshift({id:0,name:""});
-        tagsData.jobHeight.unshift({id:0,name:""});
-        tagsData.jobAge.unshift({id:0,name:""});
-        tagsData.jobWeight.unshift({id:0,name:""});
+//        tagsData.city.unshift({id:0,name:""});
+//        //tagsData.jobType.unshift({id:0,name:""});
+//        tagsData.jobSalary.unshift({id:0,name:""});
+//        tagsData.jobSalaryUnit.unshift({id:0,name:""});
+//        tagsData.jobStyle.unshift({id:0,name:""});
+//        tagsData.jobHeight.unshift({id:0,name:""});
+//        tagsData.jobAge.unshift({id:0,name:""});
+//        tagsData.jobWeight.unshift({id:0,name:""});
 
         renderJobForm(tagsData);
 

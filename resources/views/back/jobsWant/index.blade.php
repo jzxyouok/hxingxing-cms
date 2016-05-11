@@ -97,8 +97,10 @@ aria-labelledby="contactModalLabel" aria-hidden="true">
                                         </div>
                                         <label for="" class="control-label pull-left"><i class="icon fa fa-phone"></i></label>
                                         <div class="col-md-3">
-                                             <input type="text" class="form-control" name="mobile" id="realMobile" maxlength="11">
+                                             <input type="text" class="form-control" name="realMobile" id="realMobile" maxlength="11">
                                         </div>
+                                        <input type="button" class="btn btn-primary pubMan" value="发布" />
+                                        <label for="realMobile" id="realMobile-error" class="pull-left error"></label>
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="col-md-2 control-label">虚拟姓名</label>
@@ -109,6 +111,7 @@ aria-labelledby="contactModalLabel" aria-hidden="true">
                                           <div class="col-md-3">
                                               <input type="text" class="form-control" name="fakeMobile" id="fakeMobile" maxlength="11">
                                           </div>
+                                        <input type="button" class="btn btn-primary pubMan" value="发布" />
                                     </div>
                                     <div class="form-group">
                                         <label for="" class="col-md-2 control-label">公司</label>
@@ -189,7 +192,7 @@ aria-labelledby="contactModalLabel" aria-hidden="true">
         $('#modalForm').find('input[type="text"]','input[type="hidden"]').val('');
         contactModal.find('.alert').hide();
         contactModal.find('#jobWantId').val(activeBtn.attr('jobWantId'));
-        try{
+        //try{
             var commentData = JSON.parse(activeBtn.attr('data-comment'));
             //console.log(commentData);
             var artTitle = $(this).data('title');//s
@@ -199,7 +202,7 @@ aria-labelledby="contactModalLabel" aria-hidden="true">
             $('#contactName').val(commentData.name);
             $('#fakeName').val(commentData.fakeName);
             $('#fakeMobile').val(commentData.fakeMobile);
-            $('#realMobile').val(commentData.mobile);
+            $('#realMobile').val(commentData.realMobile);
             $('#contactCompany').val(commentData.company);
             $('#contactPosition').val(commentData.position);
             $('#otherName').val(commentData.otherName);
@@ -208,12 +211,14 @@ aria-labelledby="contactModalLabel" aria-hidden="true">
             $('#remark').val(commentData.remark);
             if (commentData.isPubed==0) {
                 $('.pubMan').val('发布').prop('disabled', false);
+            }else if(commentData.isPubed == undefined){
+                $('.pubMan').hide();
             }else{
                 $('.pubMan').val('已发布').prop('disabled', true);
             }
-        }catch(e) {
-
-        }
+//        }catch(e) {
+//
+//        }
 
         contactModal.modal('show');
         //console.log($(this).closest('tr').attr('class'));
@@ -314,6 +319,8 @@ var validator= modalForm.validate({
             if(!uid)  oldContact.uid = result;
             //console.log(JSON.stringify(oldContact));
             //console.log(activeBtn);
+            var tab = activeBtn.closest('div.jsgrid');
+            tab.jsGrid("search");
             activeBtn.attr('data-comment',JSON.stringify(oldContact));
 
             self.next().text('操作成功').removeClass('alert-warning').addClass('alert-success').show();

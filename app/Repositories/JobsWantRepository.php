@@ -125,7 +125,7 @@ class JobsWantRepository extends BaseRepository {
 		// var_dump($data);die();
 		$query = $this->model->with(array(
 			'contact' => function ($query) {
-				$query->get(['uid', 'name', 'fakeName', 'fakeMobile', 'mobile', 'company', 'position', 'otherName', 'otherMobile', 'otherCompany', 'remark']);
+				$query->get(['uid', 'name', 'fakeName', 'fakeMobile', 'realMobile','isPubed', 'company', 'position', 'otherName', 'otherMobile', 'otherCompany', 'remark']);
 			},
 		));
 		if ($onlySelf) {

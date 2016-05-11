@@ -1,3 +1,4 @@
+var mobileReg = /^(((13[0-9]{1})|(15[0-9]{1})|(18[0-9]{1}))+\d{8})$/;
 // <!-- 提交数据带上下拉选中项的文本 -->
 function takeSelectedTxt(selector,data) {
     var selects = ['name','category', 'topic1', 'topic2', 'topic3','salary', 'salaryUnit', 'site']
@@ -14,9 +15,9 @@ $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
         tagsData.jobType.unshift({id:0,name:""});
-        tagsData.jobCategory.unshift({id:0,name:""});
-        tagsData.jobTopic.unshift({id:0,name:""});
-        tagsData.jobSalary.unshift({id:0,name:""});
+//        tagsData.jobCategory.unshift({id:0,name:""});
+//        //tagsData.jobTopic.unshift({id:0,name:""});
+//        tagsData.jobSalary.unshift({id:0,name:""});
         tagsData.jobSalaryUnit.unshift({id:0,name:""});
         //tagsData.city.unshift({id:0,name:""});
 
@@ -315,6 +316,7 @@ $(function() {
             data: {_token:_token}
         }).done(function() {
             $("#unpub").jsGrid("search");
+            $("#pubed").jsGrid("search");
         });
     };
 
@@ -354,6 +356,50 @@ $(function() {
                     }
                 }).done(function(data) {
                     msgBox.text('已发送！').removeClass('alert-warning').removeClass('alert-info').addClass('alert-success').show();
+                });
+            }
+        }
+    })
+
+    $('.pubMan').click(function(event) {
+        var self = $(this);
+        var mobile = self.prev().find('input');
+        if(!mobileReg.test(mobile.val())) {
+            alert('请输入有效的手机号码！');
+            mobile.select();
+            return false;
+        }
+
+        /*if(confirm('确定以这个号码发布招聘信息？')){
+         alert('发布成功\n初始密码为123456，请尽快修改。');
+         var isPubed = self.attr('isPubed');
+         console.log('isPubed:'+isPubed);
+         $('#contactForm').find('#hidden').append('<input type="hidden" name="isPubed" value="'+isPubed+'"/>');
+         $('.pubMan').val('已发布').prop('disabled', true);
+         }*/
+
+        var uid = $('#uid').val();
+        if (uid>0) {
+            if (confirm('确定创建这个人吗？')) {
+
+                $.ajax({
+                    type: "post",
+                    url: personController+'/pubMan',
+                    data: {mobile:mobile.val(),uid:uid},
+                    error: function( xhr ) {
+                        alert('出错了');
+                    },
+                    /*complete: function( xhr ) {
+                     alert('发布成功\n初始密码为123456，请尽快修改。');
+                     self.prop('disabled', false);
+                     }*/
+                }).done(function(data) {
+                    if (data) {
+                        alert('发布成功\n初始密码为123456，请尽快修改。');
+                        $('.pubMan').val('已发布').prop('disabled', true);
+                    }else{
+                        alert('出错了');
+                    }
                 });
             }
         }

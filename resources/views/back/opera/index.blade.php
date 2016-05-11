@@ -493,7 +493,7 @@
                 $('#contactModal #uid').val(result);
               }
                 var tab = activeBtn.closest('div.jsgrid');
-                
+
 
                 tab.jsGrid("search");
 
