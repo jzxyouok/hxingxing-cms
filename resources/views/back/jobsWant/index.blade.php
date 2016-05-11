@@ -123,7 +123,10 @@ aria-labelledby="contactModalLabel" aria-hidden="true">
                                     </div>
                                     <div class="row">
                                         <label for="" class="col-md-2 control-label">备注</label>
-                                        <div class="col-md-10"><input type="text" class="form-control" name="remark" id="remark"></div>
+                                        <!--<div class="col-md-10"><input type="text" class="form-control" name="remark" id="remark"></div>-->
+                                        <div class="col-md-10">
+                                            <textarea class="form-control" rows="3" name="remark" id="remark"></textarea>
+                                        </div>
                                     </div>
                                 </div>
                                 <div class="tab-pane fade" id="other">
