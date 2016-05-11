@@ -45,18 +45,18 @@ function renderJobForm(tagsData) {
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
-        tagsData.jobCategory.unshift({id:'',name:""});
-        tagsData.jobTopic.unshift({id:'',name:""});
-        tagsData.jumuStart.unshift({id:'',name:""});
-        tagsData.jumuRunTime.unshift({id:'',name:""});
-        tagsData.city.unshift({id:'',name:""});
-        tagsData.jobType.unshift({id:'',name:""});
-        tagsData.jobSalary.unshift({id:'',name:""});
-        tagsData.jobSalaryUnit.unshift({id:'',name:""});
-        tagsData.jobStyle.unshift({id:'',name:""});
-        tagsData.jobHeight.unshift({id:'',name:""});
-        tagsData.jobAge.unshift({id:'',name:""});
-        tagsData.jobWeight.unshift({id:'',name:""});
+        //tagsData.jobCategory.unshift({id:0,name:""});
+        //tagsData.jobTopic.unshift({id:0,name:""});
+        tagsData.jumuStart.unshift({id:0,name:""});
+        tagsData.jumuRunTime.unshift({id:0,name:""});
+        tagsData.city.unshift({id:0,name:""});
+        //tagsData.jobType.unshift({id:0,name:""});
+        tagsData.jobSalary.unshift({id:0,name:""});
+        tagsData.jobSalaryUnit.unshift({id:0,name:""});
+        tagsData.jobStyle.unshift({id:0,name:""});
+        tagsData.jobHeight.unshift({id:0,name:""});
+        tagsData.jobAge.unshift({id:0,name:""});
+        tagsData.jobWeight.unshift({id:0,name:""});
 
         renderJobForm(tagsData);
 
@@ -87,6 +87,7 @@ $(function() {
                         data: item,
                         async:false,
                         success : function(result){
+                            $("#unpub").jsGrid("search");
                             result = JSON.parse(result);
                             item.id = result.id;
                             return item;
@@ -94,8 +95,9 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
-                    item._token=_token;
                     item = takeSelectedTxt('.jsgrid-edit-row',item);
+                    item._token=_token;
+                    // item.cover = item.find('.operaCoverBox').val();
                     console.log(item)
                     $.ajax({
                         type: "PUT",
@@ -103,7 +105,7 @@ $(function() {
                         data: item,
                         async:false,
                         success : function(data1){
-                            // console.log(data1);
+                            $("#unpub").jsGrid("search");
                             if(data1.name != item.name){
                                 alert('剧名已存在！');
                             }
@@ -134,10 +136,7 @@ $(function() {
                     },
                     itemTemplate: function(_, item) {
                         return $("<input>").attr({"type":"checkbox","class":"table-operation hide tabOperaId","data-id":item.id});
-                        //return '<input type="checkbox" class="table-operation hide tabOperaId" data-id="'+item.id+'"/>';
-
-                    },
-                    align: "center",width: 30,sorting: false
+                    },align: "center",width: 30,sorting: false
                 },
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function(_, item) {
@@ -181,12 +180,13 @@ $(function() {
                 { name: "producer", title: "制片方", type: "text", width: 40 },
                 { name: "creator", title: "主创", type: "text", width: 40 },
                 { name: "platform", title: "播放平台", type: "text", width: 40 },
-                // {headerTemplate: function() {return '封面';},
-                //     itemTemplate: function(_, item) {
-                //         return '<img src="'+item.cover+'" style="height: 35px;width: 35px">';
-                //     },width: 40,sorting: false,
-                // },
-                {headerTemplate: function() {return '职位发布';},
+                {headerTemplate: function() {return '封面';},
+                    itemTemplate: function(_, item) {
+                        return '<form class="operaCoverForm" action="'+uploadController+'" method="post">'+
+    '<img class="operaCoverFile" src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px"><input type="file" name="picture" class="operaCoverInput" style="display:none"><input type="hidden" class="operaCoverBox"><button class="btn btn-sm" type="submit" style="display:none">上传</button></form>';
+                    },width: 80,sorting: false,
+                },
+                {headerTemplate: function() {return '职位';},
                     insertTemplate: function() {
                         //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openJobs" >新增<i class="icon fa fa-edit"></i></a>';
                     },
@@ -201,8 +201,12 @@ $(function() {
             onDataLoaded: function(args) {
                 setIcheck();
             },
+            onItemUpdating: function(args) {
+                args.row.find('.operaCoverInput,.operaCoverBox').show();
+            },
             onRefreshed: function(args) {
                 setIcheck();
+                console.log(123)
             }
         });
         $("#pubed").jsGrid({
@@ -266,7 +270,7 @@ $(function() {
                         return item.cover?'<img src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px">':'';
                     },width: 40,sorting: false,
                 },
-                {headerTemplate: function() {return '职位发布';},
+                {headerTemplate: function() {return '职位';},
                     itemTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.jobs?JSON.stringify((item.jobs)):"")+' data-toggle="modal" data-target="#jobsModal" class="btn btn-default btn-sm openJobs" >'+(item.jobs&&item.jobs.length>0?item.jobs.length:'<i class="icon fa fa-edit"></i>')+'</a>';
                     },
@@ -312,47 +316,45 @@ $(function() {
     $('.pubMan').click(function(event) {
         var self = $(this);
         var mobile = self.prev().find('input');
-//        console.log(mobile[0]);
         if(!mobileReg.test(mobile.val())) {
             alert('请输入有效的手机号码！');
             mobile.select();
             return false;
         }
 
-//        if(confirm('确定以这个号码发布招聘信息？')){
-//            alert('发布成功\n初始密码为123456，请尽快修改。');
-//            var isPubed = self.attr('isPubed');
-//            console.log('isPubed:'+isPubed);
-//            $('#contactForm').find('#hidden').append('<input type="hidden" name="isPubed" value="'+isPubed+'"/>');
-//            $('.pubMan').val('已发布').prop('disabled', true);
-//        }
+        /*if(confirm('确定以这个号码发布招聘信息？')){
+            alert('发布成功\n初始密码为123456，请尽快修改。');
+            var isPubed = self.attr('isPubed');
+            console.log('isPubed:'+isPubed);
+            $('#contactForm').find('#hidden').append('<input type="hidden" name="isPubed" value="'+isPubed+'"/>');
+            $('.pubMan').val('已发布').prop('disabled', true);
+        }*/
 
-        var uid = $('#uid').val();
-        //console.log(uid);
-        if (uid>0) {
-            if (confirm('确定创建这个人吗？')) {
+       var uid = $('#uid').val();
+       if (uid>0) {
+           if (confirm('确定创建这个人吗？')) {
 
-                $.ajax({
-                    type: "post",
-                    url: personController+'/pubMan',
-                    data: {mobile:mobile.val(),uid:uid},
-                    error: function( xhr ) {
-                        alert('出错了');
-                    },
-                    /*complete: function( xhr ) {
-                        alert('发布成功\n初始密码为123456，请尽快修改。');
-                        self.prop('disabled', false);
-                    }*/
-                }).done(function(data) {
-                    if (data) {
-                        alert('发布成功\n初始密码为123456，请尽快修改。');
-                        $('.pubMan').val('已发布').prop('disabled', true);
-                    }else{
-                        alert('出错了');
-                    }
-                });
-            }
-        }
+               $.ajax({
+                   type: "post",
+                   url: personController+'/pubMan',
+                   data: {mobile:mobile.val(),uid:uid},
+                   error: function( xhr ) {
+                       alert('出错了');
+                   },
+                   /*complete: function( xhr ) {
+                       alert('发布成功\n初始密码为123456，请尽快修改。');
+                       self.prop('disabled', false);
+                   }*/
+               }).done(function(data) {
+                   if (data) {
+                       alert('发布成功\n初始密码为123456，请尽快修改。');
+                       $('.pubMan').val('已发布').prop('disabled', true);
+                   }else{
+                       alert('出错了');
+                   }
+               });
+           }
+       }
     })
 
     $('#search').on('keyup',function(e){

@@ -98,7 +98,11 @@ class OperaRepository extends BaseRepository {
 				$content->$val = e($inputs[$val]);
 			}
 		}
-		$content->created_uid = user('id');
+		
+		// set created_uid for a new data
+		if (!isset($content->created_uid)) {
+			$content->created_uid = user('id');
+		}
 		/*if ($user_id) {
 			            $content->uid = $user_id;
 		*/
