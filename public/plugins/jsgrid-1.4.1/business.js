@@ -95,10 +95,9 @@ $(function() {
                     });
                 },
                 updateItem: function(item) {
+                    console.log(item)
                     item = takeSelectedTxt('.jsgrid-edit-row',item);
                     item._token=_token;
-                    // item.cover = item.find('.operaCoverBox').val();
-                    console.log(item)
                     $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
@@ -110,6 +109,10 @@ $(function() {
                                 alert('剧名已存在！');
                             }
                             result = data1;
+                        },
+                        error:function(data) {
+                            alert('出错了');
+                            result = false;
                         }
                     });
                     return result;
@@ -183,7 +186,7 @@ $(function() {
                 {headerTemplate: function() {return '封面';},
                     itemTemplate: function(_, item) {
                         return '<form class="operaCoverForm" action="'+uploadController+'" method="post">'+
-    '<img class="operaCoverFile" src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px"><input type="file" name="picture" class="operaCoverInput" style="display:none"><input type="hidden" class="operaCoverBox"><button class="btn btn-sm" type="submit" style="display:none">上传</button></form>';
+    '<img class="operaCoverFile" src="'+item.cover+'" style="height: 40px;width: 80px"><input type="file" name="picture" class="operaCoverInput" style="display:none"><button class="btn btn-sm btn-default operaCoverBtn" type="submit" style="display:none"><i class="icon fa fa-cloud-upload"></i> 上传</button><span class="text-success uploadMsg" style="display:none">上传成功</span></form>';
                     },width: 80,sorting: false,
                 },
                 {headerTemplate: function() {return '职位';},
@@ -201,12 +204,20 @@ $(function() {
             onDataLoaded: function(args) {
                 setIcheck();
             },
+            onItemEditing:function(args) {
+                setTimeout(function (argument) {
+                    $('#unpub .jsgrid-edit-row').find('.operaCoverInput').show();
+                }, 500)
+            },
+            // set cover src
             onItemUpdating: function(args) {
-                args.row.find('.operaCoverInput,.operaCoverBox').show();
+                var newCoverSrc = $('#unpub .jsgrid-edit-row').find('.operaCoverFile').attr('src');
+                if (newCoverSrc.length) {
+                    args.item.cover = newCoverSrc
+                }
             },
             onRefreshed: function(args) {
                 setIcheck();
-                console.log(123)
             }
         });
         $("#pubed").jsGrid({
@@ -267,8 +278,9 @@ $(function() {
                 { name: "platform", title: "播放平台", type: "text", width: 40 },
                 {headerTemplate: function() {return '封面';},
                     itemTemplate: function(_, item) {
-                        return item.cover?'<img src="'+serverUrl+item.cover+'" style="height: 35px;width: 35px">':'';
-                    },width: 40,sorting: false,
+                        return '<form class="operaCoverForm" action="'+uploadController+'" method="post">'+
+    '<img class="operaCoverFile" src="'+item.cover+'" style="height: 40px;width: 80px"><input type="file" name="picture" class="operaCoverInput" style="display:none"><button class="btn btn-sm btn-default operaCoverBtn" type="submit" style="display:none"><i class="icon fa fa-cloud-upload"></i> 上传</button><span class="text-success uploadMsg" style="display:none">上传成功</span></form>';
+                    },width: 80,sorting: false,
                 },
                 {headerTemplate: function() {return '职位';},
                     itemTemplate: function(_, item) {
@@ -279,7 +291,19 @@ $(function() {
                 { type: "control", editButton: false,deleteButton:manageRole,modeSwitchButton: false}
             ],
             onDataLoaded: function(args) {
-            }
+            },
+            onItemEditing:function(args) {
+                setTimeout(function (argument) {
+                    $('#pubed .jsgrid-edit-row').find('.operaCoverInput').show();
+                }, 500)
+            },
+            // set cover src
+            onItemUpdating: function(args) {
+                var newCoverSrc = $('#pubed .jsgrid-edit-row').find('.operaCoverFile').attr('src');
+                if (newCoverSrc.length) {
+                    args.item.cover = newCoverSrc
+                }
+            },
         });
     });
     function setIcheck() {
