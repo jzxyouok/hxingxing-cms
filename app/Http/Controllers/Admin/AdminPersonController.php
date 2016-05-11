@@ -136,12 +136,12 @@ class AdminPersonController extends BackController {
 		//
 		$data = $request->all();
 		//var_dump($data);var_dump('update');die;
-		$this->person->update($id, $data, 'manager'); //修改用户信息
+		$res = $this->person->update($id, $data, 'manager'); //修改用户信息
 
 		if (isset($data['operaId']) && $data['operaId'] > 0) {
 			$this->opera->update($data['operaId'], array('uid' => $data['uid']), 'manager');
 		}
-		echo 1;
+		echo $res;
 	}
 
 	public function delWork($id) {

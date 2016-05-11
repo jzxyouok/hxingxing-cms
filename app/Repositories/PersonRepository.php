@@ -181,7 +181,7 @@ class PersonRepository extends BaseRepository {
 //			$inputs['password'] = md5(md5('123456') . 'fuck_salt');
 //		}
 		$inputs['updTime'] = round(microtime(true) * 1000);
-		$this->model->where('uid', $id)->update((array) $inputs);
+		return $this->model->where('uid', $id)->update((array) $inputs);
 	}
 	public function checkMobile($mobile, $uid) {
 		$query = $this->model->where('mobile', $mobile);

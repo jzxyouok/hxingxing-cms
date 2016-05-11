@@ -50,10 +50,10 @@ $(function() {
         tagsData.jumuStart.unshift({id:0,name:""});
         tagsData.jumuRunTime.unshift({id:0,name:""});
 //        tagsData.city.unshift({id:0,name:""});
-//        //tagsData.jobType.unshift({id:0,name:""});
+        tagsData.jobType.unshift({id:0,name:""});
 //        tagsData.jobSalary.unshift({id:0,name:""});
 //        tagsData.jobSalaryUnit.unshift({id:0,name:""});
-//        tagsData.jobStyle.unshift({id:0,name:""});
+        tagsData.jobStyle.unshift({id:0,name:""});
 //        tagsData.jobHeight.unshift({id:0,name:""});
 //        tagsData.jobAge.unshift({id:0,name:""});
 //        tagsData.jobWeight.unshift({id:0,name:""});
@@ -348,6 +348,10 @@ $(function() {
                }).done(function(data) {
                    if (data) {
                        alert('发布成功\n初始密码为123456，请尽快修改。');
+                       //var tab = activeBtn.closest('div.jsgrid');
+                       //tab.jsGrid("search");
+                       $("#unpub").jsGrid("search");
+                       //$("#pubed").jsGrid("search");
                        $('.pubMan').val('已发布').prop('disabled', true);
                    }else{
                        alert('出错了');

@@ -316,7 +316,11 @@ var validator= modalForm.validate({
             },
         }).done(function(result) {//联系人操作
 
-            if(!uid)  oldContact.uid = result;
+            if(!uid){
+                oldContact.uid = result;
+                $('#uid').val(result);
+                $('.pubMan').val('发布').prop('disabled', false).show();
+            }
             //console.log(JSON.stringify(oldContact));
             //console.log(activeBtn);
             var tab = activeBtn.closest('div.jsgrid');

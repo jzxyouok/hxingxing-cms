@@ -491,10 +491,9 @@
               if(!personId){
                 oldContact.uid = result;
                 $('#contactModal #uid').val(result);
+                $('.pubMan').val('发布').prop('disabled', false).show();
               }
                 var tab = activeBtn.closest('div.jsgrid');
-
-
                 tab.jsGrid("search");
 
               console.log(JSON.stringify(oldContact));

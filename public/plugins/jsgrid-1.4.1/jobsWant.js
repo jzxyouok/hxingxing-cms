@@ -80,11 +80,18 @@ $(function() {
                     item._token=_token;
                     item.uid= data ? data.uid:0;
                     item.pubStatus=0;
-                    return $.ajax({
+                    $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
-                        data: item
+                        data: item,
+                        async:false,
+                        success : function(data1){
+                            $("#unpub").jsGrid("search");
+                            result = data1;
+                        }
                     });
+                    return result;
+
                 },
                 deleteItem: function(item) {
                     item._method='delete';
@@ -397,6 +404,11 @@ $(function() {
                     if (data) {
                         alert('发布成功\n初始密码为123456，请尽快修改。');
                         $('.pubMan').val('已发布').prop('disabled', true);
+//                        var tab = activeBtn.closest('div.jsgrid');
+//                        console.log(tab);
+                        $("#unpub").jsGrid("search");
+                        //$("#pubed").jsGrid("search");
+                        //tab.jsGrid("search");
                     }else{
                         alert('出错了');
                     }
