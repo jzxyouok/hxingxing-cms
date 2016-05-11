@@ -101,6 +101,13 @@ class AdminJobsWantController extends BackController {
 		}
 		$operas = $this->content->index($data, $onlySelf, Cache::get('page_size', '10'),$pubStatus);
 		//var_dump($pubStatus);die();
+        // escape special char
+        foreach ($operas as $k => $val) {
+            $operas[$k]['contact']['name'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['name']));
+            $operas[$k]['contact']['company'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['company']));
+            $operas[$k]['contact']['remark'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['remark']));
+
+        }
 		echo json_encode($operas);
 	}
 

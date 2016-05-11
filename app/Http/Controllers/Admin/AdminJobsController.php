@@ -81,7 +81,7 @@ class AdminJobsController extends BackController {
 		//
 		$data = $request->all();
 		//var_dump('store');die;
-		$data['actorType'] = (isset($data['nameC'])&&$data['nameC'] > 24 && $data['nameC'] < 46) ? 'actor' : 'other';
+		$data['actorType'] = (isset($data['nameC'])&&$data['nameC'] > 23 && $data['nameC'] < 46) ? 'actor' : 'other';//24-45
 		$manager = $this->jobs->store($data, 'manager');
 		if ($manager->id) {
 			//添加成功
