@@ -74,25 +74,7 @@ class OperaRepository extends BaseRepository {
 	 * @return Douyasi\Models\Content
 	 */
 	private function saveContent($content, $inputs, $user_id = '0') {
-		//var_dump('kk');
-		// var_dump($content->attributes);die();
-		// $content->name   = e($inputs['name']);
-		// $content->content = e($inputs['content']);
-		// $content->thumb   = e($inputs['thumb']);
-		// $content->category_id = e($inputs['category_id']);
-		// $content->type        = 'article';
-		$tmp_flag = '';
-		/*这里需要对推荐位flag进行处理*/
-		if (!empty($inputs['flag']) && is_array($inputs['flag'])) {
-			foreach ($inputs['flag'] as $flag) {
-				if (!empty($flag)) {
-					$tmp_flag .= $flag . ',';
-				}
-			}
-			$content->flag = $tmp_flag;
-		}
-
-		$allFields = array('name', 'invest', 'categoryC', 'category', 'topicC1', 'topic1', 'topicC2', 'topic2', 'topicC3', 'topic3', 'siteC', 'site', 'startTimeC', 'startTime', 'periodC', 'period', 'runTime', 'outline', 'producer', 'creator', 'platform', 'pubStatus', 'uid');
+		$allFields = array('name', 'invest', 'categoryC', 'category', 'topicC1', 'topic1', 'topicC2', 'topic2', 'topicC3', 'topic3', 'siteC', 'site', 'startTimeC', 'startTime', 'periodC', 'period', 'runTime', 'outline', 'producer', 'creator', 'platform', 'pubStatus', 'uid','cover');
 		foreach ($allFields as $k => $val) {
 			if (array_key_exists($val, $inputs)) {
 				$content->$val = e($inputs[$val]);

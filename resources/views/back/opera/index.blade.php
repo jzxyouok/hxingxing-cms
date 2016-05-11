@@ -237,8 +237,8 @@
     var searchMobileController = '{{ route("admin.person.index") }}/searchMobile';
     var jobController = '{{ route("admin.jobs.index") }}';
     var manageRole = '{{$manageRole}}';
+    var serverUrl = '{{ url('') }}';
     var _token = '{{ csrf_token() }}';
-    var serverUrl = '{{ $serverUrl }}';
     var activeBtn;
 
     $('body').on('submit','.operaCoverForm',function (e) {
@@ -254,9 +254,16 @@
           processData: false,
       }).done(function(data) {
           // console.log(data)
-          self.find('.operaCoverFile').attr('src',serverUrl+data.info)
-          self.find('.operaCoverBox').val(data.info)
+          if (data.status==1) {
+            self.find('.operaCoverFile').attr('src',serverUrl+data.info).end().find('.operaCoverBtn').hide().end().find('.uploadMsg').show();
+          }else{
+            alert('上传失败。'+data.info)
+          }
       })
+    })
+    $('body').on('change','.operaCoverInput',function (e) {
+      $(this).next('.btn').show();
+      $(this).next().next('.uploadMsg').hide();
     })
 
     $('body').on('click','.openContact',function () {

@@ -22,7 +22,7 @@ return $img->response('jpg');
 //added some test routes
 
 #对后台开启csrf过滤
-Route::when('admin/*', 'csrf', ['post', 'delete', 'put']);
+// Route::when('admin/*', 'csrf', ['post', 'delete', 'put']);
 
 /*
 |--------------------------------------------------------------------------
