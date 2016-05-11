@@ -96,7 +96,7 @@ class JobsWantRepository extends BaseRepository {
 				$content->$val = e($inputs[$val]);
 			}
 		}
-		//$content->created_uid = user('id');
+		$content->created_uid = user('id');
 		/*if ($user_id) {
 			            $content->uid = $user_id;
 		*/

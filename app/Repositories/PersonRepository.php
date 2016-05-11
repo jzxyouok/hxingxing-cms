@@ -177,9 +177,9 @@ class PersonRepository extends BaseRepository {
 	public function update($id, $inputs, $type = 'manager') {
 		unset($inputs['_url']);
 		unset($inputs['uid']);unset($inputs['operaId'], $inputs['jobWantId']);unset($inputs['search']);
-		if (isset($inputs['isPubed']) && $inputs['isPubed'] > 0) {
-			$inputs['password'] = md5(md5('123456') . 'fuck_salt');
-		}
+//		if (isset($inputs['isPubed']) && $inputs['isPubed'] > 0) {
+//			$inputs['password'] = md5(md5('123456') . 'fuck_salt');
+//		}
 		$inputs['updTime'] = round(microtime(true) * 1000);
 		$this->model->where('uid', $id)->update((array) $inputs);
 	}

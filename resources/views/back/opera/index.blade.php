@@ -100,8 +100,8 @@
                         <div class="col-md-3">
                              <input type="text" class="form-control" name="mobile" id="realMobile" maxlength="11">
                         </div>
+                        <input type="button" class="btn btn-primary pubMan" value="发布" />
                         <label for="realMobile" id="realMobile-error" class="pull-left error"></label>
-                        <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="1"/>
                     </div>
                     <div class="form-group">
                         <label for="" class="col-md-2 control-label">虚拟姓名</label>
@@ -112,7 +112,7 @@
                       <div class="col-md-3">
                           <input type="text" class="form-control" name="fakeMobile" id="fakeMobile" maxlength="11">
                       </div>
-                        <input type="button" class="btn btn-primary pubMan" value="发布" isPubed="2"/>
+                        <input type="button" class="btn btn-primary pubMan" value="发布" />
                     </div>
                     <div class="form-group">
                       <label for="" class="col-md-2 control-label">公司</label>
@@ -255,7 +255,7 @@
         contactModal.find('.alert').hide();
         //console.log(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
         contactModal.find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
-        try{
+//        try{
             // console.log(activeBtn.attr('data-comment'));
             var commentData = JSON.parse(activeBtn.attr('data-comment'));
             // console.log(commentData);
@@ -273,14 +273,16 @@
             $('#otherMobile').val(commentData.otherMobile);
             $('#otherCompany').val(commentData.otherCompany);
             $('#remark').val(commentData.remark);
-            if (commentData.isPubed==0 || commentData.isPubed == undefined) {
+            if (commentData.isPubed==0) {
                 $('.pubMan').val('发布').prop('disabled', false);
+            }else if(commentData.isPubed == undefined){
+                $('.pubMan').hide();
             }else{
                 $('.pubMan').val('已发布').prop('disabled', true);
             }
-        }catch(e) {
-
-        }
+//        }catch(e) {
+//
+//        }
         contactModal.modal('show');
     })
 

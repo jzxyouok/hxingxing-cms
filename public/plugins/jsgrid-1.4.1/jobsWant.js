@@ -13,12 +13,12 @@ function takeSelectedTxt(selector,data) {
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
-        tagsData.jobType.unshift({id:0,name:""});
-        //tagsData.jobCategory.unshift({id:0,name:""});
-        //tagsData.jobTopic.unshift({id:0,name:""});
-        //tagsData.jobSalary.unshift({id:0,name:""});
-        tagsData.jobSalaryUnit.unshift({id:0,name:""});
-        //tagsData.city.unshift({id:0,name:""});
+        tagsData.jobType.unshift({id:'',name:""});
+        tagsData.jobCategory.unshift({id:'',name:""});
+        tagsData.jobTopic.unshift({id:'',name:""});
+        tagsData.jobSalary.unshift({id:'',name:""});
+        tagsData.jobSalaryUnit.unshift({id:'',name:""});
+        tagsData.city.unshift({id:'',name:""});
 
         $("#unpub").jsGrid({
             height: "650px",
