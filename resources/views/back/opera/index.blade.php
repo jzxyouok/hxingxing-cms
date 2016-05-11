@@ -97,7 +97,7 @@
                         </div>
                         <label for="" class="control-label pull-left"><i class="icon fa fa-phone"></i></label>
                         <div class="col-md-3">
-                             <input type="text" class="form-control" name="mobile" id="realMobile" maxlength="11">
+                             <input type="text" class="form-control" name="realMobile" id="realMobile" maxlength="11">
                         </div>
                         <input type="button" class="btn btn-primary pubMan" value="发布" />
                         <label for="realMobile" id="realMobile-error" class="pull-left error"></label>
@@ -282,7 +282,7 @@
             $('#contactModal #uid').val(commentData.uid);
             $('#isPubed').val(commentData.isPubed);
             $('#contactName').val(commentData.name);
-            $('#realMobile').val(commentData.mobile);
+            $('#realMobile').val(commentData.realMobile);
             $('#fakeName').val(commentData.fakeName);
             $('#fakeMobile').val(commentData.fakeMobile);
             $('#contactCompany').val(commentData.company);
@@ -492,6 +492,11 @@
                 oldContact.uid = result;
                 $('#contactModal #uid').val(result);
               }
+                var tab = activeBtn.closest('div.jsgrid');
+                
+
+                tab.jsGrid("search");
+
               console.log(JSON.stringify(oldContact));
               //console.log(activeBtn.closest('tr').attr('class'));
               activeBtn.attr('data-comment',JSON.stringify(oldContact));

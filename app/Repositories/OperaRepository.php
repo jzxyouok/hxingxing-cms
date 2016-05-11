@@ -130,7 +130,7 @@ class OperaRepository extends BaseRepository {
 		//var_dump($data);//die();
 		$query = $this->model->with(array(
 			'contact' => function ($query) {
-				$query->get(['uid', 'isPubed', 'name', 'mobile', 'fakeName', 'fakeMobile', 'company', 'position', 'otherName', 'otherMobile', 'otherCompany', 'remark']);
+				$query->get(['uid', 'isPubed', 'name', 'realMobile', 'fakeName', 'fakeMobile', 'company', 'position', 'otherName', 'otherMobile', 'otherCompany', 'remark']);
 			}, 'jobs' => function ($query) {
 				$query->get(['id', 'operaId', 'name', 'salary', 'descrip', 'role', 'age', 'nameC', 'descrip', 'role', 'styleC1', 'style1', 'styleC2', 'style2', 'styleC3', 'style3', 'height', 'age', 'weight', 'salaryC', 'salaryUnitC', 'roleDescrip']);
 			}));

@@ -157,7 +157,8 @@ class AdminPersonController extends BackController {
 		unset($data['_url']);
 		$data['password'] = md5(md5('123456') . 'fuck_salt');
 		$data['isPubed'] = 1;
-		$data['pubMobile'] = $data['mobile'];
+        $data['mobile'] = $data['mobile'];
+		//$data['pubMobile'] = $data['mobile'];
 		// var_dump($data);die();
 		$return = $this->person->update($data['uid'], $data, 'article');
 		//var_dump($return);die();

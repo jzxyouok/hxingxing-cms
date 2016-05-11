@@ -54,7 +54,7 @@ class PersonRepository extends BaseRepository {
 		$person->name = e($inputs['name']);
 		$person->fakeName = e($inputs['fakeName']);
 		$person->fakeMobile = e($inputs['fakeMobile']);
-		$person->mobile = e($inputs['mobile']);
+		$person->realmobile = e($inputs['realMobile']);
 
 		$person->company = e($inputs['company']);
 		$person->position = e($inputs['position']);
