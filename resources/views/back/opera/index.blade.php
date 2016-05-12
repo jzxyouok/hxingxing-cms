@@ -9,6 +9,7 @@
   .jsgrid-pager-container .jsgrid-pager-current-page {background: #c4e2ff;color: #fff;}
   .jsgrid-table th{height: 30px;padding: 0;}
   .jsgrid-table td{padding:0!important}
+  .jsgrid-table {width:100%!important}
   td a.btn-sm:not(.checkbox-toggle){text-overflow: ellipsis;overflow: hidden;width: 50px;padding: 5px;}
   .modal .alert{padding: 6px 15px;margin-bottom: 0;display: none}
   .error{color: red;border-color: red;}

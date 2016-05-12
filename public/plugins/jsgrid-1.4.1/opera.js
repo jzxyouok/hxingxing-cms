@@ -347,8 +347,6 @@ $(function() {
     $('.pubMan').click(function(event) {
         var self = $(this);
         var mobile = self.prev().find('input');
-        var realMobile = $('#realMobile').val();
-        var fakeMobile = $('#fakeMobile').val();
         if(!mobileReg.test(mobile.val())) {
             alert('请输入有效的手机号码！');
             mobile.select();
@@ -370,7 +368,7 @@ $(function() {
                $.ajax({
                    type: "post",
                    url: personController+'/pubMan',
-                   data: {mobile:mobile.val(),realMobile:realMobile,fakeMobile:fakeMobile,uid:uid},
+                   data: {mobile:mobile.val(),uid:uid},
                    error: function( xhr ) {
                        alert('出错了');
                    },
