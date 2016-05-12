@@ -104,6 +104,7 @@ class AdminOperaController extends BackController {
 		// escape special char
 		foreach ($operas as $k => $val) {
 			$operas[$k]['contact']['name'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['name']));
+			$operas[$k]['contact']['otherName'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['otherName']));
 			$operas[$k]['contact']['position'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['position']));
             $operas[$k]['contact']['company'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['company']));
             $operas[$k]['contact']['remark'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['remark']));
