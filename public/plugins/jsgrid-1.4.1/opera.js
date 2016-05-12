@@ -63,7 +63,6 @@ $(function() {
         tagsData.jumuStart.unshift({id:0,name:""});
         tagsData.jumuRunTime.unshift({id:0,name:""});
         tagsData.jobType.unshift({id:0,name:""});
-        tagsData.jobStyle.unshift({id:0,name:""});
 
         renderJobForm(tagsData);
 
