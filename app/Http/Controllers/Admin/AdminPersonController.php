@@ -26,11 +26,12 @@ class AdminPersonController extends BackController {
 	 */
 	protected $person;
 
-	public function __construct(PersonRepository $person, OperaRepository $opera, JobsWantRepository $jobWant, Route $route) {
+	public function __construct(PersonRepository $person, OperaRepository $opera, JobsWantRepository $jobWant, Huanxin $huanxin, Route $route) {
 		parent::__construct();
 		$this->person = $person;
 		$this->opera = $opera;
 		$this->jobWant = $jobWant;
+		$this->huanxin = $huanxin;
 		$actionName = $route->getActionName();
 		list($class, $method) = explode('@', $actionName);
 		if (in_array($method, ['index', 'delWork']) && !user('object')->can('manage_users')) {
@@ -46,12 +47,12 @@ class AdminPersonController extends BackController {
 	public function index(Request $request) {
 		if (isset($_GET['test'])&&$_GET['test']=='createHxUsers') {
 			$uids = $this->person->backendPubedUids();
-			var_dump($uids,'<hr/>');
+			var_dump('后台发布的uid:',$uids,'<hr/>');
 			// die();
 
-			$HuanXin = new HuanXin();
-			// $HuanXin->hxDelateUsers($uids);
-			$hxExist = $HuanXin->getUsers(200);
+			// $this->huanxin->deleteUsers($uids);
+			$hxExist = $this->huanxin->getUsers(300);
+			// var_dump('环信用户列表:',$hxExist,'<hr/>');
 			$hxExistUids = [];
 			foreach ($hxExist['entities'] as $k => $val) {
 				$originUid = str_replace(['y', 'z'], '', $val['username']);
@@ -60,11 +61,11 @@ class AdminPersonController extends BackController {
 				}
 			}
 			asort($hxExistUids);
-			var_dump($hxExistUids,'<hr/>');
+			var_dump('已经存在环信uid:',$hxExistUids,'<hr/>');
 			// die();
 
 			$uids = array_diff($uids, $hxExistUids);
-			var_dump($uids,'<hr/>');
+			var_dump('最终要注册的环信uid:',$uids,'<hr/>');
 
 			$users = [];
 			foreach ($uids as $k => $val) {
@@ -77,8 +78,8 @@ class AdminPersonController extends BackController {
 				// }
 			}
 			var_dump($users,'<hr/>');
-			// die();
-			$hxRegRes = $HuanXin->hxCreateUsers($users);
+			die();
+			$hxRegRes = $this->huanxin->createUsers($users);
 			// var_dump($hxRegRes);die();
 		}
 
@@ -195,7 +196,8 @@ class AdminPersonController extends BackController {
 	public function pubMan(PersonRequest $request) {
 		$data = $request->all();
 		unset($data['_url']);
-		$data['password'] = md5(md5('123456') . 'fuck_salt');
+		$data['password'] = md5(md5(md5('123456f4iU3T9GFIkmGB^O')) . 'fuck_salt');
+		// var_dump($data['password']);die();
 		$data['isPubed'] = 1;
         $data['mobile'] = $data['mobile'];
 		//$data['pubMobile'] = $data['mobile'];
@@ -209,8 +211,7 @@ class AdminPersonController extends BackController {
 
 		// reg huanxin
 		if ($pubRes) {
-			$HuanXin = new HuanXin();
-			$hxRegRes = $HuanXin->hxCreateUsers([
+			$hxRegRes = $this->huanxin->createUsers([
 				["username" => $data['uid'] . 'y', "password" => $data['password']],
 				["username" => $data['uid'] . 'z', "password" => $data['password']],
 			]);
