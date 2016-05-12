@@ -40,7 +40,9 @@ class AdminJobsController extends BackController {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		// test, to update jobs num in every opera
+		/**
+	     * for updating data
+	     */
 		$data = $request->all();
 		if (isset($data['test'])&&$data['test']=='updJobsNum') {
 			$operaIds = $this->opera->allOperaIds();
@@ -48,7 +50,14 @@ class AdminJobsController extends BackController {
 			foreach ($operaIds as $operaId) {
 				$countJobs = $this->jobs->countJobs($operaId);
 				echo '剧目id:'.$operaId.'  实际职位数:'.$countJobs.'<br/>';
-				$countJobs = $this->opera->updateJobsNum($operaId,'update',$countJobs);
+				$this->opera->updateJobsNum($operaId,'update',$countJobs);
+			}
+		}
+		if (isset($data['test'])&&$data['test']=='updJobsPubTime') {
+			$items = $this->opera->getPubTime();
+			// var_dump($items,count($items));die();
+			foreach ($items as $item) {
+				$this->jobs->updPubTime($item['id'],$item['pubTime']);
 			}
 		}
 

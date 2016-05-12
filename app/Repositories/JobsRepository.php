@@ -194,9 +194,6 @@ class JobsRepository extends BaseRepository
             $user = $this->updateManager($user, $inputs);
         }
     }
-    public function countJobs($operaId){
-        return  $this->model->where('operaId',$operaId)->count();
-    }
     public function destroy($ids, $type = 'article') {
         // $in = [];
         // if ($ids!='') {
@@ -208,5 +205,15 @@ class JobsRepository extends BaseRepository
     }
     public function pubJobs($ids) {
         $this->model->pubJobs($ids);
+    }
+    
+    /**
+     * for updating data
+     */
+    public function countJobs($operaId){
+        return  $this->model->where('operaId',$operaId)->count();
+    }
+    public function updPubTime($operaId,$time){
+        return  $this->model->where('operaId',$operaId)->update(['updTime' => $time]);
     }
 }
