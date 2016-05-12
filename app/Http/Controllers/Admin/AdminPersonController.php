@@ -232,8 +232,64 @@ class AdminPersonController extends BackController {
 			die('权限不足！');
 		}
 		//
-		$this->person->destroy($id, 'article');
+		//$this->person->destroy($id, 'article');
 		// return redirect()->route('admin.article.index')->with('message', '删除文章成功！');
-		echo 1;
+		//echo 1;
+
+        $returnStatus = 1;
+        $returnMsg = '成功';
+        DB::beginTransaction();
+        $res = $this->person->destroy($id, 'article');
+        // var_dump($pubRes);die();
+
+        // reg huanxin
+        if ($res) {
+            $HuanXin = new HuanXin();
+            $hxRegRes = $HuanXin->hxDelateUsers($id);
+            // var_dump($hxRegRes);die();
+            if (isset($hxRegRes['error'])) {
+                $returnStatus = 0;
+                $returnMsg = '删除环信失败';
+                DB::rollback();
+            }
+        }else{
+            $returnStatus = 0;
+            $returnMsg = '删除失败';
+        }
+        DB::commit();
+        echo json_encode(['status'=>$returnStatus,'msg'=>$returnMsg]);
 	}
+
+    public function updatePwd($id){
+        if (!user('object')->can('manage_users') || !user('object')->can('manage_system')) {
+            die('权限不足！');
+        }
+        //
+        //$this->person->destroy($id, 'article');
+        // return redirect()->route('admin.article.index')->with('message', '删除文章成功！');
+        //echo 1;
+
+        $returnStatus = 1;
+        $returnMsg = '成功';
+        DB::beginTransaction();
+        $res = $this->person->destroy($id, 'article');
+        // var_dump($pubRes);die();
+
+        // reg huanxin
+        if ($res) {
+            $HuanXin = new HuanXin();
+            $hxRegRes = $HuanXin->hxDelateUsers($id);
+            // var_dump($hxRegRes);die();
+            if (isset($hxRegRes['error'])) {
+                $returnStatus = 0;
+                $returnMsg = '删除环信失败';
+                DB::rollback();
+            }
+        }else{
+            $returnStatus = 0;
+            $returnMsg = '删除失败';
+        }
+        DB::commit();
+        echo json_encode(['status'=>$returnStatus,'msg'=>$returnMsg]);
+    }
 }
