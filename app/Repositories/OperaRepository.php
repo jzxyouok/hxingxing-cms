@@ -127,8 +127,15 @@ class OperaRepository extends BaseRepository {
 		}
 		return $query->where('pubStatus', e($data['pubStatus'])) /*->where('operas.id',e($data['id']))*/->orderBy('id', 'desc')->get()->toArray();
 	}
+
+	/**
+     * for updating data
+     */
 	public function allOperaIds() {
 		return $this->model->orderBy('id','desc')->lists('id')->toArray();
+	}
+	public function getPubTime() {
+		return $this->model->orderBy('id','desc')->select('id','pubTime')->get()->toArray();
 	}
 	public function tags($data = []) {
 		$ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
