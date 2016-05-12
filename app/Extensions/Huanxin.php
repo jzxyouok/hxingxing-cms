@@ -71,4 +71,13 @@ class Huanxin {
 	function hxCreateUsers($users = []) {
 		return $this->huanXin->createUsers($users);
 	}
+	function hxDelateUsers($uids = []) {
+		foreach ($uids as $key => $value) {
+			$this->huanXin->deleteUser($value."y");
+			$this->huanXin->deleteUser($value."z");
+		}
+	}
+	function getUsers($num=10) {
+		return $this->huanXin->getUsers($num);
+	}
 }

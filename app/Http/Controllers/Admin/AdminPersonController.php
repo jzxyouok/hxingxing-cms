@@ -44,6 +44,44 @@ class AdminPersonController extends BackController {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		if (isset($_GET['test'])&&$_GET['test']=='createHxUsers') {
+			$uids = $this->person->backendPubedUids();
+			var_dump($uids,'<hr/>');
+			// die();
+
+			$HuanXin = new HuanXin();
+			// $HuanXin->hxDelateUsers($uids);
+			$hxExist = $HuanXin->getUsers(200);
+			$hxExistUids = [];
+			foreach ($hxExist['entities'] as $k => $val) {
+				$originUid = str_replace(['y', 'z'], '', $val['username']);
+				if (!in_array($originUid, $hxExistUids)) {
+					$hxExistUids[] = $originUid;
+				}
+			}
+			asort($hxExistUids);
+			var_dump($hxExistUids,'<hr/>');
+			// die();
+
+			$uids = array_diff($uids, $hxExistUids);
+			var_dump($uids,'<hr/>');
+
+			$users = [];
+			foreach ($uids as $k => $val) {
+				// avoid too big curl data
+				// if ($val<487) {
+					$roles = ['y','z'];
+					foreach ($roles as $kR => $valR) {
+						$users[] = ['username'=>$val.$valR,'password'=>'e3d66c3f388ccdad8907f4f3509a898c'];
+					}
+				// }
+			}
+			var_dump($users,'<hr/>');
+			// die();
+			$hxRegRes = $HuanXin->hxCreateUsers($users);
+			// var_dump($hxRegRes);die();
+		}
+
 		//
 		$data = [
 			'name' => $request->input('s_name'),
