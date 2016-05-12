@@ -38,7 +38,8 @@ function renderJobForm(tagsData) {
             //console.log(optionArray);
             if (optionArray!=undefined) {
                 for(var j= 0;j < optionArray.length;j++){
-                    jobFormHtml += '<option value="'+optionArray[j].id+'">'+optionArray[j].name+'</option>';
+                    var selectedHtml = optionArray[j].id==0?' selected':'';
+                    jobFormHtml += '<option value="'+optionArray[j].id+'" '+selectedHtml+'>'+optionArray[j].name+'</option>';
                 }
             }
             jobFormHtml +='</select>';
