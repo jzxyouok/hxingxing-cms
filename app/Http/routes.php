@@ -90,7 +90,6 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('/person/searchMobile', 'Admin\AdminPersonController@searchMobile');
 	Route::post('/person/delWork/{id}', 'Admin\AdminPersonController@delWork');
 	Route::resource('person', 'Admin\AdminPersonController');
-	Route::resource('/pushMsg', 'Admin\AdminPushMsgController@index');
 	Route::resource('/feedback', 'Admin\AdminFeedbackController@index');
 	Route::resource('/hotWords', 'Admin\AdminHotWordsController@index');
 	Route::resource('report', 'Admin\AdminReportController');

@@ -18,8 +18,17 @@ function renderJobForm(tagsData) {
     var labelArr = ['职位名','角色说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','薪资','薪资单位','岗位说明'];
     var tagsArr = ['jobType','','','jobStyle','jobStyle','jobStyle','jobHeight','jobAge','jobWeight','jobSalary','jobSalaryUnit',''];
     for (var i = 0; i < fieldArr.length; i++) {
-        jobFormHtml += '<div class="form-group">'+
-            '<label class="col-md-3 control-label">'+labelArr[i]+'</label><div class="col-md-8">';
+        if($.inArray(fieldArr[i],['nameC','descrip','role','styleC1','height','salaryC','roleDescrip'])>=0){
+            jobFormHtml += '<div class="form-group">'+
+                '<label class="col-md-2 control-label">'+labelArr[i]+'</label>';
+            if($.inArray(fieldArr[i],['styleC1','height','salaryC'])>=0){
+                jobFormHtml += '<div class="col-md-2">';
+            }else{
+                jobFormHtml += '<div class="col-md-10">';
+            }
+        }else{
+            jobFormHtml += '<label class="col-md-2 control-label">'+labelArr[i]+'</label><div class="col-md-2">';
+        }
 
         if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3','height','age','weight'])>=0){
             jobFormHtml += '<select name="'+fieldArr[i]+'" class="form-control">';
@@ -32,12 +41,16 @@ function renderJobForm(tagsData) {
             }
             jobFormHtml +='</select>';
 
-        }else if($.inArray(fieldArr[i],['descrip','role'])>=0){
+        }else if($.inArray(fieldArr[i],['role'])>=0){
             jobFormHtml += '<input type="text" class="form-control" name="'+fieldArr[i]+'">';
         }else{
             jobFormHtml += '<textarea class="form-control" rows="2" name="'+fieldArr[i]+'"></textarea>';
         }
-        jobFormHtml +='</div></div>';
+        jobFormHtml +='</div>';
+
+        if($.inArray(fieldArr[i],['nameC','descrip','role','styleC3','weight','salaryUnitC','roleDescrip'])>=0){
+            jobFormHtml += '</div>';
+        }
     }
     $('#jobForm #elements').html(jobFormHtml);
 }
@@ -45,23 +58,15 @@ function renderJobForm(tagsData) {
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
-        //tagsData.jobCategory.unshift({id:0,name:""});
-        //tagsData.jobTopic.unshift({id:0,name:""});
         tagsData.jumuStart.unshift({id:0,name:""});
         tagsData.jumuRunTime.unshift({id:0,name:""});
-//        tagsData.city.unshift({id:0,name:""});
         tagsData.jobType.unshift({id:0,name:""});
-//        tagsData.jobSalary.unshift({id:0,name:""});
-//        tagsData.jobSalaryUnit.unshift({id:0,name:""});
         tagsData.jobStyle.unshift({id:0,name:""});
-//        tagsData.jobHeight.unshift({id:0,name:""});
-//        tagsData.jobAge.unshift({id:0,name:""});
-//        tagsData.jobWeight.unshift({id:0,name:""});
 
         renderJobForm(tagsData);
 
         $("#unpub").jsGrid({
-            height: "650px",
+            height: "780px",
             width: "100%",
             filtering: true,
             inserting: true,
@@ -69,10 +74,9 @@ $(function() {
             sorting: true,
             paging: true,
             autoload: true,
-            pageSize: 15,
             pageButtonCount: 5,
             pagerContainer: "#unpubPager",
-            deleteConfirm: "确定删除吗?",
+            pagerFormat:"{first} {prev} {pages} {next} {last} &nbsp;&nbsp; {pageIndex} / {pageCount} 页 &nbsp;&nbsp; 共 {itemCount} 条",
             controller: {
                 loadData: function(filter) {
                     return $.getJSON(operaController+'/indexData/0',filter);
@@ -179,7 +183,7 @@ $(function() {
                 { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 50},
                 { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 50},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
-                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,height:1 },
+                { name: "outline", title: "剧目介绍", type: "textarea", width: 140},
                 { name: "producer", title: "制片方", type: "text", width: 40 },
                 { name: "creator", title: "主创", type: "text", width: 40 },
                 { name: "platform", title: "播放平台", type: "text", width: 40 },
@@ -221,16 +225,16 @@ $(function() {
             }
         });
         $("#pubed").jsGrid({
-            height: "650px",
+            height: "780px",
             width: "100%",
             filtering: true,
             editing: true,
             sorting: true,
             paging: true,
             autoload: true,
-            pageSize: 15,
             pageButtonCount: 5,
             pagerContainer: "#pubedPager",
+            pagerFormat:"{first} {prev} {pages} {next} {last} &nbsp;&nbsp; {pageIndex} / {pageCount} 页 &nbsp;&nbsp; 共 {itemCount} 条",
             controller: {
                 loadData: function(filter) {
                     return $.getJSON(operaController+'/indexData/1',filter);
@@ -272,7 +276,7 @@ $(function() {
                 { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 50},
                 { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 50},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
-                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,height:1 },
+                { name: "outline", title: "剧目介绍", type: "textarea", width: 140},
                 { name: "producer", title: "制片方", type: "text", width: 40 },
                 { name: "creator", title: "主创", type: "text", width: 40 },
                 { name: "platform", title: "播放平台", type: "text", width: 40 },
