@@ -46,7 +46,7 @@ function renderJobForm(tagsData) {
         }else if($.inArray(fieldArr[i],['role'])>=0){
             jobFormHtml += '<input type="text" class="form-control" name="'+fieldArr[i]+'">';
         }else{
-            jobFormHtml += '<textarea class="form-control" rows="2" name="'+fieldArr[i]+'"></textarea>';
+            jobFormHtml += '<textarea class="form-control" rows="2" maxlength="500" name="'+fieldArr[i]+'"></textarea>';
         }
         jobFormHtml +='</div>';
 
@@ -184,11 +184,11 @@ $(function() {
                 { name: "siteC", title: "地点", type:"select",class:"chosen-select",items: tagsData.city,valueField:"id",textField:"name", width: 50},
                 { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 50},
                 { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 50},
-                { name: "runTime", title: "片长", type: "text", width: 30 },
-                { name: "outline", title: "剧目介绍", type: "textarea", width: 140},
-                { name: "producer", title: "制片方", type: "text", width: 40 },
-                { name: "creator", title: "主创", type: "text", width: 40 },
-                { name: "platform", title: "播放平台", type: "text", width: 40 },
+                { name: "runTime", title: "片长", type: "text", width: 30 ,validate:{ message: "片长不能超过10字符", validator:"maxLength",param:10 }},
+                { name: "outline", title: "剧目介绍", type: "textarea", width: 140,validate:{ message: "剧目介绍不能超过300字符", validator:"maxLength",param:300 }},
+                { name: "producer", title: "制片方", type: "text", width: 40 ,validate:{ message: "制片方不能超过30字符", validator:"maxLength",param:30 }},
+                { name: "creator", title: "主创", type: "text", width: 40 ,validate:{ message: "主创不能超过30字符", validator:"maxLength",param:30 }},
+                { name: "platform", title: "播放平台", type: "text", width: 40 ,validate:{ message: "播放平台不能超过10字符", validator:"maxLength",param:10 }},
                 {headerTemplate: function() {return '封面';},
                     itemTemplate: function(_, item) {
                         return '<form class="operaCoverForm" action="'+uploadController+'" method="post">'+
