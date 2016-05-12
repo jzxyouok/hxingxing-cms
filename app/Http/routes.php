@@ -80,6 +80,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::get('/opera/tagsData', 'Admin\AdminOperaController@tagsData');
 	Route::get('/jobsWant/tagsData', 'Admin\AdminJobsWantController@tagsData');
 	Route::get('/jobsWant/indexData/{pubStatus}', 'Admin\AdminJobsWantController@indexData');
+	Route::get('/hotWords/indexData', 'Admin\AdminHotWordsController@indexData');
 	Route::post('/opera/pushMsg', 'Admin\AdminOperaController@pushMsg');
 	Route::post('/person/pubMan', 'Admin\AdminPersonController@pubMan');
 	Route::post('/opera/checkOpera', 'Admin\AdminOperaController@checkOpera');
@@ -89,8 +90,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('/person/searchMobile', 'Admin\AdminPersonController@searchMobile');
 	Route::post('/person/delWork/{id}', 'Admin\AdminPersonController@delWork');
 	Route::resource('person', 'Admin\AdminPersonController');
-	Route::resource('/pushMsg', 'Admin\AdminPushMsgController@index');
 	Route::resource('/feedback', 'Admin\AdminFeedbackController@index');
+	Route::resource('/hotWords', 'Admin\AdminHotWordsController@index');
 	Route::resource('report', 'Admin\AdminReportController');
 	Route::resource('opera', 'Admin\AdminOperaController');
 	Route::resource('jobs', 'Admin\AdminJobsController');

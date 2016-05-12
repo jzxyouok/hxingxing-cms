@@ -1,18 +1,17 @@
 @extends('layout._back')
 
 @section('content-header')
-<!-- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid-theme.min.css" /> -->
 <link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid.min.css"/>
 <link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid-theme.min.css" />
 <style>
+  .content-header {padding: 0;}
   input,select{border: 1px solid #cccccc;border-radius: 4px;}
-  .jsgrid-table{width: 100%!important}
-  .jsgrid-pager-container .jsgrid-pager-current-page {background: #c4e2ff;color: #fff;
-  }
-  .jsgrid-table td,.jsgrid-table th{padding:0!important}
+  .jsgrid-pager-container .jsgrid-pager-current-page {background: #c4e2ff;color: #fff;}
+  .jsgrid-table th{height: 30px;padding: 0;}
+  .jsgrid-table td{padding:0!important}
   td a.btn-sm:not(.checkbox-toggle){text-overflow: ellipsis;overflow: hidden;width: 50px;padding: 5px;}
-    .modal .alert{padding: 6px 15px;margin-bottom: 0;display: none}
-    .error{color: red;border-color: red;}
+  .modal .alert{padding: 6px 15px;margin-bottom: 0;display: none}
+  .error{color: red;border-color: red;}
 </style>
 @parent
 
@@ -126,7 +125,7 @@
                          <label for="" class="col-md-2 control-label">备注</label>
                          <!--<div class="col-md-10"><input type="text" class="form-control" name="remark" id="remark"></div>-->
                         <div class="col-md-10">
-                            <textarea class="form-control" rows="3" name="remark" id="remark"></textarea>
+                            <textarea class="form-control" rows="4" name="remark" id="remark"></textarea>
                         </div>
 
                     </div>
@@ -167,8 +166,8 @@
               <div class="modal-header">
                   <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
                   <h4 class="modal-title text-center row" id="jobsModalLabel">
-                      <span class="pull-left"><i class="icon fa fa-th-large"></i> 职位</span>&nbsp;
-                      <a class="btn btn-info btn-sm pull-left" id="addJob"><i class="icon fa fa-plus"></i> 新增</a>
+                      <span class="pull-left"><i class="icon fa fa-th-large"></i> 职位</span>
+                      <a class="btn btn-info btn-sm pull-left" id="addJob" style="margin-left: 5px"><i class="icon fa fa-plus"></i> 新增</a>
                       <span class="modalTitle"></span>
                   </h4>
               </div>
@@ -185,7 +184,7 @@
                   </div>
                   </form>
 
-                  <ul class="list-group" id="jobsBox" style="max-height: 300px;overflow-y: scroll;"></ul>
+                  <ul class="list-group" id="jobsBox" style="max-height: 450px;overflow-y: scroll;margin-bottom: 0"></ul>
               </div>
           </div><!-- /.modal-content -->
       </div><!-- /.modal -->
@@ -443,7 +442,7 @@
         });
     };
 </script>
-<script src="{{ asset('plugins/jsgrid-1.4.1/business.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/jsgrid-1.4.1/opera.js') }}" type="text/javascript"></script>
 @stop
 
 @section('filledScript')
