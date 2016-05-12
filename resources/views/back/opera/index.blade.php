@@ -329,7 +329,7 @@
       var jobIndex = $('#jobsModal .list-group li').index($(this).closest('li'))
       var jobObj = JSON.parse(activeBtn.attr('data-comment'))
       var noCarray = ['height','age','weight'];//不带C的字段
-      $('#jobForm input[type="text"],select,textarea').each(function(index, el) {
+      $('#jobForm').find('input[type="text"],select,textarea').each(function(index, el) {
         var field = $(this).attr('name');
         $(this).val(jobObj[jobIndex][field]);
           if($.inArray(field,noCarray)>=0){
@@ -389,7 +389,7 @@
 
         //console.log(jobData);
         jobsModal.find('#jobsBox').html('');
-        $('#jobForm input[type="text"],select').val('');
+        $('#jobForm').find('input[type="text"],select').val('');
         $('#jobForm').collapse('hide');
         //console.log(activeBtn.closest('tr').attr('class'));
         //console.log(activeBtn.closest('tr').find('.openContact').attr('data-comment'));

@@ -3,7 +3,9 @@
 namespace Douyasi\Http\Controllers\Admin;
 
 use Cache;
+use DB;
 use Douyasi\Http\Requests\PersonRequest;
+use Douyasi\Extensions\Huanxin;
 use Douyasi\Logger\SystemLogger as SystemLogger;
 use Douyasi\Repositories\JobsWantRepository;
 use Douyasi\Repositories\OperaRepository;
@@ -42,6 +44,44 @@ class AdminPersonController extends BackController {
 	 * @return Response
 	 */
 	public function index(Request $request) {
+		if (isset($_GET['test'])&&$_GET['test']=='createHxUsers') {
+			$uids = $this->person->backendPubedUids();
+			var_dump($uids,'<hr/>');
+			// die();
+
+			$HuanXin = new HuanXin();
+			// $HuanXin->hxDelateUsers($uids);
+			$hxExist = $HuanXin->getUsers(200);
+			$hxExistUids = [];
+			foreach ($hxExist['entities'] as $k => $val) {
+				$originUid = str_replace(['y', 'z'], '', $val['username']);
+				if (!in_array($originUid, $hxExistUids)) {
+					$hxExistUids[] = $originUid;
+				}
+			}
+			asort($hxExistUids);
+			var_dump($hxExistUids,'<hr/>');
+			// die();
+
+			$uids = array_diff($uids, $hxExistUids);
+			var_dump($uids,'<hr/>');
+
+			$users = [];
+			foreach ($uids as $k => $val) {
+				// avoid too big curl data
+				// if ($val<487) {
+					$roles = ['y','z'];
+					foreach ($roles as $kR => $valR) {
+						$users[] = ['username'=>$val.$valR,'password'=>'e3d66c3f388ccdad8907f4f3509a898c'];
+					}
+				// }
+			}
+			var_dump($users,'<hr/>');
+			// die();
+			$hxRegRes = $HuanXin->hxCreateUsers($users);
+			// var_dump($hxRegRes);die();
+		}
+
 		//
 		$data = [
 			'name' => $request->input('s_name'),
@@ -157,12 +197,37 @@ class AdminPersonController extends BackController {
 		unset($data['_url']);
 		$data['password'] = md5(md5('123456') . 'fuck_salt');
 		$data['isPubed'] = 1;
+		$data['realMobile'] = $data['realMobile'];
+        $data['fakeMobile'] = $data['fakeMobile'];
         $data['mobile'] = $data['mobile'];
 		//$data['pubMobile'] = $data['mobile'];
 		// var_dump($data);die();
-		$return = $this->person->update($data['uid'], $data, 'article');
-		//var_dump($return);die();
-		echo 1;
+
+		$returnStatus = 1;
+		$returnMsg = '成功';
+		DB::beginTransaction();
+		$pubRes = $this->person->update($data['uid'], $data, 'article');
+		// var_dump($pubRes);die();
+
+		// reg huanxin
+		if ($pubRes) {
+			$HuanXin = new HuanXin();
+			$hxRegRes = $HuanXin->hxCreateUsers([
+				["username" => $data['uid'] . 'y', "password" => $data['password']],
+				["username" => $data['uid'] . 'z', "password" => $data['password']],
+			]);
+			// var_dump($hxRegRes);die();
+			if (isset($hxRegRes['error'])) {
+				$returnStatus = 0;
+				$returnMsg = '注册环信失败';
+				DB::rollback();
+			}
+		}else{
+			$returnStatus = 0;
+			$returnMsg = '发布失败';
+		}
+		DB::commit();
+		echo json_encode(['status'=>$returnStatus,'msg'=>$returnMsg]);
 	}
 	public function destroy($id) {
 		if (!user('object')->can('manage_users') || !user('object')->can('manage_system')) {

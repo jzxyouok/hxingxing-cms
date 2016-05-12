@@ -347,6 +347,8 @@ $(function() {
     $('.pubMan').click(function(event) {
         var self = $(this);
         var mobile = self.prev().find('input');
+        var realMobile = $('#realMobile').val();
+        var fakeMobile = $('#fakeMobile').val();
         if(!mobileReg.test(mobile.val())) {
             alert('请输入有效的手机号码！');
             mobile.select();
@@ -368,7 +370,7 @@ $(function() {
                $.ajax({
                    type: "post",
                    url: personController+'/pubMan',
-                   data: {mobile:mobile.val(),uid:uid},
+                   data: {mobile:mobile.val(),realMobile:realMobile,fakeMobile:fakeMobile,uid:uid},
                    error: function( xhr ) {
                        alert('出错了');
                    },
@@ -377,7 +379,9 @@ $(function() {
                        self.prop('disabled', false);
                    }*/
                }).done(function(data) {
-                   if (data) {
+                    data = $.parseJSON(data);
+                console.log(data)
+                   if (data.status) {
                        alert('发布成功\n初始密码为123456，请尽快修改。');
                        //var tab = activeBtn.closest('div.jsgrid');
                        //tab.jsGrid("search");
@@ -385,7 +389,7 @@ $(function() {
                        //$("#pubed").jsGrid("search");
                        $('.pubMan').val('已发布').prop('disabled', true);
                    }else{
-                       alert('出错了');
+                       alert(data.msg);
                    }
                });
            }

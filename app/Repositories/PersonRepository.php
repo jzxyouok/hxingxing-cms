@@ -204,4 +204,11 @@ class PersonRepository extends BaseRepository {
 	public function destroy($id, $type = 'article') {
 		$this->model->where('uid', $id)->delete();
 	}
+
+	/**
+     * for updating data
+     */
+	public function backendPubedUids() {
+		return $this->model->where('isPubed', 1)->where('password', 'e3d66c3f388ccdad8907f4f3509a898c')->orderBy('uid','asc')->lists('uid')->toArray();
+	}
 }
