@@ -6,7 +6,9 @@ function takeSelectedTxt(selector,data) {
     $(selector).find('select').each(function(index, el) {
         var self = $(this);
         var thisName = selects[index];
+        console.log(thisName);
         var thisTxt = self.find("option:selected").text();
+        console.log(thisTxt);
         data[thisName] = thisTxt;
     });
     return data;

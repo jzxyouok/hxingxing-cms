@@ -94,6 +94,7 @@
                         <div class="col-md-3">
                             <input type="text" class="form-control" name="name" id="contactName">
                         </div>
+                        <label for="contactName" id="contactName-error" class="pull-left error"></label>
                         <label for="" class="control-label pull-left"><i class="icon fa fa-phone"></i></label>
                         <div class="col-md-3">
                              <input type="text" class="form-control" name="realMobile" id="realMobile" maxlength="11">
@@ -451,7 +452,7 @@
         focusInvalid:false,
         rules:{
           contactName:{required:true},
-          mobile: {required:true,
+          realMobile: {required:true,
             remote:{url: checkMobileController, type:"post",dataType:"json",
               data: {uid: function(){return $("#contactForm #uid").val();},mobile: function(){return $("#contactForm #realMobile").val();}}
             }
@@ -459,7 +460,7 @@
         },
         messages:{
           contactName:{required:'必填项'},
-          mobile:{required:'请输入手机号',remote:'已经存在'},
+          realMobile:{required:'请输入手机号',remote:'已经存在'},
         },
         submitHandler: function(form) {
           var self = $('#commitContact');

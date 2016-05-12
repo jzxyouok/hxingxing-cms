@@ -37,5 +37,8 @@ class Jobs extends Eloquent
         //模型名 外键 本键
         return $this->belongsTo('Douyasi\Models\Opera', 'operaId', 'id');
     }
+    public function pubJobs($ids) {
+        return $this->whereIn('operaId', $ids)->update(array('updTime' => round(microtime(true) * 1000)));
+    }
 
 }

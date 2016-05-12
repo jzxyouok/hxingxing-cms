@@ -184,7 +184,8 @@ class PersonRepository extends BaseRepository {
 		return $this->model->where('uid', $id)->update((array) $inputs);
 	}
 	public function checkMobile($mobile, $uid) {
-		$query = $this->model->where('mobile', $mobile);
+		//$query = $this->model->where('mobile', $mobile);
+        $query = $this->model->where('realMobile', $mobile);
 		if ($uid > 0) {
 			$query->where('uid', '!=', $uid);
 		}

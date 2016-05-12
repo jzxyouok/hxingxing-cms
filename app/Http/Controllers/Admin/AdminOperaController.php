@@ -10,6 +10,7 @@ use Douyasi\Http\Controllers\Controller; //推荐位仓库层
 use Douyasi\Http\Requests\OperaRequest;
 use Douyasi\Repositories\FlagRepository;
 use Douyasi\Repositories\OperaRepository;
+use Douyasi\Repositories\JobsRepository;
 use Illuminate\Http\Request;
 
 /**
@@ -42,9 +43,11 @@ class AdminOperaController extends BackController {
 
 	public function __construct(
 		OperaRepository $content,
+        JobsRepository $jobs,
 		FlagRepository $flag) {
 		parent::__construct();
 		$this->content = $content;
+        $this->jobs = $jobs;
 		$this->flag = $flag;
 		if (!user('object')->can('type_in') && !user('object')->can('customer_service')) {
 			$this->middleware('deny403');
@@ -175,6 +178,7 @@ class AdminOperaController extends BackController {
 	public function pubOpera(Request $request, $ids) {
 		$ids = explode(',', $ids);
 		$this->content->pubOpera($ids);
+        $this->jobs->pubJobs($ids);
 		echo 1;
 	}
 

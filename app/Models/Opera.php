@@ -27,7 +27,7 @@ class Opera extends Eloquent
     }
     public function pubOpera($ids)
     {   
-        return $this->whereIn('id', $ids)->update(array('pubStatus' => 1));
+        return $this->whereIn('id', $ids)->update(array('pubStatus' => 1,'pubTime'=>round(microtime(true) * 1000)));
     }
     public function jobs()
     {

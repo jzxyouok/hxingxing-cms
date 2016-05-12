@@ -203,7 +203,10 @@ class JobsRepository extends BaseRepository
         $content = $this->model->findOrFail($ids);
         $content->delete();
     }
-
+    public function pubJobs($ids) {
+        $this->model->pubJobs($ids);
+    }
+    
     /**
      * for updating data
      */
