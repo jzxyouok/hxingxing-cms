@@ -158,23 +158,24 @@ $(function() {
                     },
                     align: "center",width: 40,sorting: false
                 },
-                { name: "name", title: "剧名", type: "text", width: 50/*, validate:{ message: "不能为空或者已经存在", validator: function(value, item) {
+                { name: "name", title: "剧名", type: "text", width: 50/*, validate:{ message: "剧名不能为空或者已经存在", validator: function(value, item) {
                         console.log(value,item);
                         var result;
                         if (value=='') {
                             result = false;
                         }else{
-                            $.ajax({
-                                type: "POST",
-                                url : operaController+'/checkOpera',
-                                data: {name:value,id:item.id},
-                                async:false,
-                                success : function(data){
-                                    result = data;
-                                }
-                            });
+
+//                            $.ajax({
+//                                type: "POST",
+//                                url : operaController+'/checkOpera',
+//                                data: {name:value,id:item.id},
+//                                async:false,
+//                                success : function(data){
+//                                    result = data;
+//                                }
+//                            });
                         }
-                        return result;
+                        return false;
                     }}*/},
                 { name: "invest", title: "总投资", type: "number", width: 30 },
                 { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "id", textField: "name" },
