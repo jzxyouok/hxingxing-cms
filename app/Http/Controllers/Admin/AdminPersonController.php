@@ -45,7 +45,7 @@ class AdminPersonController extends BackController {
 	 * @return Response
 	 */
 	public function index(Request $request) {
-		if (isset($_GET['test'])&&$_GET['test']=='createHxUsers') {
+		if (isset($_GET['test'])&&$_GET['test']=='updHuanxinData') {
 			$uids = $this->person->backendPubedUids();
 			var_dump('后台发布的uid:',$uids,'<hr/>');
 			// die();
@@ -65,9 +65,21 @@ class AdminPersonController extends BackController {
 			// die();
 
 			$uids = array_diff($uids, $hxExistUids);
-			var_dump('最终要注册的环信uid:',$uids,'<hr/>');
+			var_dump('最终要注册/更新的环信uid:',$uids,'<hr/>');
+			// die();
 
-			$users = [];
+			/**
+			 * update huanxin user password
+			 */
+			foreach ($uids as $k => $val) {
+				$this->huanxin->resetPassword($val."y", "5667ae347f001d14e4864f70223b1f55");
+				$this->huanxin->resetPassword($val."z", "5667ae347f001d14e4864f70223b1f55");
+			}
+
+			/**
+			 * createUsers
+			 */
+			/*$users = [];
 			foreach ($uids as $k => $val) {
 				// avoid too big curl data
 				// if ($val<487) {
@@ -79,7 +91,7 @@ class AdminPersonController extends BackController {
 			}
 			var_dump($users,'<hr/>');
 			die();
-			$hxRegRes = $this->huanxin->createUsers($users);
+			$hxRegRes = $this->huanxin->createUsers($users);*/
 			// var_dump($hxRegRes);die();
 		}
 
