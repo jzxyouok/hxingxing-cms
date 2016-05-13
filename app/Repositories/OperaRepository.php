@@ -138,7 +138,7 @@ class OperaRepository extends BaseRepository {
 		return $this->model->orderBy('id','desc')->select('id','pubTime')->get()->toArray();
 	}
 	public function tags($data = []) {
-		$ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
+		$ret = Tags::select('category', DB::raw('GROUP_CONCAT(id) as ids,GROUP_CONCAT(code) as codes,GROUP_CONCAT(name) AS labels,GROUP_CONCAT(parentId) AS parentIds'))
 			->groupBy('category')
 			->get()->toArray();
 		// $ret = Tags::groupBy('category')->get();

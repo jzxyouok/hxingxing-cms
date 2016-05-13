@@ -3,6 +3,7 @@
 @section('content-header')
 <link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid.min.css"/>
 <link type="text/css" rel="stylesheet" href="../plugins/jsgrid-1.4.1/jsgrid-theme.min.css" />
+<link type="text/css" rel="stylesheet" href="../plugins/select2/select2.min.css" />
 <style>
   .content-header {padding: 0;}
   input,select{border: 1px solid #cccccc;border-radius: 4px;}
@@ -199,6 +200,8 @@
 <!-- jsgrid -->
 <!-- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.css" /> -->
 <script src="{{ asset('plugins/jsgrid-1.4.1/jsgrid.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/select2/select2.min.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/jsgrid-1.4.1/jsgrid-select2-field-type.js') }}" type="text/javascript"></script>
 
 <!-- <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.js"></script> -->
 <script type="text/javascript" src="{{ asset('plugins/jsgrid-1.4.1/zh.js') }}"></script>
@@ -281,7 +284,7 @@
         contactModal.find('.alert').hide();
         //console.log(activeBtn.closest('tr').find('input[type="checkbox"]').attr('data-id'));
         contactModal.find('#operaId').val(activeBtn.closest('tr').find('.tabOperaId').attr('data-id'));
-//        try{
+        // try{
             // console.log(activeBtn.attr('data-comment'));
             var commentData = JSON.parse(activeBtn.attr('data-comment'));
             // console.log(commentData);
@@ -306,9 +309,9 @@
             }else{
                 $('.pubMan').val('已发布').prop('disabled', true);
             }
-//        }catch(e) {
-//
-//        }
+       /*}catch(e) {
+
+       }*/
         contactModal.modal('show');
     })
 
