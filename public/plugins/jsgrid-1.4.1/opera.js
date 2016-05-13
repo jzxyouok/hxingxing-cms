@@ -274,7 +274,7 @@ $(function() {
                 { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
                 { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
                 { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
-                { name: "siteC", title: "地点", type:"select",class:"chosen-select",items: tagsData.city,valueField:"code",textField:"name", width: 50},
+                { name: "siteC", title: "地点", type: "select2",autosearch: true, width: 100,selectWidth: 100, align: "center",items: tagsData.city,valueField: "code",  textField: "name"},
                 { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"code",textField:"name", width: 50},
                 { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"code",textField:"name", width: 50},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
