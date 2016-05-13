@@ -74,6 +74,7 @@ class AdminOperaController extends BackController {
 
 	public function tagsData(Request $request) {
 		$tags = $this->content->tags();
+        //var_dump($tags);
 		$returnTags = [];
 		foreach ($tags as $k => $val) {
 			$category = [];
@@ -131,8 +132,10 @@ class AdminOperaController extends BackController {
 		foreach ($operas as $k => $val) {
 			$operas[$k]['contact']['name'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['name']));
 			$operas[$k]['contact']['otherName'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['otherName']));
+            $operas[$k]['contact']['fakeName'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['fakeName']));
 			$operas[$k]['contact']['position'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['position']));
             $operas[$k]['contact']['company'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['company']));
+            $operas[$k]['contact']['otherCompany'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['otherCompany']));
             $operas[$k]['contact']['remark'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['remark']));
 			foreach ($val['jobs'] as $kJ => $valJ) {
 				$operas[$k]['jobs'][$kJ]['role'] = str_replace(" ", "&nbsp;", htmlentities($valJ['role']));
@@ -140,7 +143,7 @@ class AdminOperaController extends BackController {
 				$operas[$k]['jobs'][$kJ]['roleDescrip'] = str_replace(" ", "&nbsp;", htmlentities($valJ['roleDescrip']));
 			}
 		}
-		// var_dump($operas);die();
+
 		echo json_encode($operas, JSON_UNESCAPED_UNICODE);
 	}
 
@@ -303,7 +306,7 @@ class AdminOperaController extends BackController {
 	}
 	public function checkOpera(OperaRequest $request) {
 		$name = $request->input('name');
-		$id = $request->input('id');
+		$id = $request->input('id') ? $request->input('id') : 0;
 		$exsit = $this->content->checkOpera($name, $id);
 		echo $exsit ? false : true;
 	}
