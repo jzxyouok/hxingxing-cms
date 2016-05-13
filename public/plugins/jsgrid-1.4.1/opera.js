@@ -16,7 +16,7 @@ function takeSelectedTxt(selector,data) {
 
 function renderJobForm(tagsData) {
     var jobFormHtml = '';
-    var fieldArr = ['nameC','descrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','roleDescrip'];
+    var fieldArr = ['nameC','roleDescrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','descrip'];
     var labelArr = ['职位名','角色说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','薪资','薪资单位','岗位说明'];
     var tagsArr = ['jobType','','','jobStyle','jobStyle','jobStyle','jobHeight','jobAge','jobWeight','jobSalary','jobSalaryUnit',''];
     for (var i = 0; i < fieldArr.length; i++) {
@@ -38,7 +38,8 @@ function renderJobForm(tagsData) {
             //console.log(optionArray);
             if (optionArray!=undefined) {
                 for(var j= 0;j < optionArray.length;j++){
-                    jobFormHtml += '<option value="'+optionArray[j].id+'">'+optionArray[j].name+'</option>';
+                    var selectedHtml = optionArray[j].id==0?' selected':'';
+                    jobFormHtml += '<option value="'+optionArray[j].id+'" '+selectedHtml+'>'+optionArray[j].name+'</option>';
                 }
             }
             jobFormHtml +='</select>';
@@ -60,9 +61,9 @@ function renderJobForm(tagsData) {
 $(function() {
     jsGrid.locale("zh");
     $.getJSON(operaController+'/tagsData', function(tagsData) {
-        tagsData.jumuStart.unshift({id:0,name:""});
-        tagsData.jumuRunTime.unshift({id:0,name:""});
-        tagsData.jobType.unshift({id:0,name:""});
+        tagsData.jumuStart.unshift({code:0,name:""});
+        tagsData.jumuRunTime.unshift({code:0,name:""});
+        tagsData.jobType.unshift({code:0,name:""});
 
         renderJobForm(tagsData);
 
@@ -93,7 +94,6 @@ $(function() {
                         async:false,
                         success : function(data){
                             $("#unpub").jsGrid("search");
-
                         }
                     });
                 },
@@ -168,13 +168,13 @@ $(function() {
                         return result;
                 }}]},
                 { name: "invest", title: "总投资", type: "number", width: 30 },
-                { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "id", textField: "name" },
-                { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
-                { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
-                { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
-                { name: "siteC", title: "地点", type:"select",class:"chosen-select",items: tagsData.city,valueField:"id",textField:"name", width: 50},
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 50},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 50},
+                { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "code", textField: "name" },
+                { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
+                { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
+                { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
+                { name: "siteC", title: "地点", type: "select2",autosearch: true, width: 100,selectWidth: 100, align: "center",items: tagsData.city,valueField: "code",  textField: "name"},
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"code",textField:"name", width: 50},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"code",textField:"name", width: 50},
                 { name: "runTime", title: "片长", type: "text", width: 30 ,validate:{ message: "片长不能超过10字符", validator:"maxLength",param:10 }},
                 { name: "outline", title: "剧目介绍", type: "textarea", width: 140,validate:{ message: "剧目介绍不能超过300字符", validator:"maxLength",param:300 }},
                 { name: "producer", title: "制片方", type: "text", width: 40 ,validate:{ message: "制片方不能超过30字符", validator:"maxLength",param:30 }},
@@ -233,12 +233,21 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/1',filter);
                 },
                 updateItem: function(item) {
-                    console.log(item);
+                    item = takeSelectedTxt('.jsgrid-edit-row',item);
                     item._token=_token;
-                    return $.ajax({
+//                    return $.ajax({
+//                        type: "PUT",
+//                        url: operaController+'/'+item.id,
+//                        data: item
+//                    });
+                    $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
-                        data: item
+                        data: item,
+                        async:false,
+                        success : function(data){
+                            $("#pubed").jsGrid("search");
+                        }
                     });
                 },
                 deleteItem: function(item) {
@@ -252,22 +261,37 @@ $(function() {
                 }
             },
             fields: [
+                {name: "id",valueField:"id",css:"hide"},
                 {headerTemplate: function() {return '联系人';},
                     itemTemplate: function(_, item) {
                         return '<a href="#" status-table="unpub" data-title='+item.name+' data-comment='+(item.contact?JSON.stringify((item.contact)):"")+' data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openContact">'+(item.contact?item.contact.name:'')+'</a><input type="hidden" class="tabOperaId" data-id="'+item.id+'">';
                     },
                     align: "center",width: 40,sorting: false
                 },
-                { name: "name", title: "剧名", type: "text", width: 50 },
+                //{ name: "name", title: "剧名", type: "text", width: 50 },
+                { name: "name", title: "剧名", type: "text", width: 50, validate:[{message:"剧名不能为空",validator:"required"},{message: "剧名已经存在", validator: function(value, item) {
+                    console.log(value,item);
+                    $.ajax({
+                        type: "POST",
+                        url : operaController+'/checkOpera',
+                        data: {name:value,id:item.id},
+                        async:false,
+                        success : function(data){
+                            console.log(data);
+                            result = data;
+                        }
+                    });
+                    return result;
+                }}]},
 
                 { name: "invest", title: "总投资", type: "number", width: 30 },
-                { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "id", textField: "name" },
-                { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
-                { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
-                { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},
-                { name: "siteC", title: "地点", type:"select",class:"chosen-select",items: tagsData.city,valueField:"id",textField:"name", width: 50},
-                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"id",textField:"name", width: 50},
-                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"id",textField:"name", width: 50},
+                { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "code", textField: "name" },
+                { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
+                { name:"topicC2",title:"题材2",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
+                { name:"topicC3",title:"题材3",type:"select",items: tagsData.jobTopic,valueField:"code",textField:"name", width: 50},
+                { name: "siteC", title: "地点", type: "select2",autosearch: true, width: 100,selectWidth: 100, align: "center",items: tagsData.city,valueField: "code",  textField: "name"},
+                { name:"startTimeC",title:"开机时间",type:"select",items: tagsData.jumuStart,valueField:"code",textField:"name", width: 50},
+                { name:"periodC",title:"拍摄周期",type:"select",items: tagsData.jumuRunTime,valueField:"code",textField:"name", width: 50},
                 { name: "runTime", title: "片长", type: "text", width: 30 },
                 { name: "outline", title: "剧目介绍", type: "textarea", width: 140},
                 { name: "producer", title: "制片方", type: "text", width: 40 },

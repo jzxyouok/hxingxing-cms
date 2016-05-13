@@ -79,13 +79,39 @@ class AdminOperaController extends BackController {
 		foreach ($tags as $k => $val) {
 			$category = [];
 			$idArr = explode(',', $val['ids']);
+			$codeArr = explode(',', $val['codes']);
 			$labelArr = explode(',', $val['labels']);
-			foreach ($idArr as $k_c => $val_c) {
+			$parentIdArr = explode(',', $val['parentIds']);
+			foreach ($codeArr as $k_c => $val_c) {
 				$label = isset($labelArr[$k_c]) ? $labelArr[$k_c] : '';
-				array_push($category, ['id' => $val_c, 'name' => $labelArr[$k_c]]);
+				array_push($category, ['id' => $idArr[$k_c],'code' => $val_c, 'name' => $labelArr[$k_c], 'parentId' => $parentIdArr[$k_c]]);
 			}
 			$returnTags[$val['category']] = $category;
 		}
+
+		// make level for cities
+		$cities = [];
+		foreach ($returnTags['city'] as $kI => $valI) {
+			$push = [];
+			if ($valI['parentId'] == 0) {
+				$push = ['code' => $valI['code'], 'name' => $valI['name']];
+			}
+			// 子项目
+			$sons = [];
+			foreach ($returnTags['city'] as $kI2 => $valI2) {
+				if ($valI2['parentId'] == $valI['id']) {
+					$sons[] = ['code' => $valI2['code'], 'name' => $valI2['name']];
+				}
+			}
+			if (!empty($sons)) {
+				$push['children'] = $sons;
+			}
+			if (!empty($push)) {
+				$cities[] = $push;
+			}
+		}
+		$returnTags['city'] = $cities;
+		// var_dump($cities);die();
 		echo json_encode($returnTags, JSON_NUMERIC_CHECK);
 	}
 
