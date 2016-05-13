@@ -242,7 +242,7 @@ $(function() {
                     return $.getJSON(operaController+'/indexData/1',filter);
                 },
                 updateItem: function(item) {
-                    console.log(item);
+                    item = takeSelectedTxt('.jsgrid-edit-row',item);
                     item._token=_token;
                     return $.ajax({
                         type: "PUT",
