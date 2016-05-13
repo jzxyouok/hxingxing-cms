@@ -69,7 +69,9 @@ class AdminOperaController extends BackController {
 		if (user('object')->can('customer_service')) {
 			$manageRole = true;
 		}
-		return view('back.opera.index', compact('typeRole', 'manageRole'));
+		$persons = $this->content->allpersons();
+		// var_dump($persons);die();
+		return view('back.opera.index', compact('typeRole', 'manageRole','persons'));
 	}
 
 	public function tagsData(Request $request) {

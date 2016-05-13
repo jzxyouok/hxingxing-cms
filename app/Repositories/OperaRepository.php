@@ -128,6 +128,10 @@ class OperaRepository extends BaseRepository {
 		return $query->where('pubStatus', e($data['pubStatus'])) /*->where('operas.id',e($data['id']))*/->orderBy('id', 'desc')->get()->toArray();
 	}
 
+	public function allpersons() {
+		return $this->person->orderBy('uid','desc')->select('uid','name','realMobile','fakeMobile')->get()->toArray();
+	}
+
 	/**
      * for updating data
      */

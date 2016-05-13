@@ -91,6 +91,7 @@ class AdminJobsController extends BackController {
 		$data = $request->all();
 		//var_dump('store');die;
 		$data['actorType'] = (isset($data['nameC'])&&$data['nameC'] > 23 && $data['nameC'] < 46) ? 'actor' : 'other';//24-45
+		$data['updTime'] = round(microtime(true) * 1000);
 		$manager = $this->jobs->store($data, 'manager');
 		if ($manager->id) {
 			//添加成功
@@ -134,6 +135,7 @@ class AdminJobsController extends BackController {
 		$data = $request->all();
 		//var_dump('update');die;
 		$data['actorType'] = (isset($data['nameC'])&&$data['nameC'] > 23 && $data['nameC'] < 46) ? 'actor' : 'other';//24-45
+		$data['updTime'] = round(microtime(true) * 1000);
 		$this->jobs->update($data['id'], $data, 'manager');
 		echo 1;
 

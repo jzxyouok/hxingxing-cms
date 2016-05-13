@@ -14,6 +14,7 @@
   td a.btn-sm:not(.checkbox-toggle){text-overflow: ellipsis;overflow: hidden;width: 50px;padding: 5px;}
   .modal .alert{padding: 6px 15px;margin-bottom: 0;display: none}
   .error{color: red;border-color: red;}
+  .chosen-container{width: inherit!important;float: left;}
 </style>
 @parent
 
@@ -78,21 +79,22 @@
                 </ul>
                 <div id="myTabContent" class="tab-content">
                  <div class="tab-pane fade in active" id="main">
-                    <div class="form-group">
-                      <!--<label for="" class="col-md-2 control-label">姓名</label>-->
-                      <div class="col-md-10" id="hidden">
-                          <input type="hidden" name="uid" id="uid">
-                          <input type="hidden" id="activeJobIndex">
-                          <input type="hidden" name="operaId" id="operaId">
-                          <!--<input type="text" class="form-control" name="name" id="contactName">-->
-                      </div>
-                    </div>
+                      <input type="hidden" name="uid" id="uid">
+                      <input type="hidden" id="activeJobIndex">
+                      <input type="hidden" name="operaId" id="operaId">
+
                      <!-- <div class="form-group">
                          <label for="" class="col-md-2 control-label">搜索电话</label>
                          <div class="col-md-10"><input type="text" class="form-control" name="search" id="search"></div>
                      </div> -->
                     <div class="form-group">
                         <label for="" class="col-md-2 control-label">真实姓名</label>
+                        <select data-placeholder="选择..." class="chosePerson pull-left form-control chosen-select" mobileType='realMobile'>
+                          <option value="">选择</option>
+                          @foreach ($persons as $person)
+                            <option value="{{ $person['uid'] }}">{{ $person['name'] }}</option>
+                          @endforeach
+                          </select>
                         <div class="col-md-3">
                             <input type="text" class="form-control" name="name" id="contactName">
                         </div>
@@ -101,11 +103,18 @@
                         <div class="col-md-3">
                              <input type="text" class="form-control" name="realMobile" id="realMobile" maxlength="11">
                         </div>
+                        
                         <input type="button" class="btn btn-primary pubMan" value="发布" />
                         <label for="realMobile" id="realMobile-error" class="pull-left error"></label>
                     </div>
                     <div class="form-group">
                         <label for="" class="col-md-2 control-label">虚拟姓名</label>
+                        <select data-placeholder="选择..." class="chosePerson pull-left form-control chosen-select" mobileType='fakeMobile'>
+                          <option value="">选择</option>
+                          @foreach ($persons as $person)
+                            <option value="{{ $person['uid'] }}">{{ $person['name'] }}</option>
+                          @endforeach
+                          </select>
                         <div class="col-md-3">
                             <input type="text" class="form-control" name="fakeName" id="fakeName">
                         </div>
@@ -196,7 +205,7 @@
 @section('extraPlugin')
 <!--引入iCheck组件-->
 <script src="{{ asset('plugins/iCheck/icheck.min.js') }}" type="text/javascript"></script>
-
+@include('scripts.endChosen')
 <!-- jsgrid -->
 <!-- <link type="text/css" rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jsgrid/1.4.1/jsgrid.min.css" /> -->
 <script src="{{ asset('plugins/jsgrid-1.4.1/jsgrid.min.js') }}" type="text/javascript"></script>
@@ -244,6 +253,16 @@
     var serverUrl = '{{ url('') }}';
     var _token = '{{ csrf_token() }}';
     var activeBtn;
+
+    $('.chosePerson').change(function(event) {
+      var self = $(this)
+      if (self.val()!='') {
+        var inputs = self.closest('.form-group').find('input[type="text"]');
+        inputs.eq(0).val(self.val());
+        // input.eq(1).val(self.attr(self.attr('mobileType')));
+        // $('#contactModal #uid').val(commentData.uid);
+      }
+    });
 
     $('body').on('submit','.operaCoverForm',function (e) {
       e.preventDefault();
