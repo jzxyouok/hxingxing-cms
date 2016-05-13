@@ -133,6 +133,7 @@ class AdminJobsController extends BackController {
 		//
 		$data = $request->all();
 		//var_dump('update');die;
+		$data['actorType'] = (isset($data['nameC'])&&$data['nameC'] > 23 && $data['nameC'] < 46) ? 'actor' : 'other';//24-45
 		$this->jobs->update($data['id'], $data, 'manager');
 		echo 1;
 
