@@ -6,9 +6,9 @@ function takeSelectedTxt(selector,data) {
     $(selector).find('select').each(function(index, el) {
         var self = $(this);
         var thisName = selects[index];
-        console.log(thisName);
+        //console.log(thisName);
         var thisTxt = self.find("option:selected").text();
-        console.log(thisTxt);
+        //console.log(thisTxt);
         data[thisName] = thisTxt;
     });
     return data;
@@ -63,7 +63,6 @@ $(function() {
         tagsData.jumuStart.unshift({id:0,name:""});
         tagsData.jumuRunTime.unshift({id:0,name:""});
         tagsData.jobType.unshift({id:0,name:""});
-        tagsData.jobStyle.unshift({id:0,name:""});
 
         renderJobForm(tagsData);
 
@@ -92,11 +91,9 @@ $(function() {
                         url: operaController,
                         data: item,
                         async:false,
-                        success : function(result){
+                        success : function(data){
                             $("#unpub").jsGrid("search");
-                            result = JSON.parse(result);
-                            item.id = result.id;
-                            return item;
+
                         }
                     });
                 },
@@ -109,19 +106,15 @@ $(function() {
                         url: operaController+'/'+item.id,
                         data: item,
                         async:false,
-                        success : function(data1){
+                        success : function(data){
                             $("#unpub").jsGrid("search");
-                            if(data1.name != item.name){
-                                alert('剧名已存在！');
-                            }
-                            result = data1;
-                        },
-                        error:function(data) {
-                            alert('出错了');
-                            result = false;
                         }
+//                        error:function(data) {
+//                            alert('出错了');
+//                            result = false;
+//                        }
                     });
-                    return result;
+//                    return result;
                 },
                 deleteItem: function(item) {
                     item._method='delete';
@@ -147,6 +140,7 @@ $(function() {
                         return $("<input>").attr({"type":"checkbox","class":"table-operation hide tabOperaId","data-id":item.id});
                     },align: "center",width: 30,sorting: false
                 },
+                {name: "id",valueField:"id",css:"hide"},
                 {headerTemplate: function() {return '联系人';},
                     insertTemplate: function(_, item) {
                        //return '<a href="#" status-table="unpub" data-comment="" data-toggle="modal" data-target="#pageModal" class="btn btn-default btn-sm openContact" ><i class="icon fa fa-edit"></i></a>';
@@ -158,25 +152,21 @@ $(function() {
                     },
                     align: "center",width: 40,sorting: false
                 },
-                { name: "name", title: "剧名", type: "text", width: 50/*, validate:{ message: "剧名不能为空或者已经存在", validator: function(value, item) {
-                        console.log(value,item);
-                        var result;
-                        if (value=='') {
-                            result = false;
-                        }else{
 
-//                            $.ajax({
-//                                type: "POST",
-//                                url : operaController+'/checkOpera',
-//                                data: {name:value,id:item.id},
-//                                async:false,
-//                                success : function(data){
-//                                    result = data;
-//                                }
-//                            });
-                        }
-                        return false;
-                    }}*/},
+                { name: "name", title: "剧名", type: "text", width: 50, validate:[{message:"剧名不能为空",validator:"required"},{message: "剧名已经存在", validator: function(value, item) {
+                      console.log(value,item);
+                        $.ajax({
+                            type: "POST",
+                            url : operaController+'/checkOpera',
+                            data: {name:value,id:item.id},
+                            async:false,
+                            success : function(data){
+                                console.log(data);
+                                result = data;
+                            }
+                        });
+                        return result;
+                }}]},
                 { name: "invest", title: "总投资", type: "number", width: 30 },
                 { name: "categoryC", title: "类型", type: "select", width: 50, items: tagsData.jobCategory, valueField: "id", textField: "name" },
                 { name:"topicC1",title:"题材1",type:"select",items: tagsData.jobTopic,valueField:"id",textField:"name", width: 50},

@@ -138,11 +138,12 @@ class OperaRepository extends BaseRepository {
 		return $this->model->orderBy('id','desc')->select('id','pubTime')->get()->toArray();
 	}
 	public function tags($data = []) {
+
 		$ret = Tags::select('category', DB::raw('GROUP_CONCAT(code) as ids,GROUP_CONCAT(name) AS labels'))
-			->groupBy('category')->orderBy('id','desc')
+			->groupBy('category')
 			->get()->toArray();
 		// $ret = Tags::groupBy('category')->get();
-		// var_dump($ret);die();
+		//var_dump($ret);die();
 		return $ret;
 	}
 	/**
@@ -155,8 +156,7 @@ class OperaRepository extends BaseRepository {
 	 */
 	public function store($inputs, $user_id = '0') {
 		$content = new $this->model;
-		$content = $this->saveContent($content, $inputs, $user_id);
-		return $content;
+		return $this->saveContent($content, $inputs, $user_id);
 	}
 
 	/**
@@ -186,13 +186,7 @@ class OperaRepository extends BaseRepository {
 	 * @return void
 	 */
 	public function update($id, $inputs, $type = 'article') {
-		$content = $this->model->findOrFail($id); //查表
-		if (isset($inputs['name']) && $content->name != $inputs['name']) {
-			$ret = $this->checkOpera($inputs['name'], $id);
-			if (!is_null($ret)) {
-				$inputs['name'] = $content->name; //如果查重了，还是修改，但是用原来值
-			}
-		}
+		$content = $this->model->findOrFail($id);
 		return $this->saveContent($content, $inputs);
 	}
 
@@ -225,6 +219,7 @@ class OperaRepository extends BaseRepository {
 		}
 	}
 	public function checkOpera($name, $id) {
+        //var_dump($name,$id);die;
 		$query = $this->model->where('name', $name)->where('created_uid', '>', 0);
 		if ($id > 0) {
 			$query->where('id', '!=', $id);
