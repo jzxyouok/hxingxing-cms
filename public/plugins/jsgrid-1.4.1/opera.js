@@ -17,7 +17,7 @@ function takeSelectedTxt(selector,data) {
 function renderJobForm(tagsData) {
     var jobFormHtml = '';
     var fieldArr = ['nameC','roleDescrip','role','styleC1','styleC2','styleC3','height','age','weight','salaryC','salaryUnitC','descrip'];
-    var labelArr = ['职位名','角色说明','角色名','演艺风格1','演艺风格2','演艺风格3','身高','年龄','体重','薪资','薪资单位','岗位说明'];
+    var labelArr = ['职位名','角色说明','角色名','演艺风格1','风格2','风格3','身高','年龄','体重','薪资','单位','岗位说明'];
     var tagsArr = ['jobType','','','jobStyle','jobStyle','jobStyle','jobHeight','jobAge','jobWeight','jobSalary','jobSalaryUnit',''];
     for (var i = 0; i < fieldArr.length; i++) {
         if($.inArray(fieldArr[i],['nameC','descrip','role','styleC1','height','salaryC','roleDescrip'])>=0){
@@ -26,10 +26,10 @@ function renderJobForm(tagsData) {
             if($.inArray(fieldArr[i],['styleC1','height','salaryC'])>=0){
                 jobFormHtml += '<div class="col-md-2">';
             }else{
-                jobFormHtml += '<div class="col-md-10">';
+                jobFormHtml += '<div class="col-md-9">';
             }
         }else{
-            jobFormHtml += '<label class="col-md-2 control-label">'+labelArr[i]+'</label><div class="col-md-2">';
+            jobFormHtml += '<label class="pull-left control-label" style="width:60px">'+labelArr[i]+'</label><div class="col-md-2">';
         }
 
         if($.inArray(fieldArr[i],['nameC','salaryC','salaryUnitC','styleC1','styleC2','styleC3','height','age','weight'])>=0){
