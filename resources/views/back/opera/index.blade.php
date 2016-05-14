@@ -388,6 +388,7 @@
       if (confirm('确定删除？')) {
         var self = $(this);
         var jobIndex = $(this).attr('jobid')
+
         var operaId = $(this).attr('operaId')
         $.post(jobController+'/'+jobIndex, {_method:'delete',_token:_token,operaId:operaId}, function(data, textStatus, xhr) {
             data = JSON.parse(data)

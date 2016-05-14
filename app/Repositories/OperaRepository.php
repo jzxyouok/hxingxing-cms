@@ -129,7 +129,7 @@ class OperaRepository extends BaseRepository {
 	}
 
 	public function allpersons() {
-		return $this->person->orderBy('uid','desc')->select('uid','name','fakeName','realMobile','fakeMobile','isPubed','company','position','otherName','otherMobile','otherCompany','remark')->get()->toArray();
+		return $this->person->orderBy('uid','desc')->select('uid','name','realMobile','fakeMobile')->get()->toArray();
 	}
 
 	/**
