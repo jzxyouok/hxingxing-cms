@@ -1,6 +1,5 @@
 /node_modules
-/storage
-/vendor
+.env
 /.idea
 /config/app.php
 /config/database.php
