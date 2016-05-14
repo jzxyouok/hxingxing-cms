@@ -156,7 +156,6 @@ class AdminJobsController extends BackController {
 			exit(json_encode(['status' => 'false', 'msg' => '权限不足！删除失败'], JSON_UNESCAPED_UNICODE));
 		}
 		$data = $request->all();
-
 		$this->jobs->destroy($ids, 'article');
 		
 		$this->opera->updateJobsNum($data['operaId'],'delete');

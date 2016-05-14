@@ -183,10 +183,12 @@ class AdminJobsWantController extends BackController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($ids) {
-		if (!user('object')->can('customer_service')) {
-			die('权限不足！');
-		}
+	public function destroy(Request $request,$ids) {
+        $data = $request->all();
+        $user = user('object');
+        if (!$user->can('customer_service')|| $data['created_uid']!= $user->id) {
+            die('权限不足！');
+        }
 		$this->content->destroy($ids, 'article');
 		echo 1;
 		// return redirect()->route('admin.opera.index')->with('message', '删除剧目成功！');

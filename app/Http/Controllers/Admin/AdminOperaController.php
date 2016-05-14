@@ -221,8 +221,10 @@ class AdminOperaController extends BackController {
 	 * @param  int  $id
 	 * @return Response
 	 */
-	public function destroy($ids) {
-		if (!user('object')->can('customer_service')) {
+	public function destroy(Request $request,$ids) {
+        $data = $request->all();
+        $user = user('object');
+        if (!$user->can('customer_service')|| $data['created_uid']!=$user->id) {
 			die('权限不足！');
 		}
 		$this->content->destroy($ids, 'article');
