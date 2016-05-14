@@ -91,8 +91,8 @@
                         <label for="" class="col-md-2 control-label">真实姓名</label>
                         <select data-placeholder="选择..." class="chosePerson pull-left form-control chosen-select" mobileType='realMobile'>
                           <option value="">选择</option>
-                          @foreach ($persons as $person)
-                            <option value="{{ $person['uid'] }}">{{ $person['name'] }}</option>
+                            @foreach ($persons as $person)
+                            <option value="{{ $person['uid'] }}" data="{{ isset($person) ? json_encode($person) : '[]' }}">{{ $person['name'] }}</option>
                           @endforeach
                           </select>
                         <div class="col-md-3">
@@ -109,12 +109,7 @@
                     </div>
                     <div class="form-group">
                         <label for="" class="col-md-2 control-label">虚拟姓名</label>
-                        <select data-placeholder="选择..." class="chosePerson pull-left form-control chosen-select" mobileType='fakeMobile'>
-                          <option value="">选择</option>
-                          @foreach ($persons as $person)
-                            <option value="{{ $person['uid'] }}">{{ $person['name'] }}</option>
-                          @endforeach
-                          </select>
+
                         <div class="col-md-3">
                             <input type="text" class="form-control" name="fakeName" id="fakeName">
                         </div>
@@ -126,7 +121,7 @@
                     </div>
                     <div class="form-group">
                       <label for="" class="col-md-2 control-label">公司</label>
-                      <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany"></div>
+                      <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany" maxlength="10"></div>
                     </div>
                     <div class="form-group">
                       <label for="" class="col-md-2 control-label">职务</label>
@@ -149,13 +144,13 @@
                     <div class="form-group">
                       <label for="" class="col-md-2 control-label">手机号</label>
                       <div class="col-md-6">
-                          <input type="text" class="form-control" name="otherMobile" id="otherMobile">
+                          <input type="text" class="form-control" name="otherMobile" id="otherMobile" maxlength="11">
                       </div>
                       <label for="mobile" id="mobile-error" class="row col-md-4 control-label error"></label>
                     </div>
                     <div class="row">
                       <label for="" class="col-md-2 control-label">公司</label>
-                      <div class="col-md-10"><input type="text" class="form-control" name="otherCompany" id="otherCompany"></div>
+                      <div class="col-md-10"><input type="text" class="form-control" name="otherCompany" id="otherCompany" maxlength="10"></div>
                     </div>
                  </div>
                 </div>
@@ -255,12 +250,32 @@
     var activeBtn;
 
     $('.chosePerson').change(function(event) {
-      var self = $(this)
+      var self = $(this);
+      var selectedOption = self.find('option:selected');
       if (self.val()!='') {
-        var inputs = self.closest('.form-group').find('input[type="text"]');
-        inputs.eq(0).val(self.val());
+//        var inputs = self.closest('.form-group').find('input[type="text"]');
+//        inputs.eq(0).val(self.val());
         // input.eq(1).val(self.attr(self.attr('mobileType')));
         // $('#contactModal #uid').val(commentData.uid);
+          var data = selectedOption.attr('data');
+          data = JSON.parse(data);
+          //console.log(JSON.parse(selectedOption.attr('data')));
+          $('#contactForm #uid').val(data.uid);
+          $('#contactForm #contactName').val(data.name);
+          $('#contactForm #realMobile').val(data.realMobile);
+          $('#contactForm #fakeName').val(data.fakeName);
+          $('#contactForm #fakeMobile').val(data.fakeMobile);
+          $('#contactForm #contactCompany').val(data.company);
+          $('#contactForm #contactPosition').val(data.position);
+          $('#contactForm #remark').val(data.remark);
+          $('#contactForm #otherName').val(data.otherName);
+          $('#contactForm #otherMobile').val(data.otherMobile);
+          $('#contactForm #otherCompany').val(data.otherCompany);
+          if (data.isPubed==0) {
+              $('.pubMan').val('发布').prop('disabled', false).show();
+          }else{
+              $('.pubMan').val('已发布').prop('disabled', true).show();
+          }
       }
     });
 
