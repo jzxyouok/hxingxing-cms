@@ -70,7 +70,7 @@ class AdminOperaController extends BackController {
 			$manageRole = true;
 		}
 		$persons = $this->content->allpersons();
-		// var_dump($persons);die();
+		 //var_dump($persons);die();
 		return view('back.opera.index', compact('typeRole', 'manageRole','persons'));
 	}
 
@@ -169,6 +169,7 @@ class AdminOperaController extends BackController {
 		$data = $request->all(); //获取请求过来的数据
 		// var_dump($data);
 		//var_dump('store');die();
+        //var_dump($data);die;
 		$content = $this->content->store($data, user('id')); //使用仓库方法存储
 		if ($content->id) {
 			//添加成功
