@@ -215,9 +215,9 @@ class OperaRepository extends BaseRepository {
 	}
 	public function updateJobsNum($id,$action,$jobsNum=0) {
 		if ($action=='add') {
-			$this->model->increment('jobsNum', 1, ['id' => $id]);
+			$this->model->whereId($id)->increment('jobsNum');
 		}elseif($action=='delete'){
-			$this->model->decrement('jobsNum', 1, ['id' => $id]);
+			$this->model->whereId($id)->decrement('jobsNum');
 		}elseif($action=='update'){
 			$this->model->where('id', $id)->update(['jobsNum' => $jobsNum]);
 		}
