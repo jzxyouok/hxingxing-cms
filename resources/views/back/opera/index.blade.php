@@ -121,7 +121,7 @@
                     </div>
                     <div class="form-group">
                       <label for="" class="col-md-2 control-label">公司</label>
-                      <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany"></div>
+                      <div class="col-md-10"><input type="text" class="form-control" name="company" id="contactCompany" maxlength="10"></div>
                     </div>
                     <div class="form-group">
                       <label for="" class="col-md-2 control-label">职务</label>
@@ -144,13 +144,13 @@
                     <div class="form-group">
                       <label for="" class="col-md-2 control-label">手机号</label>
                       <div class="col-md-6">
-                          <input type="text" class="form-control" name="otherMobile" id="otherMobile">
+                          <input type="text" class="form-control" name="otherMobile" id="otherMobile" maxlength="11">
                       </div>
                       <label for="mobile" id="mobile-error" class="row col-md-4 control-label error"></label>
                     </div>
                     <div class="row">
                       <label for="" class="col-md-2 control-label">公司</label>
-                      <div class="col-md-10"><input type="text" class="form-control" name="otherCompany" id="otherCompany"></div>
+                      <div class="col-md-10"><input type="text" class="form-control" name="otherCompany" id="otherCompany" maxlength="10"></div>
                     </div>
                  </div>
                 </div>
