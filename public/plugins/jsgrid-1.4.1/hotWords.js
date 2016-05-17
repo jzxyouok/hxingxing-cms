@@ -59,7 +59,7 @@ $(function() {
         },
         fields: [
             { name: "word", title: "词语", type: "text"},
-            { name: "type", title: "类型", type: "select", items: [{ name: "", id: '' },{ name: "剧目", id: 'operas' },{ name: "演职位", id: 'jobs' },{ name: "123", id: 'persons' }], valueField: "id", textField: "name" },
+            { name: "type", title: "类型", type: "select", items: [{ name: "", id: '' },{ name: "剧目", id: 'operas' },{ name: "演职位", id: 'jobs' },{ name: "演职员", id: 'persons' }], valueField: "id", textField: "name" },
             { type: "control", editButton: false }
         ]
     });
