@@ -18,7 +18,7 @@ class UmengAndroidPush extends UmengAndroidNotification {
 		$this->timestamp = strval(time());
 	}
 
-	function sendAndroidBroadcast($ticker='',$title='',$text='',$extraData=[]) {
+	function sendAndroidBroadcast($ticker='',$title='',$text='',$extraData=[],$articleUrl) {
 		try {
 			// $brocast = new AndroidNotification();
 			$this->setAppMasterSecret($this->appMasterSecret);
@@ -27,7 +27,8 @@ class UmengAndroidPush extends UmengAndroidNotification {
 			$this->setPredefinedKeyValue("ticker",           $ticker);
 			$this->setPredefinedKeyValue("title",            $title);
 			$this->setPredefinedKeyValue("text",             $text);
-			$this->setPredefinedKeyValue("after_open",       "go_app");
+			$this->setPredefinedKeyValue("after_open",       "go_custom");
+			$this->setPredefinedKeyValue("custom",       $articleUrl);
 			// Set 'production_mode' to 'false' if it's a test device. 
 			// For how to register a test device, please see the developer doc.
 			$this->setPredefinedKeyValue("production_mode", "true");

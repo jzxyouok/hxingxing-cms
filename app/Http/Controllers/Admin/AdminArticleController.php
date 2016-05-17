@@ -123,7 +123,7 @@ class AdminArticleController extends BackController
             $simpleContent = str_replace(["\r\n", "\r", "\n"], "", preg_replace("/&#?[a-z0-9]+;/i","",mb_substr(strip_tags($data['content']),0,50,'utf-8')));
             $extraData = ['articleType'=>$data['category_id'],'articleUrl'=>'http://www.hxingxing.com/news/'.$content->id];
             // var_dump($extraData);die();
-            $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$data['title'],$simpleContent,$extraData);
+            $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$data['title'],$simpleContent,$extraData,'http://www.hxingxing.com/news/'.$content->id);
             $this->umengIosPush->sendIOSBroadcast($data['title'],$extraData);
             return redirect()->route('admin.article.index')->with('message', '成功发布新文章！');
         } else {  //添加失败
