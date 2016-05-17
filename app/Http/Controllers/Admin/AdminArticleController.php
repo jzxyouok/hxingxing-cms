@@ -9,6 +9,8 @@ use Douyasi\Repositories\ContentRepository;  //模型仓库层
 use Douyasi\Repositories\FlagRepository;  //推荐位仓库层
 use Douyasi\Cache\DataCache;
 use Cache;
+use Douyasi\Extensions\UmengAndroidPush;
+use Douyasi\Extensions\UmengIosPush;
 
 /**
  * 内容文章资源控制器
@@ -41,12 +43,14 @@ class AdminArticleController extends BackController
     protected $flags;
 
     public function __construct(
-        ContentRepository $content,
+        ContentRepository $content, UmengAndroidPush $umengAndroidPush,UmengIosPush $umengIosPush,
         FlagRepository $flag)
     {
         parent::__construct();
         $this->content = $content;
         $this->flag = $flag;
+        $this->umengAndroidPush = $umengAndroidPush;
+        $this->umengIosPush = $umengIosPush;
         if (! user('object')->can('manage_contents')) {
             $this->middleware('deny403');
         }
@@ -115,12 +119,23 @@ class AdminArticleController extends BackController
         $data = $request->all();  //获取请求过来的数据
         $content = $this->content->store($data, 'article', user('id'));  //使用仓库方法存储
         if ($content->id) {  //添加成功
+            $simpleContent = str_replace(["\r\n", "\r", "\n"], "", preg_replace("/&#?[a-z0-9]+;/i","",mb_substr(strip_tags($data['content']),0,20,'utf-8')));
+            $this->umengPush(!$data['is_draft'],$content->id,$data['category_id'],$data['title'],$simpleContent);
             return redirect()->route('admin.article.index')->with('message', '成功发布新文章！');
         } else {  //添加失败
             return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
         }
     }
+    // umengPush
+    public function umengPush($push=false,$articleId,$category_id,$title='',$simpleContent='') {
+        if ($push) {
+            $extraData = ['articleType'=>$category_id,'articleUrl'=>'http://www.hxingxing.com/news/'.$articleId];
+            $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$title,$simpleContent,$extraData,'http://www.hxingxing.com/news/'.$articleId);
+            $this->umengIosPush->sendIOSBroadcast($title,$extraData);
 
+            $this->content->update($articleId, ['umengPushed'=>1], 'article');
+        }
+    }
 
     /**
      * Show the form for editing the specified resource.
@@ -153,12 +168,16 @@ class AdminArticleController extends BackController
      */
     public function update(ArticleRequest $request, $id)
     {
-
 //        if ($_SERVER['REMOTE_ADDR'] !== '27.154.55.210') {
 //            return redirect()->route('admin.article.index')->with('fail', '没有权限进行文章修改炒作！');
 //            //die('没有权限进行文章修改炒作！');
 //        }
         $data = $request->all();/*var_dump($data)*///;die;
+
+        // 没推过并且现在发布
+        $simpleContent = str_replace(["\r\n", "\r", "\n"], "", preg_replace("/&#?[a-z0-9]+;/i","",mb_substr(strip_tags($data['content']),0,20,'utf-8')));
+        $this->umengPush(!$data['umengPushed']&&!$data['is_draft'],$id,$data['category_id'],$data['title'],$simpleContent);
+
         $this->content->update($id, $data, 'article');
         return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }

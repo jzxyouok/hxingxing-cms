@@ -62,7 +62,7 @@
               <ul class="treeview-menu">
                 <li><a href="{{ route('admin.person.index') }}"><i class="fa fa-user"></i>用户管理</a></li>
                 <li><a href="{{ route('admin.opera.index') }}"><i class="fa fa-th-list"></i> 剧目</a></li>
-                <li><a href="{{ route('admin.jobsWant.index') }}"><i class="fa fa-newspaper-o"></i> 应聘名片</a></li>
+                <li><a href="{{ route('admin.jobsWant.index') }}"><i class="fa fa-th-large"></i> 应聘名片</a></li>
                 <li><a href="{{ route('admin.article.index') }}"><i class="fa fa-newspaper-o"></i> 文章</a></li>
                 <!-- <li><a href="{{ route('admin.page.index') }}"><i class="fa fa-file-o"></i> 单页</a></li> -->
                 <!-- <li><a href="{{ route('admin.fragment.index') }}"><i class="fa fa-file-o"></i> 碎片</a></li> -->
