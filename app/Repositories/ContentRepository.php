@@ -81,13 +81,13 @@ class ContentRepository extends BaseRepository {
 	 * @return Douyasi\Models\Content
 	 */
 	private function saveContent($content, $inputs, $type = 'article', $user_id = '0') {
-		$fields = ['title','author','content','thumb','is_draft','category_id','is_top','outer_link','slug'];
+		$fields = ['title','author','content','thumb','is_draft','category_id','is_top','outer_link','slug','umengPushed'];
 		foreach ($fields as $key => $value) {
 			if (array_key_exists($value, $inputs)) {
-				$content->$value = e($inputs[$value]);
+				$content->$value = $inputs[$value];
 			}
 		}
-
+// var_dump($inputs,$content);die();
 		$content->type = 'article';
 		$content->flag = '';
 		if ($user_id) {
