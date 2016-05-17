@@ -49,6 +49,7 @@
               <!-- <h2 class="page-header">修改文章</h2> -->
               <form id="article_form" method="post" action="{{ route('admin.article.update', $data->id) }}" accept-charset="utf-8" class="form-horizontal">
 
+              <input name="umengPushed" type="hidden" value="{{  isset($data)&&isset($data->umengPushed) ? $data->umengPushed : 0 }}">
               <input name="_method" type="hidden" value="put">
               <input type="hidden" name="_token" value="{{ csrf_token() }}">
               <div class="nav-tabs-custom col-md-12">
