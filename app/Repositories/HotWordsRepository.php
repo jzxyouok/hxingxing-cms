@@ -70,24 +70,10 @@ class HotWordsRepository extends BaseRepository {
      * @param  string|int $user_id
      * @return Douyasi\Models\Content
      */
-    private function saveContent($content, $inputs, $user_id = '0') {
-        $allFields = array('name', 'invest', 'categoryC', 'category', 'topicC1', 'topic1', 'topicC2', 'topic2', 'topicC3', 'topic3', 'siteC', 'site', 'startTimeC', 'startTime', 'periodC', 'period', 'runTime', 'outline', 'producer', 'creator', 'platform', 'pubStatus', 'uid','cover');
-        foreach ($allFields as $k => $val) {
-            if (array_key_exists($val, $inputs)) {
-                $content->$val = e($inputs[$val]);
-            }
-        }
-        
-        // set created_uid for a new data
-        if (!isset($content->created_uid)) {
-            $content->created_uid = user('id');
-        }
-        /*if ($user_id) {
-                        $content->uid = $user_id;
-        */
-        //var_dump($content);die();
+    private function saveContent($content, $inputs) {
+        $content->word = e($inputs['word']);
+        $content->type = e($inputs['type']);
         $content->save();
-        $content = $this->model->with('contact')->findOrFail($content->id);
         return $content;
     }
 
@@ -117,9 +103,6 @@ class HotWordsRepository extends BaseRepository {
         }
         return $query->orderBy('id', 'desc')->get()->toArray();
     }
-    public function allOperaIds() {
-        return $this->model->orderBy('id','desc')->lists('id')->toArray();
-    }
     /**
      * 存储内容
      *
@@ -130,7 +113,7 @@ class HotWordsRepository extends BaseRepository {
      */
     public function store($inputs, $user_id = '0') {
         $content = new $this->model;
-        $content = $this->saveContent($content, $inputs, $user_id);
+        $content = $this->saveContent($content, $inputs);
         return $content;
     }
 

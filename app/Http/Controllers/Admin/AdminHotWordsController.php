@@ -63,6 +63,7 @@ class AdminHotWordsController extends BackController {
      */
     public function store(HotWordsRequest $request) {
         $data = $request->all(); //获取请求过来的数据
+//        var_dump('store');die;
         $content = $this->content->store($data, user('id')); //使用仓库方法存储
         if ($content->id) {
             //添加成功
@@ -80,6 +81,7 @@ class AdminHotWordsController extends BackController {
      */
     public function update(HotWordsRequest $request, $id) {
         $data = $request->all();
+//        var_dump('update');die;
         return $this->content->update($id, $data, 'article');
     }
 

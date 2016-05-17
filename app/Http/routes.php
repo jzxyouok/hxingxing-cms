@@ -91,7 +91,8 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('/person/delWork/{id}', 'Admin\AdminPersonController@delWork');
 	Route::resource('person', 'Admin\AdminPersonController');
 	Route::resource('/feedback', 'Admin\AdminFeedbackController@index');
-	Route::resource('/hotWords', 'Admin\AdminHotWordsController@index');
+//	Route::resource('/hotWords', 'Admin\AdminHotWordsController@index');
+    Route::resource('/hotWords', 'Admin\AdminHotWordsController');
 	Route::resource('report', 'Admin\AdminReportController');
 	Route::resource('opera', 'Admin\AdminOperaController');
 	Route::resource('jobs', 'Admin\AdminJobsController');
