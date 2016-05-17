@@ -32,7 +32,7 @@ class UmengAndroidPush extends UmengAndroidNotification {
 			// For how to register a test device, please see the developer doc.
 			$this->setPredefinedKeyValue("production_mode", "true");
 			// [optional]Set extra fields
-			$this->setExtraField($extraData[0], $extraData[1]);
+			$this->setExtraField($extraData);
 			// print("Sending Android broadcast notification, please wait...\r\n");
 			$this->send();
 			// print("Sent Android SUCCESS\r\n");

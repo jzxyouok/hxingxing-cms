@@ -31,7 +31,7 @@ class UmengIosPush extends UmengIOSNotification {
 			// Set 'production_mode' to 'true' if your app is under production mode
 			$this->setPredefinedKeyValue("production_mode", "false");
 			// Set customized fields
-			$this->setCustomizedField($extraData[0], $extraData[1]);
+			$this->setCustomizedField($extraData);
 			// print("Sending broadcast notification, please wait...\r\n");
 			$this->send();
 			// print("Sent SUCCESS\r\n");

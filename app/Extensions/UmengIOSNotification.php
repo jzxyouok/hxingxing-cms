@@ -45,9 +45,15 @@ abstract class UmengIOSNotification extends UmengNotification {
 	}
 
 	// Set extra key/value for Android notification
-	function setCustomizedField($key, $value) {
-		if (!is_string($key))
+	function setCustomizedField($extra=[]) {
+		/*if (!is_string($key))
 			throw new Exception("key should be a string!");
-		$this->data["payload"][$key] = $value;
+		$this->data["payload"][$key] = $value;*/
+		foreach ($extra as $k => $val) {
+			if (!is_string($k))
+				throw new Exception("key should be a string!");
+			$this->data["payload"][$k] = $val;
+		}
+		// var_dump($this->data["payload"]);die();
 	}
 }

@@ -121,11 +121,10 @@ class AdminArticleController extends BackController
         if ($content->id) {  //添加成功
             // umengPush
             $simpleContent = str_replace(["\r\n", "\r", "\n"], "", preg_replace("/&#?[a-z0-9]+;/i","",mb_substr(strip_tags($data['content']),0,50,'utf-8')));
-            /*var_dump('新的文章',$data['title'],$simpleContent,['articleUrl','http://www.hxingxing.com/news/'.$content->id]);
-            echo '<hr/>';
-            var_dump($data['title'],['articleUrl','http://www.hxingxing.com/news/'.$content->id]);die();*/
-            $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$data['title'],$simpleContent,['articleUrl','http://www.hxingxing.com/news/'.$content->id]);
-            $this->umengIosPush->sendIOSBroadcast($data['title'],['articleUrl','http://www.hxingxing.com/news/'.$content->id]);
+            $extraData = ['articleType'=>$data['category_id'],'articleUrl'=>'http://www.hxingxing.com/news/'.$content->id];
+            // var_dump($extraData);die();
+            $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$data['title'],$simpleContent,$extraData);
+            $this->umengIosPush->sendIOSBroadcast($data['title'],$extraData);
             return redirect()->route('admin.article.index')->with('message', '成功发布新文章！');
         } else {  //添加失败
             return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
