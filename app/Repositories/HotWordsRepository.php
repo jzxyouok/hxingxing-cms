@@ -5,6 +5,7 @@ namespace Douyasi\Repositories;
 use Douyasi\Models\Meta;
 use Douyasi\Models\HotWords;
 use Douyasi\Models\Person;
+use DB;
 /**
  * 内容仓库ContentRepository
  *
@@ -92,8 +93,8 @@ class HotWordsRepository extends BaseRepository {
         if (!ctype_digit($size)) {
             $size = '50';
         }
-        /*var_dump($data);
-        die();*/
+
+        //return $this->model->where('type','like', '%persons%')->orderBy('id', 'desc')->get()->toArray();
         $query = $this->model;
         $searchFields = array('word', 'type');
         foreach ($searchFields as $k => $val) {
@@ -102,6 +103,7 @@ class HotWordsRepository extends BaseRepository {
             }
         }
         return $query->orderBy('id', 'desc')->get()->toArray();
+
     }
     /**
      * 存储内容

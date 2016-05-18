@@ -45,19 +45,6 @@ $(function() {
                         console.log(data);
                     }
                     item.pubStatus = 0;
-//                    item._token=_token;
-//                    item.uid= data ? data.uid:0;
-//                    console.log(item);
-//                    var name = data? data.name:'';
-//                    var cotact = {name:name};
-//                    item.contact = cotact ;///*****跑错
-//                    item.pubStatus=0;
-//                    //console.log(item);
-//                    $.post(operaController,item,function(result){
-//                        $("#unpub").jsGrid("search");
-//                        console.log(result);
-//                        return result;
-//                    });
                     $.ajax({
                         type: "POST",
                         url: operaController,
@@ -73,13 +60,9 @@ $(function() {
                 },
                 updateItem: function(item) {
                     item = takeSelectedTxt('.jsgrid-edit-row',item);
-                    if(activeBtn){
-                        var data = JSON.parse(activeBtn.attr('data-comment'));
-                        console.log(data);
-                    }
                     item._token=_token;
-                    item.uid= data ? data.uid:0;
                     item.pubStatus=0;
+
                     $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
@@ -87,11 +70,8 @@ $(function() {
                         async:false,
                         success : function(data1){
                             $("#unpub").jsGrid("search");
-                            result = data1;
                         }
                     });
-                    return result;
-
                 },
                 deleteItem: function(item) {
                     item._method='delete';
@@ -187,33 +167,16 @@ $(function() {
                 },
                 insertItem: function(item) {
                     item = takeSelectedTxt('.jsgrid-insert-row',item);
-                    if(activeBtn){
-                        var data = JSON.parse(activeBtn.attr('data-comment'));
-                        console.log(data);
-                    }
                     item._token=_token;
-                    item.uid= data ? data.uid:0;
-                    console.log(item);
-                    var name = data? data.name:'';
-                    var cotact = {name:name};
-                    item.contact = cotact ;///*****跑错
-                    item.pubStatus=0;
-                    //console.log(item);
+                    item.pubStatus=1;
                     $.post(operaController,item,function(result){
-                        $("#unpub").jsGrid("search");
-                        //console.log(result);
-                        return result;
+                        $("#pubed").jsGrid("search");
                     });
                 },
                 updateItem: function(item) {
                     item = takeSelectedTxt('.jsgrid-edit-row',item);
-                    if(activeBtn){
-                        var data = JSON.parse(activeBtn.attr('data-comment'));
-                        console.log(data);
-                    }
                     item._token=_token;
-                    item.uid= data ? data.uid:0;
-                    item.pubStatus=0;
+                    item.pubStatus=1;
                     return $.ajax({
                         type: "PUT",
                         url: operaController+'/'+item.id,
