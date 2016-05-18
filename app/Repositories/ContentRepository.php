@@ -84,16 +84,15 @@ class ContentRepository extends BaseRepository {
 		$fields = ['title','author','content','thumb','is_draft','category_id','is_top','outer_link','slug','umengPushed'];
 		foreach ($fields as $key => $value) {
 			if (array_key_exists($value, $inputs)) {
+                echo $value;echo $inputs[$value];
 				$content->$value = $inputs[$value];
 			}
 		}
-// var_dump($inputs,$content);die();
 		$content->type = 'article';
 		$content->flag = '';
 		if ($user_id) {
 			$content->user_id = $user_id;
 		}
-
 		$content->save();
 		return $content;
 	}

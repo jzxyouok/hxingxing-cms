@@ -129,9 +129,9 @@ class AdminArticleController extends BackController
     // umengPush
     public function umengPush($push=false,$articleId,$category_id,$title='',$simpleContent='') {
         if ($push) {
-            $extraData = ['articleType'=>$category_id,'articleUrl'=>'http://www.hxingxing.com/news/'.$articleId];
-            $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$title,$simpleContent,$extraData,'http://www.hxingxing.com/news/'.$articleId);
-            $this->umengIosPush->sendIOSBroadcast($title,$extraData);
+            //$extraData = ['articleType'=>$category_id,'articleUrl'=>'http://www.hxingxing.com/news/'.$articleId];
+            //$this->umengAndroidPush->sendAndroidBroadcast('新的文章',$title,$simpleContent,$extraData,'http://www.hxingxing.com/news/'.$articleId);
+            //$this->umengIosPush->sendIOSBroadcast($title,$extraData);
 
             $this->content->update($articleId, ['umengPushed'=>1], 'article');
         }
@@ -177,7 +177,7 @@ class AdminArticleController extends BackController
         // 没推过并且现在发布
         $simpleContent = str_replace(["\r\n", "\r", "\n"], "", preg_replace("/&#?[a-z0-9]+;/i","",mb_substr(strip_tags($data['content']),0,20,'utf-8')));
         $this->umengPush(!$data['umengPushed']&&!$data['is_draft'],$id,$data['category_id'],$data['title'],$simpleContent);
-
+        unset($data['umengPushed']);
         $this->content->update($id, $data, 'article');
         return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
     }
