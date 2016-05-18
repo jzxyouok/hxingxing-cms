@@ -11,7 +11,7 @@ $imgsets = array(
  'maxheight' => 3000, //1800        // maximum allowed height, in pixels
  'minwidth' => 10,           // minimum allowed width, in pixels
  'minheight' => 10,          // minimum allowed height, in pixels
- 'type' => array('bmp', 'gif', 'jpg', 'jpe', 'png')        // allowed extensions
+ 'type' => array('bmp', 'gif', 'jpg', 'jpe', 'png','bpg')        // allowed extensions
 );
 
 $re = '';
