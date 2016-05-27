@@ -61,6 +61,7 @@
               </a>
               <ul class="treeview-menu">
                 <li><a href="{{ route('admin.person.index') }}"><i class="fa fa-user"></i>用户管理</a></li>
+                <!--<li><a href="{{ route('admin.msg.index') }}"><i class="fa fa-user"></i>消息记录</a></li>-->
                 <li><a href="{{ route('admin.opera.index') }}"><i class="fa fa-th-list"></i> 剧目</a></li>
                 <li><a href="{{ route('admin.jobsWant.index') }}"><i class="fa fa-th-large"></i> 应聘名片</a></li>
                 <li><a href="{{ route('admin.article.index') }}"><i class="fa fa-newspaper-o"></i> 文章</a></li>
