@@ -31,7 +31,7 @@ class AdminConsoleController extends BackController
         
         $month = isset($_GET['month'])?$_GET['month']:$curMonth;
         $monthDate = date('Y-m-d',strtotime($month));
-        var_dump($monthDate,$curMonth);
+        //var_dump($monthDate,$curMonth);
         $monthBegin = date('Y-m-01', strtotime($monthDate));
         $monthEnd   = date('Y-m-d', strtotime("$monthBegin +1 month -1 day"));
         
