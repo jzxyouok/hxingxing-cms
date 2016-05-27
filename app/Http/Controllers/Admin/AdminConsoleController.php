@@ -26,16 +26,12 @@ class AdminConsoleController extends BackController
         }
 
         // $mondayTimestamp = mktime(0, 0, 0, date("n"), date("j") - date("N") + 1);
-        $curMonth = date("n");
+        $curMonth = date("Y-m");
         $mondayDate = date("j") - date("N") + 1;
-
-        $_data = $request->all();
-        if (!isset($_data['month'])) {
-            $_data['month'] = $curMonth;
-        }
-        $month = $_data['month'];
-        // var_dump($month);
-        $monthDate = date('Y-m-d',strtotime($_data['month']-$curMonth.' months'));
+        
+        $month = isset($_GET['month'])?$_GET['month']:$curMonth;
+        $monthDate = date('Y-m-d',strtotime($month));
+        var_dump($monthDate,$curMonth);
         $monthBegin = date('Y-m-01', strtotime($monthDate));
         $monthEnd   = date('Y-m-d', strtotime("$monthBegin +1 month -1 day"));
         

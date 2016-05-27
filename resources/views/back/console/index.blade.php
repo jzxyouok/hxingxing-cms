@@ -1,6 +1,7 @@
 @extends('layout._back')
 
 @section('content-header')
+<link type="text/css" rel="stylesheet" href="../plugins/datepicker/datepicker3.css"/>
 @parent
           <h1>
             控制面板
@@ -13,80 +14,45 @@
 @stop
 
 @section('content')
-          <!-- Small boxes (Stat box) -->
           <div class="row">
-            <!-- <div class="col-lg-3 col-xs-6">
-              small box
-              <div class="small-box bg-aqua">
-                <div class="inner">
-                  <h3>150<sup style="font-size: 20px">个</sup></h3>
-                  <p>本周新增话题</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-chatboxes"></i>
-                </div>
-                <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div> --><!-- ./col -->
             @if($manageSystem)
-              <div id="container" style="min-width:700px;height:300px"></div>
-              <nav>
-                <ul class="pager">
-                  <li class="previous"><a href="{{ route('admin.console.index') }}?month={{$month-1}}"><span aria-hidden="true">&larr;</span> 上个月</a></li>
-                  @if($month<$curMonth)
-                  <li class="next"><a href="{{ route('admin.console.index') }}?month={{$month+1}}">下个月 <span aria-hidden="true">&rarr;</span></a></li>
-                  @endif
-                </ul>
-              </nav>
-              <!-- <div class="col-md-12">
-                <div class="col-md-4">
-                  本月
-                  <b>{{$monthCount}}</b>
-                </div>
-                <div class="col-md-4">
-                  本周
-                  <b>{{$weekCount}}</b>
-                </div>
-                <div class="col-md-4"></div>
-              </div> -->
+            <div style="    position: absolute;z-index: 9;" class="input-append date" id="datepicker" data-date="{{$curMonth}}" data-date-format="yyyy-mm">
+              <input size="12" type="text" readonly="readonly" name="date" value="{{$curMonth}}">
+              <span class="add-on"><i class="fa fa-calendar"></i></span>      
+            </div>
+              <div id="container" style="height:250px"></div>
             @else
               <h3 class="text-center">欢迎!</h3>
             @endif
-            <!-- <div class="col-lg-3 col-xs-6">
-              small box
-              <div class="small-box bg-yellow">
-                <div class="inner">
-                  <h3>44<sup style="font-size: 20px">人</sup></h3>
-                  <p>本周新增注册用户</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-person-add"></i>
-                </div>
-                <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div> --><!-- ./col -->
-            <!-- <div class="col-lg-3 col-xs-6">
-              small box
-              <div class="small-box bg-red">
-                <div class="inner">
-                  <h3>65<sup style="font-size: 20px">人次</sup></h3>
-                  <p>本周活跃用户访问量</p>
-                </div>
-                <div class="icon">
-                  <i class="ion ion-pie-graph"></i>
-                </div>
-                <a href="#" class="small-box-footer">更多信息 <i class="fa fa-arrow-circle-right"></i></a>
-              </div>
-            </div> --><!-- ./col -->
           </div><!-- /.row -->
 @stop
 
 @section('extraPlugin')
 <script src="{{ asset('static/js/highcharts.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/datepicker/bootstrap-datepicker.js') }}" type="text/javascript"></script>
+<script src="{{ asset('plugins/datepicker/locales/bootstrap-datepicker.zh-CN.js') }}" type="text/javascript"></script>
 @stop
 
 @section('filledScript')
 @if($manageSystem)
+$("#datepicker").datepicker( {
+    format: "yyyy-mm",
+    viewMode: "months", 
+    minViewMode: "months",
+    autoclose:true,
+    language: 'zh-CN'
+}).on('changeDate', dateChanged);
+
+function dateChanged(ev) {
+console.log(ev)
+    $(this).datepicker('hide');
+    <!-- location.href = '{{ route('admin.console.index') }}?month='+ev.date -->
+}
+
+$("#datepicker").on("dp.change", function(e) {
+  <!-- location.href = '{{ route('admin.console.index') }}?month='+e.date -->
+});
+
 dates = []
 for(i = 1; i < {{$monthEnd}}; i += 1){
             dates.push(i);
@@ -94,7 +60,7 @@ for(i = 1; i < {{$monthEnd}}; i += 1){
 $(function () {
     $('#container').highcharts({
         title: {
-            text: '{{$month}}月@if($month==$curMonth)(本月)@endif文章统计',
+            text: '{{$month}}月@if($month==$curMonth)(本月)@endif文章统计{{$monthCount}},本周{{$weekCount}}',
             x: -20 //center
         },
         xAxis: {
