@@ -18,9 +18,12 @@
             @if($manageSystem)
             <div style="    position: absolute;z-index: 9;" class="input-append date" id="datepicker" data-date="{{$curMonth}}" data-date-format="yyyy-mm">
               <input size="12" type="text" readonly="readonly" name="date" value="{{$curMonth}}">
-              <span class="add-on"><i class="fa fa-calendar"></i></span>      
+              <span class="add-on"><i class="fa fa-calendar"></i></span>
             </div>
-              <div id="container" style="height:250px"></div>
+            <div id="articles" style="height:250px"></div>
+            <div id="operas" style="height:250px"></div>
+            <div id="jobsWant" style="height:250px"></div>
+
             @else
               <h3 class="text-center">欢迎!</h3>
             @endif
@@ -35,40 +38,37 @@
 
 @section('filledScript')
 @if($manageSystem)
+
 $("#datepicker").datepicker( {
     format: "yyyy-mm",
-    viewMode: "months", 
+    viewMode: "months",
     minViewMode: "months",
     autoclose:true,
-    language: 'zh-CN'
+    language: 'zh-CN',
 }).on('changeDate', dateChanged);
 
+
 function dateChanged(ev) {
-console.log(ev)
+    //console.log(ev);
+    ajax_article_count();
+    ajax_opera_count();
+    ajax_jobsWant_count();
     $(this).datepicker('hide');
     <!-- location.href = '{{ route('admin.console.index') }}?month='+ev.date -->
 }
 
-$("#datepicker").on("dp.change", function(e) {
-  <!-- location.href = '{{ route('admin.console.index') }}?month='+e.date -->
-});
-
-dates = []
-for(i = 1; i < {{$monthEnd}}; i += 1){
-            dates.push(i);
-    }
-$(function () {
-    $('#container').highcharts({
+function showHightCharts(id,title,data){
+    $('#'+id).highcharts({
         title: {
-            text: '{{$month}}月@if($month==$curMonth)(本月)@endif文章统计{{$monthCount}},本周{{$weekCount}}',
+            text: title,
             x: -20 //center
         },
         xAxis: {
             categories: dates
         },
         yAxis: {
-        title: {
-                text: ''
+            title: {
+                 text: ''
             },
             plotLines: [{
                 value: 0,
@@ -85,10 +85,10 @@ $(function () {
             }
         },
         credits: {
-           enabled: false
+            enabled: false
         },
         tooltip: {
-            valueSuffix: '篇'
+            valueSuffix: ''
         },
         legend: {
             layout: 'vertical',
@@ -96,8 +96,51 @@ $(function () {
             verticalAlign: 'middle',
             borderWidth: 0
         },
-        series: JSON.parse('{{$dataFinal}}'.replace(/&quot;/g, '"'))
+        series: data,//
     });
+}
+
+$.ajaxSetup({
+    headers: {
+        'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
+    }
 });
+var consoleController = '{{ route("admin.console.index") }}';
+function ajax_article_count(){
+    var month = $('#datepicker').find('input').val();
+    $.post(consoleController+'/ajaxArticleCount', {month:month}, function(data, textStatus, xhr) {
+        if (data.status=='1') {
+            showHightCharts('articles',data.title,data.data);
+        }
+    });
+}
+function ajax_opera_count(){
+    var month = $('#datepicker').find('input').val();
+    $.post(consoleController+'/ajaxOperaCount', {month:month}, function(data, textStatus, xhr) {
+        if (data.status=='1') {
+            showHightCharts('operas',data.title,data.data);
+        }
+    });
+}
+function ajax_jobsWant_count(){
+    var month = $('#datepicker').find('input').val();
+    $.post(consoleController+'/ajaxJobsWantCount', {month:month}, function(data, textStatus, xhr) {
+        if (data.status=='1') {
+            showHightCharts('jobsWant',data.title,data.data);
+        }
+    });
+}
+
+
+dates = []
+for(i = 1; i < {{$monthEnd}}; i += 1){
+            dates.push(i);
+    }
+$(function () {
+    ajax_article_count();
+    ajax_opera_count();
+    ajax_jobsWant_count();
+});
+
 @endif
 @stop

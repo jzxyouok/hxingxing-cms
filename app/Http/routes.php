@@ -65,8 +65,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 		$resource = 'admin.console';
 		$controller = 'Admin\AdminConsoleController@';
 		Route::get('/', ['as' => $resource . '.index', 'uses' => $controller . 'getIndex']);
+		Route::post('/ajaxArticleCount', $controller . 'ajaxArticleCount');
+		Route::post('/ajaxOperaCount', $controller . 'ajaxOperaCount');
+		Route::post('/ajaxJobsWantCount', $controller . 'ajaxJobsWantCount');
 	});
-
 #--------------------
 	# 控制台 END
 	#--------------------
