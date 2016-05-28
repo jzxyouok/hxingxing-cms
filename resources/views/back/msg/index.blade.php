@@ -23,7 +23,7 @@
 
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">消息列表({{$count}}条)</h3>
+                  <h3 class="box-title">消息列表({{$count}}条/第{{$index}}页)</h3>
                   <div class="box-tools">
                     <form action="{{ route('admin.user.index') }}" method="get">
                       <div class="input-group">
@@ -68,8 +68,14 @@
 
 
               </div>
-<a href="{{ route('admin.msg.index',['page'=>-1]) }}" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i>上一页</a>
-<a href="{{ route('admin.msg.index',['page'=>+1]) }}" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i>下一页</a>
+@if($lastButton)
+  <a href="{{ route('admin.msg.index',['page'=>-1]) }}" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i>上一页</a>
+@endif
+
+@if($nextButton)
+  <a href="{{ route('admin.msg.index',['page'=>+1]) }}" class="btn btn-primary"><i class="fa fa-fw fa-plus"></i>下一页</a>
+@endif
+
 @stop
 
 

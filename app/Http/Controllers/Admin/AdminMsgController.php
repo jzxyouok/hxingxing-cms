@@ -48,18 +48,23 @@ class AdminMsgController extends BackController
         $groups = [];
         $count = 0;
         $page= isset($_GET['page'])? (int)$_GET['page']:0;
-        $cursorSession = $request->session()->get('cursor', ['index'=>0,'cursor'=>['**']]);
-//        var_dump($cursorSession);
-        $cursorSession['index'] = $cursorSession['index']+$page;
-        $cursor = $cursorSession['cursor'][$cursorSession['index']];
+        $lastButton = $nextButton = true;
+        $cursorSession = $request->session()->get('cursor', ['index'=>0,'cursor'=>['']]);
+        $index = $cursorSession['index'] = $cursorSession['index']+$page;
+        $index += 1;
+        if($cursorSession['index'] <= 0){
+            $lastButton = false;
+        }
+        //var_dump($cursorSession);
+        $cursor = isset($cursorSession['cursor'][$cursorSession['index']])?$cursorSession['cursor'][$cursorSession['index']]:'';
 //        var_dump($cursorSession);//die;
         $timestamp = (strtotime(date('Y-m-d'),time())-6*24*3600)*1000;
-        $ql = 'select+*+timestamp>'.$timestamp.'+order+by+timestamp+asc&limit=400';
-        //if($cursor) $ql .='&cursor='.$cursor;
-//        var_dump($ql);
-        $history = '';//$h->getChatRecord($ql);
-        if($history &&isset($history['entities'])){
-//            var_dump(1);
+        $ql = 'select+*+timestamp>'.$timestamp.'+order+by+timestamp+asc&limit=1000';
+        if($cursor) $ql .='&cursor='.$cursor;
+        //var_dump($ql);
+        $history = $h->getChatRecord($ql);
+        //var_dump($history);//die;
+        if(isset($history['entities'])){
             if($page>=0 && isset($history['cursor'])&&!isset($cursorSession['cursor'][$cursorSession['index']+1])){
                 $cursorSession['cursor'][] = $history['cursor'];
             }
@@ -95,12 +100,16 @@ class AdminMsgController extends BackController
                 $groups[$from.'-'.$to][] = $arr;
             }
             $count = count($return);
-//            var_dump(session('cursor'));
+            if(!isset($history['cursor'])){
+                $nextButton = false;
+            }
+            //var_dump(session('cursor'));
+           //var_dump($groups);
         }/*else{
             $this->middleware('操作失败，请重试');
         }*/
 
-        return view('back.msg.index', compact('groups','count'));
+        return view('back.msg.index', compact('groups','count','lastButton','nextButton','index'));
 
     }
 
