@@ -5,8 +5,8 @@ namespace Douyasi\Http\Controllers\Admin;
 use Douyasi\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use DB;
-use Douyasi\Models\opera;
-use Douyasi\Models\jobsWant;
+use Douyasi\Models\Opera;
+use Douyasi\Models\JobsWant;
 /**
  * 后台控制台常规控制器
  *

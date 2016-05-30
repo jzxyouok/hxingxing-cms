@@ -2,6 +2,9 @@
 
 @section('content-header')
 <link type="text/css" rel="stylesheet" href="../plugins/datepicker/datepicker3.css"/>
+<style>
+    .datepicker table tr td span.disabled, .datepicker table tr td span.disabled:hover{color: #ccc}
+</style>
 @parent
           <h1>
             控制面板
@@ -45,6 +48,7 @@ $("#datepicker").datepicker( {
     minViewMode: "months",
     autoclose:true,
     language: 'zh-CN',
+    endDate: '+0d',
 }).on('changeDate', dateChanged);
 
 
