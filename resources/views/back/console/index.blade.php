@@ -18,7 +18,7 @@
             @if($manageSystem)
             <div style="    position: absolute;z-index: 9;" class="input-append date" id="datepicker" data-date="{{$curMonth}}" data-date-format="yyyy-mm">
               <input size="12" type="text" readonly="readonly" name="date" value="{{$curMonth}}">
-              <span class="add-on"><i class="fa fa-calendar"></i></span>      
+              <span class="add-on"><i class="fa fa-calendar"></i></span>
             </div>
               <div id="container" style="height:250px"></div>
             @else
@@ -37,7 +37,7 @@
 @if($manageSystem)
 $("#datepicker").datepicker( {
     format: "yyyy-mm",
-    viewMode: "months", 
+    viewMode: "months",
     minViewMode: "months",
     autoclose:true,
     language: 'zh-CN'

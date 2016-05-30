@@ -55,9 +55,9 @@ return [
 		'mysql' => [
 			'driver' => 'mysql',
 			'host' => env('DB_HOST', 'localhost'),
-			'database' => env('DB_DATABASE', 'hongka'),
+			'database' => env('DB_DATABASE', 'hxingxing'),
 			'username' => env('DB_USERNAME', 'root'),
-			'password' => env('DB_PASSWORD', 'shiheng*7D'),
+			'password' => env('DB_PASSWORD', 'hey'),
 			'charset' => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix' => env('DB_PREFIX', 'back_'),
@@ -66,9 +66,9 @@ return [
 		'mysql_front_tables' => [
 			'driver' => 'mysql',
 			'host' => env('DB_HOST', 'localhost'),
-			'database' => env('DB_DATABASE', 'hongka'),
+			'database' => env('DB_DATABASE', 'hxingxing'),
 			'username' => env('DB_USERNAME', 'root'),
-			'password' => env('DB_PASSWORD', 'shiheng*7D'),
+			'password' => env('DB_PASSWORD', 'hey'),
 			'charset' => 'utf8',
 			'collation' => 'utf8_unicode_ci',
 			'prefix' => env('DB_PREFIX', ''),
