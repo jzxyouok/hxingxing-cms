@@ -11,6 +11,7 @@ use Douyasi\Http\Requests\OperaRequest;
 use Douyasi\Repositories\FlagRepository;
 use Douyasi\Repositories\OperaRepository;
 use Douyasi\Repositories\JobsRepository;
+use Douyasi\Repositories\PersonRepository;
 use Illuminate\Http\Request;
 
 /**
@@ -44,11 +45,14 @@ class AdminOperaController extends BackController {
 	public function __construct(
 		OperaRepository $content,
         JobsRepository $jobs,
-		FlagRepository $flag) {
+		FlagRepository $flag,
+        PersonRepository $person
+    ) {
 		parent::__construct();
 		$this->content = $content;
         $this->jobs = $jobs;
 		$this->flag = $flag;
+        $this->person = $person;
 		if (!user('object')->can('type_in') && !user('object')->can('customer_service')) {
 			$this->middleware('deny403');
 		}
@@ -134,6 +138,7 @@ class AdminOperaController extends BackController {
 		foreach ($operas as $k => $val) {
 			$operas[$k]['contact']['name'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['name']));
 			$operas[$k]['contact']['otherName'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['otherName']));
+            $operas[$k]['contact']['otherMobile'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['otherMobile']));
             $operas[$k]['contact']['fakeName'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['fakeName']));
 			$operas[$k]['contact']['position'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['position']));
             $operas[$k]['contact']['company'] = str_replace(" ", "&nbsp;", htmlentities($val['contact']['company']));
@@ -270,20 +275,20 @@ class AdminOperaController extends BackController {
 		// var_dump($return);die();
 		return $result['data'][$uid . 'y'] == 'success' && $result['data'][$uid . 'z'] == 'success' ? json_encode($return, JSON_UNESCAPED_UNICODE) : 0;
 	}
-	public function hxChatHistory($uid, $page) {
-		// var_dump($data);die();
-		$h = $this->newEasemob();
+    public function hxChatHistory($uid,$page){
+        // var_dump($data);die();
+        $h=$this->newEasemob();
 
-		$return = [];
-		$ql = 'select+*+where+timestamp>1435536480000+from="admin"+and+to="' . $uid . 'y"+or+to="' . $uid . 'z"+limit=10+cursor=**';
-		// $cursor=$h->readCursor("chatfile.txt");
-		$history = $h->getChatRecord($ql);
-		// var_dump($history);
-		foreach ($history['entities'] as $k => $val) {
-			$return[date('m-d H:i', round($val['timestamp'] / 1000))] = $val['payload']['bodies'][0]['msg'];
-		}
-		return $return;
-	}
+        $return = [];
+        $ql='select+*+where+timestamp>1435536480000+from="admin"+and+to="'.$uid.'y"+or+to="'.$uid.'z"+limit=10+cursor=**';
+        // $cursor=$h->readCursor("chatfile.txt");
+        $history = $h->getChatRecord($ql);
+        // var_dump($history);
+        foreach ($history['entities'] as $k => $val) {
+            $return[date('m-d H:i',round($val['timestamp']/1000))] = $val['payload']['bodies'][0]['msg'];
+        }
+        return $return;
+    }
 	private function newChuanglan() {
 		$config = [
 			'api_send_url' => 'http://222.73.117.156/msg/HttpBatchSendSM',

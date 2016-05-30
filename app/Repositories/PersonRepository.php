@@ -211,4 +211,15 @@ class PersonRepository extends BaseRepository {
 	public function backendPubedUids() {
 		return $this->model->where('isPubed', 1)->where('password', 'e3d66c3f388ccdad8907f4f3509a898c')->orderBy('uid','asc')->lists('uid')->toArray();
 	}
+    public function getPersonByIds($ids) {
+        if(!is_array($ids)){
+            $ids = explode(',',$ids);
+        }
+        $data = $this->model->select('uid', 'name')->whereIn('uid', $ids)->orderBy('uid', 'desc')
+             ->get()->toArray();
+        $collection = collect($data);
+        $keyed = $collection->keyBy('uid');
+        return $keyed->all();
+            //->paginate($size);
+    }
 }
