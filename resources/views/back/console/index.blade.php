@@ -4,6 +4,7 @@
 <link type="text/css" rel="stylesheet" href="../plugins/datepicker/datepicker3.css"/>
 <style>
     .datepicker table tr td span.disabled, .datepicker table tr td span.disabled:hover{color: #ccc}
+    .input-group.date input,.input-group.date span {cursor: pointer; }
 </style>
 @parent
           <h1>
@@ -19,7 +20,7 @@
 @section('content')
           <div class="row">
             @if($manageSystem)
-            <div style="    position: absolute;z-index: 9;" class="input-append date" id="datepicker" data-date="{{$curMonth}}" data-date-format="yyyy-mm">
+            <div style="position: absolute;z-index: 9;" class="input-group date" id="datepicker" data-date="{{$curMonth}}" data-date-format="yyyy-mm">
               <input size="12" type="text" readonly="readonly" name="date" value="{{$curMonth}}">
               <span class="add-on"><i class="fa fa-calendar"></i></span>
             </div>
