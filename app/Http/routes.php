@@ -65,8 +65,10 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 		$resource = 'admin.console';
 		$controller = 'Admin\AdminConsoleController@';
 		Route::get('/', ['as' => $resource . '.index', 'uses' => $controller . 'getIndex']);
+		Route::post('/ajaxArticleCount', $controller . 'ajaxArticleCount');
+		Route::post('/ajaxOperaCount', $controller . 'ajaxOperaCount');
+		Route::post('/ajaxJobsWantCount', $controller . 'ajaxJobsWantCount');
 	});
-
 #--------------------
 	# 控制台 END
 	#--------------------
@@ -84,6 +86,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::post('/opera/pushMsg', 'Admin\AdminOperaController@pushMsg');
 	Route::post('/person/pubMan', 'Admin\AdminPersonController@pubMan');
 	Route::post('/opera/checkOpera', 'Admin\AdminOperaController@checkOpera');
+	//Route::post('/opera/hxChatHistory', 'Admin\AdminOperaController@hxChatHistory');
 	Route::post('/article/updViewNum/{id}/{num}/{is_show}', 'Admin\AdminArticleController@updViewNum');
 	Route::post('/article/delComment/{id}/{newsId}', 'Admin\AdminArticleController@delComment');
 	Route::post('/person/checkMobile', 'Admin\AdminPersonController@checkMobile');
@@ -97,6 +100,7 @@ Route::group(['prefix' => 'admin', 'middleware' => 'admin'], function () {
 	Route::resource('opera', 'Admin\AdminOperaController');
 	Route::resource('jobs', 'Admin\AdminJobsController');
 	Route::resource('statistics', 'Admin\AdminStatisticsController');
+    Route::resource('msg', 'Admin\AdminMsgController');
 
 	# 文章
 	Route::resource('article', 'Admin\AdminArticleController');
