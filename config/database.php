@@ -55,7 +55,7 @@ return [
 		'mysql' => [
 			'driver' => 'mysql',
 			'host' => env('DB_HOST', 'localhost'),
-			'database' => env('DB_DATABASE', 'hongka'),
+			'database' => env('DB_DATABASE', 'hxingxing'),
 			'username' => env('DB_USERNAME', 'root'),
 			'password' => env('DB_PASSWORD', 'shiheng*7D'),
 			'charset' => 'utf8',
@@ -66,7 +66,7 @@ return [
 		'mysql_front_tables' => [
 			'driver' => 'mysql',
 			'host' => env('DB_HOST', 'localhost'),
-			'database' => env('DB_DATABASE', 'hongka'),
+			'database' => env('DB_DATABASE', 'hxingxing'),
 			'username' => env('DB_USERNAME', 'root'),
 			'password' => env('DB_PASSWORD', 'shiheng*7D'),
 			'charset' => 'utf8',
