@@ -64,6 +64,7 @@ class AdminMsgController extends BackController
         //$time = microtime(true);
         $history= $h->getChatRecord($ql);
         //echo (microtime(true)-$time);
+        $hxResult = true;
         if(isset($history['entities'])){
             if($page>=0 && isset($history['cursor'])&&!isset($cursorSession['cursor'][$cursorSession['index']+1])){
                 $cursorSession['cursor'][] = $history['cursor'];
@@ -109,10 +110,10 @@ class AdminMsgController extends BackController
         }else{
             $cursorSession['index'] = $cursorSession['index']-$page;
             //$this->middleware('操作失败，请重试');
-            echo '接口调用失败！';
+            $hxResult = false;
         }
         session(['cursor' => $cursorSession]);
-        return view('back.msg.index', compact('groups','lastButton','nextButton','index'));
+        return view('back.msg.index', compact('groups','lastButton','nextButton','index','hxResult'));
 
     }
 
