@@ -107,6 +107,7 @@ class AdminMsgController extends BackController
             }
             //var_dump(session('cursor'));
            //var_dump($groups);
+           $groups = array_reverse($groups); 
         }else{
             $cursorSession['index'] = $cursorSession['index']-$page;
             //$this->middleware('操作失败，请重试');
