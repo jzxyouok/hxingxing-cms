@@ -23,9 +23,9 @@
 
               <div class="box box-primary">
                 <div class="box-header with-border">
-                  <h3 class="box-title">消息列表({{$count}}条/第{{$index}}页)</h3>
+                  <h3 class="box-title">消息列表(第{{$index}}页)</h3>
                   <div class="box-tools">
-                    <form action="{{ route('admin.user.index') }}" method="get">
+                    <!-- <form action="{{ route('admin.user.index') }}" method="get">
                       <div class="input-group">
                         <input type="text" class="form-control input-sm pull-right" name="s_name" value="{{ Input::get('s_name') }}" style="width: 150px;" placeholder="搜索用户登录名或昵称或真实姓名">
                         <input type="text" class="form-control input-sm pull-right" name="s_phone" value="{{ Input::get('s_phone') }}" style="width: 150px;" placeholder="搜索用户手机号">
@@ -33,7 +33,7 @@
                           <button class="btn btn-sm btn-default"><i class="fa fa-search"></i></button>
                         </div>
                       </div>
-                    </form>
+                    </form> -->
                   </div>
                 </div><!-- /.box-header -->
                 <div class="box-body table-responsive">
