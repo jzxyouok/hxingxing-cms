@@ -258,7 +258,7 @@ class AdminOperaController extends BackController {
 		// var_dump($data);die();
 		$h = $this->newEasemob();
 
-		$simpleCard = ['uname' => '红猩猩', 'msgType' => 'likeMe', 'time' => time(), 'unread' => true, 'avatar' => 'http://112.74.86.237:8081/logo.ico'];
+		$simpleCard = ['uname' => '红猩猩', 'msgType' => 'likeMe', 'time' => time(), 'unread' => true, 'avatar' => 'http://cms.hxingxing.com/logo.ico'];
 		// $uids = ['73y'];
 		$uids[] = $uid . 'y';
 		$uids[] = $uid . 'z';
