@@ -129,9 +129,9 @@ class AdminArticleController extends BackController
     // umengPush
     public function umengPush($push=false,$articleId,$category_id,$title='',$simpleContent='') {
         if ($push) {
-            //$extraData = ['articleType'=>$category_id,'articleUrl'=>'http://www.hxingxing.com/news/'.$articleId];
-            //$this->umengAndroidPush->sendAndroidBroadcast('新的文章',$title,$simpleContent,$extraData,'http://www.hxingxing.com/news/'.$articleId);
-            //$this->umengIosPush->sendIOSBroadcast($title,$extraData);
+            $extraData = ['articleType'=>$category_id,'articleUrl'=>'http://www.hxingxing.com/news/'.$articleId];
+            $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$title,$simpleContent,$extraData,'http://www.hxingxing.com/news/'.$articleId);
+            $this->umengIosPush->sendIOSBroadcast($title,$extraData);
 
             $this->content->update($articleId, ['umengPushed'=>1], 'article');
         }
@@ -153,7 +153,7 @@ class AdminArticleController extends BackController
         }
         $article = $this->content->edit($id, 'article');
         //已经findOrFail处理，如果不存在该id资源会抛出异常，再加is_null判定无意义
-        //is_null($article) and abort(404); 
+        //is_null($article) and abort(404);
         $flags = $this->flag->index();
         return view('back.article.edit', ['data' => $article, 'returnC' => $returnC, 'flags' => $flags]);
     }
