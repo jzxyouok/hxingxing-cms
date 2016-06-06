@@ -90,8 +90,8 @@ class AdminController extends CommonController
                         $oFile = $uniqid.'o.'.$ext;
                         $rFile = $uniqid.'rw300.'.$ext;
 
-                        // $fullfilename = url('').'/'.$savePath.'/'.$oFile;  //原始完整路径
-                        $fullfilename = '/'.$savePath.'/'.$oFile;  //原始完整路径
+                        $fullfilename = url('').'/'.$savePath.'/'.$oFile;  //原始完整路径
+                        // $fullfilename = '/'.$savePath.'/'.$oFile;  //原始完整路径
                         if ($file->isValid()) {
                             $uploadSuccess = $file->move($savePath, $oFile);  //移动文件
                             
