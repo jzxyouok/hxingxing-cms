@@ -84,7 +84,7 @@ class AdminConsoleController extends BackController
     private function dataHandle($objectArr,$monthEnd){
         $userData = $userFinal = $dataFinal = [];
         foreach ($objectArr as $key => $value) {
-            $date = substr($value->created_at,8,2);
+            $date = (int)substr($value->created_at,8,2);
             $userData[$value->realname][$date][] = 1;
         }
         //var_dump($userData);die();
