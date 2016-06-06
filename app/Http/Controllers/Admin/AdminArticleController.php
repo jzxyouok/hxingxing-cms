@@ -130,7 +130,7 @@ class AdminArticleController extends BackController
     public function umengPush($push=false,$articleId,$category_id,$title='',$simpleContent='') {
         if ($push) {
             $extraData = ['articleType'=>$category_id,'articleUrl'=>'http://www.hxingxing.com/news/'.$articleId];
-            $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$title,$simpleContent,$extraData,'http://www.hxingxing.com/news/'.$articleId);
+            // $this->umengAndroidPush->sendAndroidBroadcast('新的文章',$title,$simpleContent,$extraData,'http://www.hxingxing.com/news/'.$articleId);
             $this->umengIosPush->sendIOSBroadcast($title,$extraData);
 
             $this->content->update($articleId, ['umengPushed'=>1], 'article');
