@@ -120,7 +120,7 @@ class AdminArticleController extends BackController
         $content = $this->content->store($data, 'article', user('id'));  //使用仓库方法存储
         if ($content->id) {  //添加成功
             $simpleContent = str_replace(["\r\n", "\r", "\n"], "", preg_replace("/&#?[a-z0-9]+;/i","",mb_substr(strip_tags($data['content']),0,20,'utf-8')));
-            $this->umengPush(!$data['is_draft'],$content->id,$data['category_id'],$data['title'],$simpleContent);
+            // $this->umengPush(!$data['is_draft'],$content->id,$data['category_id'],$data['title'],$simpleContent);
             return redirect()->route('admin.article.index')->with('message', '成功发布新文章！');
         } else {  //添加失败
             return redirect()->back()->withInput($request->input())->with('fail', '数据库操作返回异常！');
@@ -176,7 +176,7 @@ class AdminArticleController extends BackController
 
         // 没推过并且现在发布
         $simpleContent = str_replace(["\r\n", "\r", "\n"], "", preg_replace("/&#?[a-z0-9]+;/i","",mb_substr(strip_tags($data['content']),0,20,'utf-8')));
-        $this->umengPush(!$data['umengPushed']&&!$data['is_draft'],$id,$data['category_id'],$data['title'],$simpleContent);
+        // $this->umengPush(!$data['umengPushed']&&!$data['is_draft'],$id,$data['category_id'],$data['title'],$simpleContent);
         unset($data['umengPushed']);
         $this->content->update($id, $data, 'article');
         return redirect()->route('admin.article.index')->with('message', '修改文章成功！');
