@@ -28,8 +28,9 @@ if(isset($_FILES['upload']) && strlen($_FILES['upload']['name']) > 1) {
   
   // get protocol and host name to send the absolute image path to CKEditor
   $protocol = !empty($_SERVER['HTTPS']) ? 'https://' : 'http://';
-  $site = $protocol. $_SERVER['SERVER_NAME'] .'/';
-
+  // $site = $protocol. $_SERVER['SERVER_NAME'] .'/';
+  $site = 'http://cms.hxingxing.com/';
+  
   $uploadpath = $_SERVER['DOCUMENT_ROOT'] .'/'. $upload_dir . $img_name;       // full file path
   
   
