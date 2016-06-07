@@ -105,7 +105,7 @@ class AdminPersonController extends BackController {
 		$pubed = $this->person->index($data, 1, Cache::get('page_size', '10'));
 		// var_dump($persons);die;
 		// $serverUrl = 'http://112.74.86.237:8080/img/';
-		$serverUrl = 'http://cms.hxingxing.com/img/';
+		$serverUrl = 'http://static.hxingxing.com/';
 		$canDel = true;
 		if (!user('object')->can('manage_users') || !user('object')->can('manage_system')) {
 			$canDel = false;
