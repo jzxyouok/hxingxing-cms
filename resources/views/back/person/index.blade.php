@@ -81,7 +81,7 @@
                         <td class="text-muted">{{ $user->position }}</td>
                         <td>
                           @if($user->avatar)
-                            <img src="{{$serverUrl}}/{{ $user->avatar }}" style="height: 35px;width: 35px">
+                            <img src="{{ $user->avatar }}" style="height: 35px;width: 35px">
                             @endif
                         </td>
                         <td class="text-muted">
@@ -149,7 +149,7 @@
                         <td class="text-muted">{{ $user->position }}</td>
                         <td>
                           @if($user->avatar)
-                            <img src="{{$serverUrl}}/{{ $user->avatar }}" style="height: 35px;width: 35px">
+                            <img src="{{ $user->avatar }}" style="height: 35px;width: 35px">
                             @endif
                         </td>
                         <td class="text-muted">
@@ -365,7 +365,7 @@
 
       var commentHtml = '';
       for (var i = 0; i < commentData.length; i++) {
-        commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-1"><img src="{{$serverUrl}}/'+commentData[i].avatar+'" style="height: 35px;width: 35px"></div><div class="col-md-11"><h4 class="list-group-item-heading">'+commentData[i].name+' - '+commentData[i].role+' - '+commentData[i].time+'</h4><p class="list-group-item-text">'+commentData[i].category+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="'+commentData[i].id+'"></i></a></li>';
+        commentHtml += '<li class="list-group-item container-fluid"><div class="col-md-1"><img src="'+commentData[i].avatar+'" style="height: 35px;width: 35px"></div><div class="col-md-11"><h4 class="list-group-item-heading">'+commentData[i].name+' - '+commentData[i].role+' - '+commentData[i].time+'</h4><p class="list-group-item-text">'+commentData[i].category+'</p></div><a href="javascript:void(0);" class="col-md-1"><i class="fa fa-fw fa-minus-circle delete_item" title="删除" data-action="" data-id="'+commentData[i].id+'"></i></a></li>';
       }
       $('#worksModal').find('.modalTitle').html(artTitle).end().find('.modal-body .list-group').html(commentHtml);
     })
