@@ -80,9 +80,7 @@
                         <td class="text-muted">{{ $user->company }}</td>
                         <td class="text-muted">{{ $user->position }}</td>
                         <td>
-                          @if($user->avatar)
-                            <img src="{{ $user->avatar }}" style="height: 35px;width: 35px">
-                            @endif
+                            <img class="personCoverFile" src="{{ $user->avatar }}" style="height: 35px;width: 35px" data-toggle="modal" data-target="#uploadModal">
                         </td>
                         <td class="text-muted">
                             @if( count($user->works) > 1)
@@ -279,6 +277,38 @@
       </div><!-- /.modal-content -->
     </div><!-- /.modal -->
   </div>
+
+  <div class="modal fade" id="uploadModal" tabindex="-1" role="dialog" aria-labelledby="chatHistoryModalLabel" aria-hidden="true">
+   <div class="modal-dialog">
+      <div class="modal-content">
+         <div class="modal-header">
+             <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+             <h4 class="modal-title text-center row" id="myModalLabel">
+               <span class="modalTitle"></span>
+             </h4>
+         </div>
+         <div class="modal-body" id="commentBox">
+             <div class="form-group">
+               <label class="control-label">请上传头像</label>
+               <div class="form-group">
+                   <img style="width:80px"  alt="">
+                   <input type="file" name="picture" class="operaCoverInput" style="">
+               </div>
+               <input type="hidden" name="uid" id="uid">
+             </div>
+
+             <div class="form-group">
+               {{-- <button type="submit" class="btn btn-block kh-btn">上传</button>
+               <button type="submit" class="btn btn-block kh-btn">保存</button> --}}
+               <button type="button" id="uploadBtn"class="btn btn-primary" id="pushBtn">上传</button>
+               <button type="button" id="savePathBtn"class="btn btn-primary" id="pushBtn">保存</button>
+             </div>
+         </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal -->
+  </div>
+
+
 @stop
 
 @section('filledScript')
@@ -290,6 +320,7 @@
     });
     var token = '{{ csrf_token() }}';
     var rowIndex;
+    var uploadController = '{{ route("admin.upload") }}';
 
     $('#msgTpl').change(function () {
       $('#msgInput').val('')
@@ -382,4 +413,49 @@
             })
         }
     });
+
+    $('body').on('submit','.operaCoverForm',function (e) {
+        e.preventDefault();
+        var self = $(this);
+        var formData = new FormData();
+        formData.append('picture', self.find('.operaCoverInput')[0].files[0]);
+        $.ajax({
+          type: 'POST',
+          url: uploadController,
+          data: formData,
+          contentType: false,
+          processData: false,
+        }).done(function(data) {
+          // console.log(data)
+          if (data.status==1) {
+            self.find('.personCoverFile').attr('src',serverUrl+data.info).end().find('.operaCoverBtn').hide().end().find('.uploadMsg').show();
+          }else{
+            alert('上传失败。'+data.info)
+          }
+        })
+    })
+    $('body').on('change','.operaCoverInput',function (e) {
+      $(this).next('.btn').show();
+      $(this).next().next('.uploadMsg').hide();
+    })
+    $('body').on('click','.personCoverFile',function (e) {
+      {{-- $(this).next('.operaCoverInput').show();
+      $(this).next().next('.uploadMsg').hide(); --}}
+      rowIndex = $('table tr').index($(this).closest('tr'));
+      var dataBtn = $(this).closest('tr').find('.btn');
+      console.log(dataBtn);
+      var uid = dataBtn.attr('data-uid');
+      var title = dataBtn.attr('data-title');
+      console.log(uid,title);
+
+      $('#uploadModal').find('.modalTitle').html(title).end().find('#uid').val(uid);
+    })
+
+    $("#uploadBtn").on('click',function(){
+
+    })
+@stop
+
+@section('extraPlugin')
+
 @stop
